@@ -66,8 +66,8 @@ public class TrackerManager : MonoBehaviour
         {
             Debug.Log("Gana jeroglifico");
             JeroglificAction?.Invoke(this);
-            HasWon = true;
             BackToGameplay();
+            HasWon = true;
         }
     }
 }

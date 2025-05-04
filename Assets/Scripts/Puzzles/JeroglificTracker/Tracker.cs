@@ -8,7 +8,6 @@ public class Tracker : MonoBehaviour
     [Header("Start Settings")]
     public bool CanStart;
     [SerializeField] StatueManager statueManager;
-    [SerializeField] List<GameObject> nodesToEnable;
 
     [Header("Nodes")]
     [SerializeField] List<GameObject> actionNodes; //Referencia a su action
@@ -35,11 +34,6 @@ public class Tracker : MonoBehaviour
 
     private void Start()
     {
-        if (actionNodes == null || actionNodes.Count == 0)
-        {
-            actionNodes = new List<GameObject>(nodesToEnable);
-        }
-
         if (validNodes == null || validNodes.Count == 0)
         {
             validNodes = new List<GameObject>(actionNodes);
