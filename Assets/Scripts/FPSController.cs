@@ -1,0 +1,145 @@
+using System;
+using Unity.Cinemachine;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+
+public class FPSController : MonoBehaviour
+{
+    [Header("Speed Settings")]
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float crouchSpeed = 1.5f;
+
+    [Header("Camera Settings")]
+    [SerializeField] private bool invertYAxis = false;
+    [SerializeField] private Transform cameraHolder;
+    //[SerializeField] CinemachineBrain brain;
+
+    [Header("Look Settings")]
+    public float mouseSensitivity = 2f;
+    [SerializeField] private float clampRange = 80f;
+
+    Vector2 mouseInput;
+
+    private CharacterController characterController;
+    private Camera mainCamera;
+    private PlayerInputHandler inputHandler;
+    private Vector3 currentMovement = Vector3.zero;
+    private float verticalRotation;
+
+    private Vector3 originalCameraLocalPosition;
+    private Vector3 crouchedCameraLocalPosition;
+
+    private float originalHeight;
+    private float crouchedHeight;
+    private float currentSpeed;
+
+    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float terminalVelocity = -50f;
+    private float verticalVelocity = 0f;
+    private bool isGrounded = false;
+    public Slider sensSlider;
+    public float newSensitivity;
+
+    private void Awake()
+    {
+        characterController = GetComponent<CharacterController>();
+
+        //brain que avisa cuando hay una transicion de camara para por ej si transiciono de vuelta a la cam del player activar los inputs
+    }
+
+    private void Start()
+    {
+        mainCamera = Camera.main;
+        inputHandler = PlayerInputHandler.Instance;
+        newSensitivity = sensSlider.value;
+
+        originalCameraLocalPosition = cameraHolder.localPosition;
+        crouchedCameraLocalPosition = originalCameraLocalPosition + new Vector3(0, -1f, 0);
+
+        originalHeight = characterController.height;
+        crouchedHeight = originalHeight / 2;
+        currentSpeed = moveSpeed;
+
+        characterController.center = Vector3.zero;
+        cameraHolder.localPosition = originalCameraLocalPosition;
+    }
+
+    private void Update()
+    {
+        HandleMovement();
+        RotationInputs();
+    }
+
+    private void LateUpdate()
+    {
+        HandleRotation();
+    }
+
+    void RotationInputs()
+    {
+        mouseInput.y = invertYAxis ? -inputHandler.LookInput.y : inputHandler.LookInput.y;
+        mouseInput.x = inputHandler.LookInput.x * mouseSensitivity;
+    }
+
+    private void HandleRotation()
+    {
+        transform.Rotate(0, mouseInput.x, 0);
+
+        verticalRotation -= mouseInput.y * mouseSensitivity;
+        verticalRotation = Mathf.Clamp(verticalRotation, -clampRange, clampRange);
+
+        cameraHolder.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
+    }
+
+    private void HandleMovement()
+    {
+        bool wantsToStand = !Keyboard.current.cKey.isPressed;
+        bool ceilingAbove = IsCeilingAbove();
+        bool shouldCrouch = Keyboard.current.cKey.isPressed || ceilingAbove;
+
+        float targetHeight = shouldCrouch ? crouchedHeight : originalHeight;
+        characterController.height = Mathf.Lerp(characterController.height, targetHeight, Time.deltaTime * 10f);
+
+        Vector3 targetCamPos = shouldCrouch ? crouchedCameraLocalPosition : originalCameraLocalPosition;
+        cameraHolder.localPosition = Vector3.Lerp(cameraHolder.localPosition, targetCamPos, Time.deltaTime * 10f);
+
+        currentSpeed = shouldCrouch ? crouchSpeed : moveSpeed;
+
+        Vector3 inputDirection = new Vector3(inputHandler.MoveInput.x, 0f, inputHandler.MoveInput.y);
+        Vector3 worldDirection = transform.TransformDirection(inputDirection).normalized;
+
+        currentMovement.x = worldDirection.x * currentSpeed;
+        currentMovement.z = worldDirection.z * currentSpeed;
+
+        isGrounded = characterController.isGrounded;
+
+        if (isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2f;
+        }
+        else
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+            verticalVelocity = Mathf.Max(verticalVelocity, terminalVelocity);
+        }
+
+        currentMovement.y = verticalVelocity;
+
+        characterController.Move(currentMovement * Time.deltaTime);
+    }
+
+
+    private bool IsCeilingAbove()
+    {
+        Vector3 origin = transform.position + Vector3.up * (characterController.height / 2f);
+        float checkDistance = 0.6f;
+        bool hasHit = Physics.Raycast(origin, Vector3.up, out RaycastHit hit, checkDistance, ~0, QueryTriggerInteraction.Ignore);
+        return hasHit;
+    }
+
+    public void SetMouseSensitivity(float newSensitivity)
+    {
+        mouseSensitivity = newSensitivity;
+    }
+}

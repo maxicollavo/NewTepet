@@ -1,0 +1,768 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4791f706ce13d4a4f83d4ded38d41b38, type: 3}
+  m_Name: Wawe
+  m_EditorClassIdentifier: 
+  pattern:
+  - X: 101
+    Y: 82
+    StrokeID: 1
+  - X: 100
+    Y: 84
+    StrokeID: 1
+  - X: 99
+    Y: 85
+    StrokeID: 1
+  - X: 97
+    Y: 87
+    StrokeID: 1
+  - X: 96
+    Y: 90
+    StrokeID: 1
+  - X: 93
+    Y: 92
+    StrokeID: 1
+  - X: 92
+    Y: 94
+    StrokeID: 1
+  - X: 91
+    Y: 95
+    StrokeID: 1
+  - X: 90
+    Y: 98
+    StrokeID: 1
+  - X: 89
+    Y: 99
+    StrokeID: 1
+  - X: 88
+    Y: 101
+    StrokeID: 1
+  - X: 87
+    Y: 103
+    StrokeID: 1
+  - X: 86
+    Y: 105
+    StrokeID: 1
+  - X: 85
+    Y: 106
+    StrokeID: 1
+  - X: 85
+    Y: 108
+    StrokeID: 1
+  - X: 83
+    Y: 109
+    StrokeID: 1
+  - X: 82
+    Y: 110
+    StrokeID: 1
+  - X: 81
+    Y: 113
+    StrokeID: 1
+  - X: 80
+    Y: 115
+    StrokeID: 1
+  - X: 80
+    Y: 117
+    StrokeID: 1
+  - X: 79
+    Y: 119
+    StrokeID: 1
+  - X: 78
+    Y: 121
+    StrokeID: 1
+  - X: 78
+    Y: 124
+    StrokeID: 1
+  - X: 77
+    Y: 126
+    StrokeID: 1
+  - X: 75
+    Y: 128
+    StrokeID: 1
+  - X: 74
+    Y: 131
+    StrokeID: 1
+  - X: 73
+    Y: 134
+    StrokeID: 1
+  - X: 71
+    Y: 138
+    StrokeID: 1
+  - X: 70
+    Y: 141
+    StrokeID: 1
+  - X: 70
+    Y: 143
+    StrokeID: 1
+  - X: 69
+    Y: 146
+    StrokeID: 1
+  - X: 68
+    Y: 148
+    StrokeID: 1
+  - X: 68
+    Y: 150
+    StrokeID: 1
+  - X: 67
+    Y: 153
+    StrokeID: 1
+  - X: 67
+    Y: 155
+    StrokeID: 1
+  - X: 66
+    Y: 157
+    StrokeID: 1
+  - X: 66
+    Y: 159
+    StrokeID: 1
+  - X: 65
+    Y: 162
+    StrokeID: 1
+  - X: 65
+    Y: 164
+    StrokeID: 1
+  - X: 64
+    Y: 168
+    StrokeID: 1
+  - X: 64
+    Y: 171
+    StrokeID: 1
+  - X: 64
+    Y: 174
+    StrokeID: 1
+  - X: 63
+    Y: 177
+    StrokeID: 1
+  - X: 62
+    Y: 180
+    StrokeID: 1
+  - X: 61
+    Y: 182
+    StrokeID: 1
+  - X: 61
+    Y: 185
+    StrokeID: 1
+  - X: 61
+    Y: 188
+    StrokeID: 1
+  - X: 61
+    Y: 191
+    StrokeID: 1
+  - X: 61
+    Y: 194
+    StrokeID: 1
+  - X: 61
+    Y: 197
+    StrokeID: 1
+  - X: 61
+    Y: 199
+    StrokeID: 1
+  - X: 61
+    Y: 202
+    StrokeID: 1
+  - X: 61
+    Y: 204
+    StrokeID: 1
+  - X: 61
+    Y: 207
+    StrokeID: 1
+  - X: 61
+    Y: 210
+    StrokeID: 1
+  - X: 61
+    Y: 212
+    StrokeID: 1
+  - X: 61
+    Y: 215
+    StrokeID: 1
+  - X: 61
+    Y: 217
+    StrokeID: 1
+  - X: 61
+    Y: 219
+    StrokeID: 1
+  - X: 61
+    Y: 221
+    StrokeID: 1
+  - X: 61
+    Y: 224
+    StrokeID: 1
+  - X: 61
+    Y: 227
+    StrokeID: 1
+  - X: 61
+    Y: 229
+    StrokeID: 1
+  - X: 61
+    Y: 232
+    StrokeID: 1
+  - X: 61
+    Y: 235
+    StrokeID: 1
+  - X: 61
+    Y: 238
+    StrokeID: 1
+  - X: 61
+    Y: 242
+    StrokeID: 1
+  - X: 61
+    Y: 244
+    StrokeID: 1
+  - X: 62
+    Y: 246
+    StrokeID: 1
+  - X: 63
+    Y: 249
+    StrokeID: 1
+  - X: 63
+    Y: 253
+    StrokeID: 1
+  - X: 63
+    Y: 257
+    StrokeID: 1
+  - X: 64
+    Y: 259
+    StrokeID: 1
+  - X: 65
+    Y: 262
+    StrokeID: 1
+  - X: 66
+    Y: 265
+    StrokeID: 1
+  - X: 66
+    Y: 268
+    StrokeID: 1
+  - X: 66
+    Y: 270
+    StrokeID: 1
+  - X: 67
+    Y: 274
+    StrokeID: 1
+  - X: 67
+    Y: 276
+    StrokeID: 1
+  - X: 68
+    Y: 279
+    StrokeID: 1
+  - X: 69
+    Y: 282
+    StrokeID: 1
+  - X: 70
+    Y: 284
+    StrokeID: 1
+  - X: 70
+    Y: 286
+    StrokeID: 1
+  - X: 71
+    Y: 288
+    StrokeID: 1
+  - X: 72
+    Y: 291
+    StrokeID: 1
+  - X: 73
+    Y: 294
+    StrokeID: 1
+  - X: 73
+    Y: 297
+    StrokeID: 1
+  - X: 75
+    Y: 300
+    StrokeID: 1
+  - X: 77
+    Y: 303
+    StrokeID: 1
+  - X: 77
+    Y: 306
+    StrokeID: 1
+  - X: 78
+    Y: 307
+    StrokeID: 1
+  - X: 79
+    Y: 309
+    StrokeID: 1
+  - X: 79
+    Y: 311
+    StrokeID: 1
+  - X: 118
+    Y: 125
+    StrokeID: 2
+  - X: 117
+    Y: 128
+    StrokeID: 2
+  - X: 116
+    Y: 129
+    StrokeID: 2
+  - X: 115
+    Y: 132
+    StrokeID: 2
+  - X: 114
+    Y: 134
+    StrokeID: 2
+  - X: 114
+    Y: 136
+    StrokeID: 2
+  - X: 113
+    Y: 137
+    StrokeID: 2
+  - X: 112
+    Y: 138
+    StrokeID: 2
+  - X: 111
+    Y: 141
+    StrokeID: 2
+  - X: 111
+    Y: 143
+    StrokeID: 2
+  - X: 110
+    Y: 144
+    StrokeID: 2
+  - X: 109
+    Y: 146
+    StrokeID: 2
+  - X: 109
+    Y: 148
+    StrokeID: 2
+  - X: 108
+    Y: 149
+    StrokeID: 2
+  - X: 107
+    Y: 150
+    StrokeID: 2
+  - X: 107
+    Y: 154
+    StrokeID: 2
+  - X: 106
+    Y: 155
+    StrokeID: 2
+  - X: 105
+    Y: 156
+    StrokeID: 2
+  - X: 105
+    Y: 158
+    StrokeID: 2
+  - X: 104
+    Y: 159
+    StrokeID: 2
+  - X: 104
+    Y: 161
+    StrokeID: 2
+  - X: 103
+    Y: 164
+    StrokeID: 2
+  - X: 103
+    Y: 166
+    StrokeID: 2
+  - X: 102
+    Y: 168
+    StrokeID: 2
+  - X: 102
+    Y: 170
+    StrokeID: 2
+  - X: 101
+    Y: 174
+    StrokeID: 2
+  - X: 101
+    Y: 176
+    StrokeID: 2
+  - X: 100
+    Y: 179
+    StrokeID: 2
+  - X: 100
+    Y: 181
+    StrokeID: 2
+  - X: 100
+    Y: 183
+    StrokeID: 2
+  - X: 100
+    Y: 185
+    StrokeID: 2
+  - X: 100
+    Y: 188
+    StrokeID: 2
+  - X: 100
+    Y: 191
+    StrokeID: 2
+  - X: 100
+    Y: 194
+    StrokeID: 2
+  - X: 100
+    Y: 196
+    StrokeID: 2
+  - X: 100
+    Y: 198
+    StrokeID: 2
+  - X: 100
+    Y: 201
+    StrokeID: 2
+  - X: 100
+    Y: 203
+    StrokeID: 2
+  - X: 100
+    Y: 205
+    StrokeID: 2
+  - X: 100
+    Y: 207
+    StrokeID: 2
+  - X: 100
+    Y: 209
+    StrokeID: 2
+  - X: 100
+    Y: 211
+    StrokeID: 2
+  - X: 100
+    Y: 213
+    StrokeID: 2
+  - X: 100
+    Y: 215
+    StrokeID: 2
+  - X: 100
+    Y: 218
+    StrokeID: 2
+  - X: 100
+    Y: 221
+    StrokeID: 2
+  - X: 100
+    Y: 223
+    StrokeID: 2
+  - X: 100
+    Y: 226
+    StrokeID: 2
+  - X: 101
+    Y: 227
+    StrokeID: 2
+  - X: 102
+    Y: 229
+    StrokeID: 2
+  - X: 102
+    Y: 231
+    StrokeID: 2
+  - X: 102
+    Y: 233
+    StrokeID: 2
+  - X: 102
+    Y: 235
+    StrokeID: 2
+  - X: 103
+    Y: 237
+    StrokeID: 2
+  - X: 103
+    Y: 239
+    StrokeID: 2
+  - X: 104
+    Y: 241
+    StrokeID: 2
+  - X: 104
+    Y: 243
+    StrokeID: 2
+  - X: 105
+    Y: 244
+    StrokeID: 2
+  - X: 105
+    Y: 246
+    StrokeID: 2
+  - X: 106
+    Y: 247
+    StrokeID: 2
+  - X: 106
+    Y: 250
+    StrokeID: 2
+  - X: 107
+    Y: 252
+    StrokeID: 2
+  - X: 108
+    Y: 254
+    StrokeID: 2
+  - X: 109
+    Y: 256
+    StrokeID: 2
+  - X: 110
+    Y: 258
+    StrokeID: 2
+  - X: 110
+    Y: 260
+    StrokeID: 2
+  - X: 111
+    Y: 262
+    StrokeID: 2
+  - X: 112
+    Y: 263
+    StrokeID: 2
+  - X: 114
+    Y: 266
+    StrokeID: 2
+  - X: 115
+    Y: 267
+    StrokeID: 2
+  - X: 116
+    Y: 269
+    StrokeID: 2
+  - X: 116
+    Y: 271
+    StrokeID: 2
+  - X: 149
+    Y: 163
+    StrokeID: 3
+  - X: 149
+    Y: 165
+    StrokeID: 3
+  - X: 148
+    Y: 167
+    StrokeID: 3
+  - X: 148
+    Y: 169
+    StrokeID: 3
+  - X: 148
+    Y: 172
+    StrokeID: 3
+  - X: 147
+    Y: 173
+    StrokeID: 3
+  - X: 146
+    Y: 175
+    StrokeID: 3
+  - X: 146
+    Y: 177
+    StrokeID: 3
+  - X: 146
+    Y: 179
+    StrokeID: 3
+  - X: 146
+    Y: 181
+    StrokeID: 3
+  - X: 146
+    Y: 183
+    StrokeID: 3
+  - X: 146
+    Y: 186
+    StrokeID: 3
+  - X: 146
+    Y: 188
+    StrokeID: 3
+  - X: 146
+    Y: 190
+    StrokeID: 3
+  - X: 146
+    Y: 192
+    StrokeID: 3
+  - X: 146
+    Y: 194
+    StrokeID: 3
+  - X: 146
+    Y: 198
+    StrokeID: 3
+  - X: 146
+    Y: 200
+    StrokeID: 3
+  - X: 146
+    Y: 202
+    StrokeID: 3
+  - X: 146
+    Y: 204
+    StrokeID: 3
+  - X: 146
+    Y: 206
+    StrokeID: 3
+  - X: 146
+    Y: 209
+    StrokeID: 3
+  - X: 147
+    Y: 212
+    StrokeID: 3
+  - X: 147
+    Y: 215
+    StrokeID: 3
+  - X: 148
+    Y: 218
+    StrokeID: 3
+  - X: 149
+    Y: 220
+    StrokeID: 3
+  - X: 149
+    Y: 223
+    StrokeID: 3
+  - X: 150
+    Y: 224
+    StrokeID: 3
+  - X: 150
+    Y: 226
+    StrokeID: 3
+  - X: 151
+    Y: 229
+    StrokeID: 3
+  - X: 152
+    Y: 231
+    StrokeID: 3
+  - X: 153
+    Y: 232
+    StrokeID: 3
+  - X: 205
+    Y: 177
+    StrokeID: 4
+  - X: 203
+    Y: 177
+    StrokeID: 4
+  - X: 201
+    Y: 177
+    StrokeID: 4
+  - X: 199
+    Y: 177
+    StrokeID: 4
+  - X: 198
+    Y: 178
+    StrokeID: 4
+  - X: 197
+    Y: 179
+    StrokeID: 4
+  - X: 196
+    Y: 180
+    StrokeID: 4
+  - X: 195
+    Y: 181
+    StrokeID: 4
+  - X: 194
+    Y: 183
+    StrokeID: 4
+  - X: 194
+    Y: 185
+    StrokeID: 4
+  - X: 193
+    Y: 186
+    StrokeID: 4
+  - X: 193
+    Y: 188
+    StrokeID: 4
+  - X: 193
+    Y: 190
+    StrokeID: 4
+  - X: 193
+    Y: 192
+    StrokeID: 4
+  - X: 193
+    Y: 194
+    StrokeID: 4
+  - X: 193
+    Y: 196
+    StrokeID: 4
+  - X: 193
+    Y: 198
+    StrokeID: 4
+  - X: 194
+    Y: 199
+    StrokeID: 4
+  - X: 194
+    Y: 201
+    StrokeID: 4
+  - X: 195
+    Y: 203
+    StrokeID: 4
+  - X: 196
+    Y: 204
+    StrokeID: 4
+  - X: 197
+    Y: 205
+    StrokeID: 4
+  - X: 199
+    Y: 207
+    StrokeID: 4
+  - X: 200
+    Y: 208
+    StrokeID: 4
+  - X: 202
+    Y: 208
+    StrokeID: 4
+  - X: 204
+    Y: 209
+    StrokeID: 4
+  - X: 205
+    Y: 210
+    StrokeID: 4
+  - X: 207
+    Y: 210
+    StrokeID: 4
+  - X: 209
+    Y: 210
+    StrokeID: 4
+  - X: 211
+    Y: 210
+    StrokeID: 4
+  - X: 213
+    Y: 209
+    StrokeID: 4
+  - X: 215
+    Y: 209
+    StrokeID: 4
+  - X: 216
+    Y: 208
+    StrokeID: 4
+  - X: 217
+    Y: 207
+    StrokeID: 4
+  - X: 218
+    Y: 206
+    StrokeID: 4
+  - X: 219
+    Y: 205
+    StrokeID: 4
+  - X: 220
+    Y: 203
+    StrokeID: 4
+  - X: 220
+    Y: 200
+    StrokeID: 4
+  - X: 220
+    Y: 198
+    StrokeID: 4
+  - X: 220
+    Y: 196
+    StrokeID: 4
+  - X: 220
+    Y: 194
+    StrokeID: 4
+  - X: 220
+    Y: 192
+    StrokeID: 4
+  - X: 219
+    Y: 190
+    StrokeID: 4
+  - X: 218
+    Y: 189
+    StrokeID: 4
+  - X: 218
+    Y: 186
+    StrokeID: 4
+  - X: 217
+    Y: 185
+    StrokeID: 4
+  - X: 216
+    Y: 184
+    StrokeID: 4
+  - X: 215
+    Y: 183
+    StrokeID: 4
+  - X: 214
+    Y: 182
+    StrokeID: 4
+  - X: 212
+    Y: 182
+    StrokeID: 4
+  - X: 210
+    Y: 181
+    StrokeID: 4
+  - X: 209
+    Y: 180
+    StrokeID: 4
+  - X: 207
+    Y: 180
+    StrokeID: 4
+  paternName: Wawe
+  StrokeAmmount: 4
+  ID: 4
