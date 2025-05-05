@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public GameObject crosshair;
     public CameraManager camManager;
     private CinemachineBrain brain;
+    [SerializeField] CinemachineCamera playerCam;
+    public bool canCheck;
 
     public bool BlendedToPlayer = true;
 
@@ -55,6 +57,16 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseTrigger();
+        }
+
+        if (canCheck)
+        {
+            if (brain.ActiveVirtualCamera as CinemachineCamera == playerCam)
+            {
+                Debug.Log("La camara volvio al player");
+                canCheck = false;
+                EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+            }
         }
     }
 

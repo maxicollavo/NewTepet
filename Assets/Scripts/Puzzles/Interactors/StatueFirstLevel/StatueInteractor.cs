@@ -28,7 +28,6 @@ public class StatueInteractor : MonoBehaviour, Interactor
 
     public void Aiming()
     {
-        if (HasInteract) return;
         EnableOutline();
 
         UIManager.Instance.ChangeCursor(true);
@@ -50,9 +49,8 @@ public class StatueInteractor : MonoBehaviour, Interactor
     {
         if (HasInteract) return;
 
-        HasInteract = true;
         DisableOutline();
-        coll.isTrigger = false;
+        coll.enabled = false;
         InteractorAction?.Invoke(this);
     }
 }

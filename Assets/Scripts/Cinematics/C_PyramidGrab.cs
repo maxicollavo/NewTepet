@@ -49,8 +49,9 @@ public class C_PyramidGrab : MonoBehaviour
         cam.LookAt = originalLookAt;
         cam.gameObject.SetActive(false);
 
-        yield return WaitForBlendEnd();
+        yield return new WaitForSeconds(1.5f);
 
+        GameManager.Instance.canCheck = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
         EventManager.Instance.Register(GameEventTypes.OnCinematic, CursorDisabled);
         EventManager.Instance.Register(GameEventTypes.OnGameplay, CursorDisabled);
@@ -19,12 +19,14 @@ public class CameraBehaviour : MonoBehaviour
 
     void CursorEnabled(object sender, EventArgs e)
     {
+        Debug.Log("Curosr visible");
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
     void CursorDisabled(object sender, EventArgs e)
     {
+        Debug.Log("Curosr invisible");
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

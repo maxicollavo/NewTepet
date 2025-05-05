@@ -1,6 +1,8 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class CinematicsLvlOne : MonoBehaviour
 {
@@ -8,10 +10,11 @@ public class CinematicsLvlOne : MonoBehaviour
     [SerializeField] BoardPuzzleManager boardManager;
 
     [Header("References")]
-    [SerializeField] PlayableDirector boardDirector;
+    [SerializeField] CinemachineCamera cam;
     private CinemachineBrain brain;
-
-    private bool waitingForBlendEndBoard;
+    [SerializeField] Transform lookAtTarget;
+    Transform originalLookAt;
+    [SerializeField] List<Animator> doorAnims;
 
     private void Start()
     {
@@ -20,19 +23,41 @@ public class CinematicsLvlOne : MonoBehaviour
         boardManager.OnWin += OnBoardWin;
     }
 
-    private void Update()
-    {
-        if (!waitingForBlendEndBoard) return;
-
-        if (!brain.IsBlending)
-        {
-            boardDirector.Play();
-            waitingForBlendEndBoard = false;
-        }
-    }
-
     public void OnBoardWin(BoardPuzzleManager manager)
     {
-        waitingForBlendEndBoard = true;
+        StartCoroutine(Cinematic());
+    }
+
+    private IEnumerator Cinematic()
+    {
+        yield return WaitForBlendEnd();
+
+        EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
+
+        originalLookAt = cam.LookAt;
+        cam.LookAt = lookAtTarget;
+        cam.gameObject.SetActive(true);
+
+        yield return new WaitForSeconds(2f);
+        foreach (Animator anim in doorAnims)
+        {
+            anim.SetTrigger("OpenDoor");
+        }
+
+        yield return new WaitForSeconds(2f);
+
+        cam.LookAt = originalLookAt;
+        cam.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1.5f);
+
+        GameManager.Instance.canCheck = true;
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+    }
+
+    private IEnumerator WaitForBlendEnd()
+    {
+        while (brain.IsBlending)
+            yield return null;
     }
 }
