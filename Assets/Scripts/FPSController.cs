@@ -9,20 +9,39 @@ public class FPSController : MonoBehaviour
     [Header("Speed Settings")]
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float crouchSpeed = 1.5f;
+    private bool shouldCrouch;
 
     [Header("Camera Settings")]
     [SerializeField] private bool invertYAxis = false;
     [SerializeField] private Transform cameraHolder;
-    //[SerializeField] CinemachineBrain brain;
 
     [Header("Look Settings")]
     public float mouseSensitivity = 2f;
     [SerializeField] private float clampRange = 80f;
 
+    [Header("Footstep Settings")]
+    [SerializeField] private AudioSource footstepAudioSource;
+    [SerializeField] private string footstepClipName = "Footstep";
+    [SerializeField] private float stepInterval = 0.5f;
+    [SerializeField] private float crouchStepInterval = 0.8f;
+    [SerializeField] private float footstepSpeedThreshold = 0.1f;
+    private AudioClip footstepClip;
+    private float stepTimer;
+
+    [Header("HeadBob Parameters")]
+    private bool canUseHeadBob = true;
+    [SerializeField] private float walkBobSpeed = 14f;
+    [SerializeField] private float walkBobAmount = 0.05f;
+    [SerializeField] private float crouchBobSpeed = 8f;
+    [SerializeField] private float crouchBobAmount = 0.025f;
+    private float defaultYPos = 0;
+    private float timer;
+
+    [Header("Other Settings")]
     Vector2 mouseInput;
 
+    [SerializeField] CinemachineCamera playerCam;
     private CharacterController characterController;
-    private Camera mainCamera;
     private PlayerInputHandler inputHandler;
     private Vector3 currentMovement = Vector3.zero;
     private float verticalRotation;
@@ -45,30 +64,36 @@ public class FPSController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
 
-        //brain que avisa cuando hay una transicion de camara para por ej si transiciono de vuelta a la cam del player activar los inputs
+        defaultYPos = playerCam.transform.localPosition.y;
     }
 
     private void Start()
     {
-        mainCamera = Camera.main;
         inputHandler = PlayerInputHandler.Instance;
         newSensitivity = sensSlider.value;
 
         originalCameraLocalPosition = cameraHolder.localPosition;
-        crouchedCameraLocalPosition = originalCameraLocalPosition + new Vector3(0, -1f, 0);
+        crouchedCameraLocalPosition = originalCameraLocalPosition + new Vector3(0, -0.5f, 0);
 
         originalHeight = characterController.height;
-        crouchedHeight = originalHeight / 2;
+        crouchedHeight = 1.5f;
         currentSpeed = moveSpeed;
 
         characterController.center = Vector3.zero;
         cameraHolder.localPosition = originalCameraLocalPosition;
+
+        footstepClip = Resources.Load<AudioClip>("Sounds/" + footstepClipName);
+        if (footstepClip == null)
+            Debug.LogError("Footstep clip no encontrado en Resources/Sounds/" + footstepClipName);
     }
 
     private void Update()
     {
         HandleMovement();
+        HandleFootsteps();
         RotationInputs();
+
+        if (canUseHeadBob) HandleHeadBob();
     }
 
     private void LateUpdate()
@@ -96,7 +121,7 @@ public class FPSController : MonoBehaviour
     {
         bool wantsToStand = !Keyboard.current.cKey.isPressed;
         bool ceilingAbove = IsCeilingAbove();
-        bool shouldCrouch = Keyboard.current.cKey.isPressed || ceilingAbove;
+        shouldCrouch = Keyboard.current.cKey.isPressed || ceilingAbove;
 
         float targetHeight = shouldCrouch ? crouchedHeight : originalHeight;
         characterController.height = Mathf.Lerp(characterController.height, targetHeight, Time.deltaTime * 10f);
@@ -129,6 +154,55 @@ public class FPSController : MonoBehaviour
         characterController.Move(currentMovement * Time.deltaTime);
     }
 
+    void HandleHeadBob()
+    {
+        if (!characterController.isGrounded) return;
+
+        if (Mathf.Abs(currentMovement.x) > 0.1f || Mathf.Abs(currentMovement.z) > 0.1f)
+        {
+            timer += Time.deltaTime * (shouldCrouch ? crouchBobSpeed : walkBobSpeed);
+            playerCam.transform.localPosition = new Vector3(playerCam.transform.localPosition.x, defaultYPos + Mathf.Sin(timer) * (shouldCrouch ? crouchBobAmount : walkBobAmount), playerCam.transform.localPosition.z);
+        }
+    }
+
+    private void HandleFootsteps()
+    {
+        if (!isGrounded || footstepClip == null)
+            return;
+
+        Vector3 horizontalVelocity = new Vector3(characterController.velocity.x, 0, characterController.velocity.z);
+        float speed = horizontalVelocity.magnitude;
+
+        if (speed > footstepSpeedThreshold)
+        {
+            stepTimer += Time.deltaTime;
+
+            if (shouldCrouch)
+            {
+                if (stepTimer >= crouchStepInterval)
+                {
+                    footstepAudioSource.volume = UnityEngine.Random.Range(0.3f, 0.5f);
+                    footstepAudioSource.PlayOneShot(footstepClip);
+
+                    stepTimer = 0f;
+                }
+            }
+            else
+            {
+                if (stepTimer >= stepInterval)
+                {
+                    footstepAudioSource.volume = UnityEngine.Random.Range(0.8f, 1f);
+                    footstepAudioSource.PlayOneShot(footstepClip);
+
+                    stepTimer = 0f;
+                }
+            }
+        }
+        else
+        {
+            stepTimer = 0f;
+        }
+    }
 
     private bool IsCeilingAbove()
     {

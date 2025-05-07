@@ -14,7 +14,6 @@ public class CinematicsLvlOne : MonoBehaviour
     private CinemachineBrain brain;
     [SerializeField] Transform lookAtTarget;
     Transform originalLookAt;
-    [SerializeField] List<Animator> doorAnims;
 
     private void Start()
     {
@@ -37,12 +36,6 @@ public class CinematicsLvlOne : MonoBehaviour
         originalLookAt = cam.LookAt;
         cam.LookAt = lookAtTarget;
         cam.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(2f);
-        foreach (Animator anim in doorAnims)
-        {
-            anim.SetTrigger("OpenDoor");
-        }
 
         yield return new WaitForSeconds(2f);
 

@@ -39,6 +39,7 @@ public class PyramidPicking : MonoBehaviour, Interactor
     {
         handPyramid.SetActive(true);
         grabbedPyramid.SetActive(false);
+        AudioManager.Instance.PlaySound("Grab");
         //door.SetTrigger("Open");
         UIManager.Instance.ChangeCursor(false);
         OnPicking?.Invoke(this);
