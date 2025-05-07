@@ -38,7 +38,7 @@ public class HandMecanism : MonoBehaviour, Interactor
     private void OpenDoor()
     {
         doorAnim.SetTrigger("Open");
-        AudioManager.Instance.PlaySound("VerticalDoor");
+        AudioManager.Instance.PlaySound("rocaMoviendose");
         UIManager.Instance.ChangeCursor(false);
     }
 
