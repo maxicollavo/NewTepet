@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: VolumetricLightMatBlue
-  m_Shader: {fileID: -6465566751694194690, guid: 983bdf16abf03064882b093d4e1b3053, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 2913b1bc678737847b66d6b444db2175, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -120,6 +120,7 @@ Material:
     - _EDG1: 0.32
     - _Edge: -0.63
     - _EnvironmentReflections: 1
+    - _Float: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -147,6 +148,7 @@ Material:
     - _Color: {r: 0.40792987, g: 0.4773967, b: 0.9716981, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WorldVector: {r: 0, g: 1, b: 0, a: 0}
     - _edge: {r: 0, g: 0, b: 0, a: 0}
     - _opacity: {r: 0.09, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

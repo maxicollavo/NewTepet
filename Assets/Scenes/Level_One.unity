@@ -96047,6 +96047,79 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.011984221, y: 0.01680771, z: 0.011984222}
   m_Center: {x: -0.000000029563903, y: 0.0012893722, z: 1.2998225e-15}
+--- !u!1001 &1578421618
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 135.24756
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 317.17197
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 135.24756
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 170.482
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.18
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 161.712
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.60364443
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.76678896
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0074855685
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.21815616
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 112.70999
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 62.872
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 45.393005
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4045cbc0cc2980b4c8731919ba8286b8, type: 2}
+    - target: {fileID: 919132149155446097, guid: d83009004e812804f9c884f2420e5177, type: 3}
+      propertyPath: m_Name
+      value: Cono de Luz
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d83009004e812804f9c884f2420e5177, type: 3}
 --- !u!1001 &1579772848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -124428,11 +124501,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9043264698519129883, guid: e1ff148e072655c4585a0e24fe180942, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.01066
+      value: -0.0107
       objectReference: {fileID: 0}
     - target: {fileID: 9043264698519129883, guid: e1ff148e072655c4585a0e24fe180942, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.037
+      value: 0.1256
       objectReference: {fileID: 0}
     - target: {fileID: 9043264698519129883, guid: e1ff148e072655c4585a0e24fe180942, type: 3}
       propertyPath: m_LocalRotation.w
@@ -127646,3 +127719,4 @@ SceneRoots:
   - {fileID: 1240166952}
   - {fileID: 515309260}
   - {fileID: 2116163456}
+  - {fileID: 1578421618}
