@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Android;
 
 public class StatueManager : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class StatueManager : MonoBehaviour
 
     private void Start()
     {
+        lights.SetActive(false);
         statueInteractor.InteractorAction += OnStatueInteract;
         firstInteract = true;
     }
@@ -24,6 +26,9 @@ public class StatueManager : MonoBehaviour
         StatueInteract();
     }
 
+    [SerializeField] GameObject body;
+    [SerializeField] GameObject lights;
+
     private void StatueInteract()
     {
         if (firstInteract)
@@ -31,6 +36,9 @@ public class StatueManager : MonoBehaviour
             onLeft = true;
             anim.SetBool("OnLeft", onLeft);
             anim.SetTrigger("Start");
+            lights.SetActive(true);
+            body.GetComponent<Renderer>().material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+            body.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
             firstInteract = false;
             return;
         }
