@@ -105,11 +105,6 @@ public class Detection : MonoBehaviour
             lastSwitcheable.DisableOutline();
         }
 
-        if (lastReadeable != null && lastReadeable != currentReadeable)
-        {
-            lastReadeable.DisableOutline();
-        }
-
         if (lastInteractor != null && lastInteractor != currentInteractor)
         {
             lastInteractor.DisableOutline();

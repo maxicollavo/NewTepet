@@ -73,10 +73,10 @@ public class FPSController : MonoBehaviour
         newSensitivity = sensSlider.value;
 
         originalCameraLocalPosition = cameraHolder.localPosition;
-        crouchedCameraLocalPosition = originalCameraLocalPosition + new Vector3(0, -0.5f, 0);
+        crouchedCameraLocalPosition = originalCameraLocalPosition + new Vector3(0, -1.5f, 0);
 
         originalHeight = characterController.height;
-        crouchedHeight = 1.5f;
+        crouchedHeight = 2.5f;
         currentSpeed = moveSpeed;
 
         characterController.center = Vector3.zero;
@@ -124,7 +124,11 @@ public class FPSController : MonoBehaviour
         shouldCrouch = Keyboard.current.cKey.isPressed || ceilingAbove;
 
         float targetHeight = shouldCrouch ? crouchedHeight : originalHeight;
-        characterController.height = Mathf.Lerp(characterController.height, targetHeight, Time.deltaTime * 10f);
+        float currentHeight = Mathf.Lerp(characterController.height, targetHeight, Time.deltaTime * 10f);
+        float heightDifference = currentHeight - characterController.height;
+        characterController.height = currentHeight;
+        characterController.center += new Vector3(0, heightDifference / 2f, 0);
+
 
         Vector3 targetCamPos = shouldCrouch ? crouchedCameraLocalPosition : originalCameraLocalPosition;
         cameraHolder.localPosition = Vector3.Lerp(cameraHolder.localPosition, targetCamPos, Time.deltaTime * 10f);
