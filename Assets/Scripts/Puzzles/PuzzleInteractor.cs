@@ -8,7 +8,7 @@ public class PuzzleInteractor : MonoBehaviour, Interactor
 
     private void Start()
     {
-        if (outline == null) outline = transform.parent.GetComponent<Outline>();
+        if (outline == null) outline = GetComponent<Outline>();
 
         outline.enabled = false;
     }

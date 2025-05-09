@@ -11,7 +11,6 @@ public class BoardWaypoint : MonoBehaviour
     public BoardWaypoint waypointRight;
 
     public bool IsUsing;
-    public int index;
 
     public bool IsTarget { get; private set; }
 

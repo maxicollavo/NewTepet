@@ -28,6 +28,7 @@ public class BoardPiece : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (IsSelected) return;
         SelectedPiece();
     }
 
