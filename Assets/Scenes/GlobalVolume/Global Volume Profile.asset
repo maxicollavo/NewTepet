@@ -15,10 +15,10 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.36
+    m_Value: -1.23
   contrast:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 2
   colorFilter:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -129,15 +129,6 @@ MonoBehaviour:
   occlusionOnlyReflectionNormalization:
     m_OverrideState: 1
     m_Value: 1
-  intensityMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-  skyOcclusionIntensityMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-  worldOffset:
-    m_OverrideState: 0
-    m_Value: {x: 0, y: 0, z: 0}
 --- !u!114 &8177748590966921092
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -153,7 +144,7 @@ MonoBehaviour:
   active: 1
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.5849056, g: 0.3959187, b: 0.07394089, a: 1}
+    m_Value: {r: 0.2603773, g: 0.18727513, b: 0.06239228, a: 1}
   center:
     m_OverrideState: 0
     m_Value: {x: 0.5, y: 0.5}
