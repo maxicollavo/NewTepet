@@ -17,6 +17,7 @@ public class StatueManager : MonoBehaviour
     private void Start()
     {
         lights.SetActive(false);
+        body.material = apagado;
         statueInteractor.InteractorAction += OnStatueInteract;
         firstInteract = true;
     }
@@ -26,8 +27,10 @@ public class StatueManager : MonoBehaviour
         StatueInteract();
     }
 
-    [SerializeField] GameObject body;
+    [SerializeField] Renderer body;
     [SerializeField] GameObject lights;
+    [SerializeField] Material apagado;
+    [SerializeField] Material prendido;
 
     private void StatueInteract()
     {
@@ -37,8 +40,7 @@ public class StatueManager : MonoBehaviour
             anim.SetBool("OnLeft", onLeft);
             anim.SetTrigger("Start");
             lights.SetActive(true);
-            body.GetComponent<Renderer>().material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
-            body.GetComponent<Renderer>().material.EnableKeyword("_EMISSION");
+            body.material = prendido;
             firstInteract = false;
             return;
         }
