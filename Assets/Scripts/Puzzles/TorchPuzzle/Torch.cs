@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Outline))]
+[RequireComponent(typeof(BoxCollider))]
 public class Torch : MonoBehaviour, Interactor
 {
     public Action<Torch, int> TorchAction;
@@ -14,6 +16,9 @@ public class Torch : MonoBehaviour, Interactor
     BoxCollider coll;
     private bool CanInteract = true;
     public ParticleSystem ParticleSystem;
+    public GameObject torchLight;
+    private Light torchLightSource;
+    private float originalLightIntensity;
 
     private void Awake()
     {
@@ -24,6 +29,9 @@ public class Torch : MonoBehaviour, Interactor
 
     private void Start()
     {
+        torchLightSource = torchLight.GetComponent<Light>();
+        originalLightIntensity = torchLightSource.intensity;
+
         outline.enabled = false;
     }
 
@@ -64,7 +72,7 @@ public class Torch : MonoBehaviour, Interactor
             DisableParticleSystem();
             anim.Play("Interact", 0, 0f);
             StartCoroutine(WaitForAnimationEnd(animDuration));
-       
+
         }
         else
         {
@@ -105,11 +113,17 @@ public class Torch : MonoBehaviour, Interactor
         var main = ParticleSystem.main;
         float elapsed = 0f;
 
-        // Asegurarse que la particula esté activa
         if (!ParticleSystem.isPlaying)
+        {
             ParticleSystem.Play();
+        }
+
+        torchLight.SetActive(true);
+        torchLightSource.enabled = true;
 
         Color startColor = main.startColor.color;
+        float startIntensity = torchLightSource != null ? originalLightIntensity : 0f;
+        float targetIntensity = (toAlpha == 0f) ? 0f : originalLightIntensity;
 
         while (elapsed < duration)
         {
@@ -120,15 +134,23 @@ public class Torch : MonoBehaviour, Interactor
             Color newColor = new Color(startColor.r, startColor.g, startColor.b, currentAlpha);
             main.startColor = newColor;
 
+            if (torchLightSource != null)
+            {
+                torchLightSource.intensity = Mathf.Lerp(startIntensity, targetIntensity, t);
+            }
+
             yield return null;
         }
 
-        // Asegurar que el alpha final quede bien
         Color finalColor = new Color(startColor.r, startColor.g, startColor.b, toAlpha);
         main.startColor = finalColor;
 
-        // Si el alpha final es 0, parar la particula
+        torchLightSource.intensity = targetIntensity;
+
         if (Mathf.Approximately(toAlpha, 0f))
+        {
             ParticleSystem.Stop();
+            torchLight.SetActive(false);
+        }
     }
 }

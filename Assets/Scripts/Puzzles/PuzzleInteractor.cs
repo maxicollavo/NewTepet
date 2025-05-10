@@ -1,9 +1,11 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Outline))]
 public class PuzzleInteractor : MonoBehaviour, Interactor
 {
     public Action<PuzzleInteractor> PuzzleAction;
+    [HideInInspector]
     public Outline outline;
 
     private void Start()

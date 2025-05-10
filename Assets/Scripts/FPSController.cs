@@ -39,8 +39,9 @@ public class FPSController : MonoBehaviour
 
     [Header("Other Settings")]
     Vector2 mouseInput;
+    private bool stepPlayedThisCycle = false;
 
-    [SerializeField] CinemachineCamera playerCam;
+    [SerializeField] private CinemachineCamera playerCam;
     private CharacterController characterController;
     private PlayerInputHandler inputHandler;
     private Vector3 currentMovement = Vector3.zero;
@@ -60,10 +61,17 @@ public class FPSController : MonoBehaviour
     public Slider sensSlider;
     public float newSensitivity;
 
+    [Header("Hand Settings")]
+    [SerializeField] private Transform handTransform;
+    [SerializeField] private float handRotationLagSpeed = 5f;
+    [SerializeField] private float handMaxYawAngle = 50f;
+    [SerializeField] private float handBobAmount = 0.03f;
+    [SerializeField] private float handBobSpeed = 14f;
+
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-
         defaultYPos = playerCam.transform.localPosition.y;
     }
 
@@ -83,18 +91,18 @@ public class FPSController : MonoBehaviour
         cameraHolder.localPosition = originalCameraLocalPosition;
 
         footstepClip = Resources.Load<AudioClip>("Sounds/" + footstepClipName);
-        if (footstepClip == null)
-            Debug.LogError("Footstep clip no encontrado en Resources/Sounds/" + footstepClipName);
     }
 
     private void Update()
     {
         HandleMovement();
-        HandleFootsteps();
         RotationInputs();
+        HandleHandLag();
+        HandleHandBob();
 
         if (canUseHeadBob) HandleHeadBob();
     }
+
 
     private void LateUpdate()
     {
@@ -117,6 +125,45 @@ public class FPSController : MonoBehaviour
         cameraHolder.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
     }
 
+    private void HandleHandLag()
+    {
+        if (handTransform == null || cameraHolder == null) return;
+
+        float bodyYaw = transform.eulerAngles.y;
+        float targetYaw = cameraHolder.rotation.eulerAngles.y;
+
+        float yawDifference = Mathf.DeltaAngle(bodyYaw, targetYaw);
+        yawDifference = Mathf.Clamp(yawDifference, -handMaxYawAngle, handMaxYawAngle);
+
+        Quaternion limitedRotation = Quaternion.Euler(0f, bodyYaw + yawDifference, 0f);
+        handTransform.rotation = Quaternion.Slerp(handTransform.rotation, limitedRotation, Time.deltaTime * handRotationLagSpeed);
+    }
+
+    private void HandleHandBob()
+    {
+        if (handTransform == null || cameraHolder == null) return;
+
+        if (characterController.isGrounded && (Mathf.Abs(currentMovement.x) > 0.1f || Mathf.Abs(currentMovement.z) > 0.1f))
+        {
+            float bobTimer = Time.time * (shouldCrouch ? crouchBobSpeed : handBobSpeed);
+            float bobOffsetY = Mathf.Sin(bobTimer) * handBobAmount;
+            float bobOffsetX = Mathf.Cos(bobTimer * 0.5f) * handBobAmount * 0.5f;
+
+            handTransform.localPosition = new Vector3(
+                Mathf.Lerp(handTransform.localPosition.x, bobOffsetX, Time.deltaTime * 5f),
+                Mathf.Lerp(handTransform.localPosition.y, bobOffsetY, Time.deltaTime * 5f),
+                handTransform.localPosition.z
+            );
+        }
+        else
+        {
+            handTransform.localPosition = Vector3.Lerp(handTransform.localPosition,
+                Vector3.zero, Time.deltaTime * 5f);
+        }
+    }
+
+
+
     private void HandleMovement()
     {
         bool wantsToStand = !Keyboard.current.cKey.isPressed;
@@ -128,7 +175,6 @@ public class FPSController : MonoBehaviour
         float heightDifference = currentHeight - characterController.height;
         characterController.height = currentHeight;
         characterController.center += new Vector3(0, heightDifference / 2f, 0);
-
 
         Vector3 targetCamPos = shouldCrouch ? crouchedCameraLocalPosition : originalCameraLocalPosition;
         cameraHolder.localPosition = Vector3.Lerp(cameraHolder.localPosition, targetCamPos, Time.deltaTime * 10f);
@@ -154,57 +200,45 @@ public class FPSController : MonoBehaviour
         }
 
         currentMovement.y = verticalVelocity;
-
         characterController.Move(currentMovement * Time.deltaTime);
     }
 
     void HandleHeadBob()
     {
-        if (!characterController.isGrounded) return;
+        if (!characterController.isGrounded)
+            return;
 
         if (Mathf.Abs(currentMovement.x) > 0.1f || Mathf.Abs(currentMovement.z) > 0.1f)
         {
             timer += Time.deltaTime * (shouldCrouch ? crouchBobSpeed : walkBobSpeed);
-            playerCam.transform.localPosition = new Vector3(playerCam.transform.localPosition.x, defaultYPos + Mathf.Sin(timer) * (shouldCrouch ? crouchBobAmount : walkBobAmount), playerCam.transform.localPosition.z);
-        }
-    }
+            float sinValue = Mathf.Sin(timer);
+            float bobAmount = shouldCrouch ? crouchBobAmount : walkBobAmount;
 
-    private void HandleFootsteps()
-    {
-        if (!isGrounded || footstepClip == null)
-            return;
+            playerCam.transform.localPosition = new Vector3(
+                playerCam.transform.localPosition.x,
+                defaultYPos + sinValue * bobAmount,
+                playerCam.transform.localPosition.z
+            );
 
-        Vector3 horizontalVelocity = new Vector3(characterController.velocity.x, 0, characterController.velocity.z);
-        float speed = horizontalVelocity.magnitude;
-
-        if (speed > footstepSpeedThreshold)
-        {
-            stepTimer += Time.deltaTime;
-
-            if (shouldCrouch)
+            if (sinValue <= -0.9f && !stepPlayedThisCycle)
             {
-                if (stepTimer >= crouchStepInterval)
-                {
-                    footstepAudioSource.volume = UnityEngine.Random.Range(0.3f, 0.5f);
-                    footstepAudioSource.PlayOneShot(footstepClip);
-
-                    stepTimer = 0f;
-                }
+                footstepAudioSource.volume = shouldCrouch ? UnityEngine.Random.Range(0.3f, 0.5f) : UnityEngine.Random.Range(0.8f, 1f);
+                footstepAudioSource.PlayOneShot(footstepClip);
+                stepPlayedThisCycle = true;
             }
-            else
+            else if (sinValue > -0.9f)
             {
-                if (stepTimer >= stepInterval)
-                {
-                    footstepAudioSource.volume = UnityEngine.Random.Range(0.8f, 1f);
-                    footstepAudioSource.PlayOneShot(footstepClip);
-
-                    stepTimer = 0f;
-                }
+                stepPlayedThisCycle = false;
             }
         }
         else
         {
-            stepTimer = 0f;
+            timer = 0f;
+            playerCam.transform.localPosition = new Vector3(
+                playerCam.transform.localPosition.x,
+                defaultYPos,
+                playerCam.transform.localPosition.z
+            );
         }
     }
 
