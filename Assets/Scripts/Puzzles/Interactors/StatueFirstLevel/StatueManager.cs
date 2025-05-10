@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 
 public class StatueManager : MonoBehaviour
 {
     [SerializeField] StatueInteractor statueInteractor;
+    [SerializeField] HieroglyficManager hieroManager;
     [SerializeField] OwlEvents owlEvents;
     public Action<StatueManager, int> SetNodes;
 
@@ -25,7 +27,14 @@ public class StatueManager : MonoBehaviour
         lights.SetActive(false);
         statueInteractor.InteractorAction += OnStatueInteract;
         owlEvents.AnimFinishAction += OnAnimFinish;
+        hieroManager.OnWinAction += OnWinMethod;
         firstInteract = true;
+    }
+
+    private void OnWinMethod(HieroglyficManager manager)
+    {
+        var owlColl = statueInteractor.gameObject.GetComponent<BoxCollider>();
+        owlColl.enabled = false;
     }
 
     private void OnAnimFinish(OwlEvents events, int pos)

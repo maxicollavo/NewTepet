@@ -6,6 +6,8 @@ using UnityEngine.Playables;
 
 public class HieroglyficManager : MonoBehaviour
 {
+    public Action<HieroglyficManager> OnWinAction;
+
     public int counter;
     [SerializeField] PlayableDirector cinematic;
 
@@ -20,12 +22,13 @@ public class HieroglyficManager : MonoBehaviour
         brain = Camera.main.GetComponent<CinemachineBrain>();
     }
 
-    public void CanOpenCeiling()
+    public void AddToCounter()
     {
         counter++;
 
-        if (counter == 4)
+        if (counter == 2)
         {
+            OnWinAction?.Invoke(this);
             StartCoroutine(Cinematic());
         }
     }

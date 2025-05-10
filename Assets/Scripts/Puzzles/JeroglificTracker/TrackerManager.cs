@@ -12,16 +12,25 @@ public class TrackerManager : MonoBehaviour
     public bool OnPuzzle { get; private set; }
     bool HasWon;
     public bool subFloor;
+    public bool isTarget;
     [SerializeField] GameObject CM_PuzzleCamera;
     BoxCollider interactorCollider;
 
-    [SerializeField] HieroglyficManager subFloorManager;
+    [SerializeField] HieroglyficManager hieroglyficManager;
 
     private void Start()
     {
         interactor.PuzzleAction += OnPuzzleMethod;
+        hieroglyficManager.OnWinAction += OnWinMethod;
 
         interactorCollider = interactor.GetComponent<BoxCollider>();
+    }
+
+    private void OnWinMethod(HieroglyficManager manager)
+    {
+        if (!interactorCollider.enabled) return;
+
+        interactorCollider.enabled = false;
     }
 
     private void Update()
@@ -67,17 +76,15 @@ public class TrackerManager : MonoBehaviour
     {
         if (trackerList.All(t => t.HasWon))
         {
-            Debug.Log("Gana jeroglifico");
             JeroglificAction?.Invoke(this);
             BackToGameplay();
             interactorCollider.enabled = false;
             HasWon = true;
 
-            if (subFloor)
+            if (subFloor && isTarget)
             {
-                subFloorManager.CanOpenCeiling();
+                hieroglyficManager.AddToCounter();
             }
         }
-
     }
 }

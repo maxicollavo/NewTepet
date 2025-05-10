@@ -8,6 +8,7 @@ public class Tracker : MonoBehaviour
     [Header("Start Settings")]
     public bool CanStart;
     public bool firstHieroglyfic;
+    [SerializeField] GameObject path;
     [SerializeField] StatueManager statueManager;
 
     [Header("Nodes")]
@@ -61,6 +62,7 @@ public class Tracker : MonoBehaviour
                 {
                     CanStart = false;
                     node.SetActive(false);
+                    path.SetActive(false);
                 }
                 return;
             }
@@ -69,6 +71,7 @@ public class Tracker : MonoBehaviour
                 foreach (var node in actionNodes)
                 {
                     CanStart = true;
+                    path.SetActive(true);
                     node.SetActive(true);
                 }
             }
@@ -79,7 +82,9 @@ public class Tracker : MonoBehaviour
             {
                 foreach (var node in actionNodes)
                 {
+                    Debug.Log("Apaga los nodos");
                     node.SetActive(false);
+                    path.SetActive(false);
                     CanStart = false;
                 }
                 return;
@@ -88,8 +93,10 @@ public class Tracker : MonoBehaviour
             {
                 foreach (var node in actionNodes)
                 {
+                    Debug.Log("Enciende los nodos");
                     CanStart = true;
                     node.SetActive(true);
+                    path.SetActive(true);
                 }
             }
         }
@@ -173,7 +180,16 @@ public class Tracker : MonoBehaviour
     private void Win()
     {
         HasWon = true;
+        DisableNodes();
         manager.OnWinMethod();
+    }
+
+    void DisableNodes()
+    {
+        foreach (var node in actionNodes)
+        {
+            node.GetComponent<BoxCollider>().enabled = false;
+        }
     }
 
     private void AddNode(GameObject node)

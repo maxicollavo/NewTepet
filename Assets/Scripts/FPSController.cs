@@ -23,9 +23,6 @@ public class FPSController : MonoBehaviour
     [Header("Footstep Settings")]
     [SerializeField] private AudioSource footstepAudioSource;
     [SerializeField] private string footstepClipName = "Footstep";
-    [SerializeField] private float stepInterval = 0.5f;
-    [SerializeField] private float crouchStepInterval = 0.8f;
-    [SerializeField] private float footstepSpeedThreshold = 0.1f;
     private AudioClip footstepClip;
     private float stepTimer;
 
