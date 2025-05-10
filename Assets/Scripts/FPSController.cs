@@ -2,6 +2,7 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class FPSController : MonoBehaviour
@@ -59,7 +60,9 @@ public class FPSController : MonoBehaviour
     private float verticalVelocity = 0f;
     private bool isGrounded = false;
     public Slider sensSlider;
+    public Slider VolumeSlider;
     public float newSensitivity;
+    public float VolumeValue = 50;
 
     [Header("Hand Settings")]
     [SerializeField] private Transform handTransform;
@@ -79,6 +82,7 @@ public class FPSController : MonoBehaviour
     {
         inputHandler = PlayerInputHandler.Instance;
         newSensitivity = sensSlider.value;
+        VolumeValue = VolumeSlider.value;
 
         originalCameraLocalPosition = cameraHolder.localPosition;
         crouchedCameraLocalPosition = originalCameraLocalPosition + new Vector3(0, -1.5f, 0);
@@ -253,5 +257,10 @@ public class FPSController : MonoBehaviour
     public void SetMouseSensitivity(float newSensitivity)
     {
         mouseSensitivity = newSensitivity;
+    }
+
+    public void ChangeVolume(float VolumeValue)
+    {
+        AudioListener.volume = VolumeValue;
     }
 }

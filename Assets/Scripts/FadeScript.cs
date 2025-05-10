@@ -1,57 +1,87 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class FadeScript : MonoBehaviour
 {
-    public List<CanvasGroup> powerCanvases;
+    public GameObject canvasObject;
     public float fadeSpeed = 1f;
     public float displayTime = 1f;
 
     private Coroutine currentRoutine;
+    private List<Graphic> graphics = new List<Graphic>();
 
-    public void ShowUI(int powerIndex)
+    private void Start()
+    {
+        ShowUI();
+    }
+    private void Awake()
+    {
+        // Guarda todos los elementos gráficos (Image, Text, TMP_Text, etc.)
+        graphics.AddRange(canvasObject.GetComponentsInChildren<Graphic>(true));
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            ShowUI();
+        }
+    }
+
+    public void ShowUI()
     {
         if (currentRoutine != null)
         {
             StopCoroutine(currentRoutine);
         }
 
-        currentRoutine = StartCoroutine(FadeSequence(powerIndex));
+        currentRoutine = StartCoroutine(FadeSequence());
     }
 
-    private IEnumerator FadeSequence(int index)
+    private IEnumerator FadeSequence()
     {
-        for (int i = 0; i < powerCanvases.Count; i++)
-        {
-            if (i != index)
-            {
-                powerCanvases[i].alpha = 0;
-                powerCanvases[i].gameObject.SetActive(false);
-            }
-        }
+        canvasObject.SetActive(true);
 
-        CanvasGroup selected = powerCanvases[index];
-        selected.gameObject.SetActive(true);
+        // Poner alfa en 0
+        foreach (var g in graphics)
+        {
+            Color c = g.color;
+            c.a = 0;
+            g.color = c;
+        }
 
         // Fade In
-        while (selected.alpha < 1)
+        float alpha = 0;
+        while (alpha < 1)
         {
-            selected.alpha += Time.deltaTime * fadeSpeed;
+            alpha += Time.deltaTime * fadeSpeed;
+            foreach (var g in graphics)
+            {
+                Color c = g.color;
+                c.a = Mathf.Clamp01(alpha);
+                g.color = c;
+            }
             yield return null;
         }
-        selected.alpha = 1;
-        Debug.Log("Activando: " + powerCanvases[index].name);
-        // Espera visible
+
         yield return new WaitForSeconds(displayTime);
 
         // Fade Out
-        while (selected.alpha > 0)
+        while (alpha > 0)
         {
-            selected.alpha -= Time.deltaTime * fadeSpeed;
+            alpha -= Time.deltaTime * fadeSpeed;
+            foreach (var g in graphics)
+            {
+                Color c = g.color;
+                c.a = Mathf.Clamp01(alpha);
+                g.color = c;
+            }
             yield return null;
         }
-        selected.alpha = 0;
-        selected.gameObject.SetActive(false);
+
+        canvasObject.SetActive(false);
     }
 }

@@ -5,6 +5,8 @@ public class ScenesManager : MonoBehaviour
 {
     [SerializeField] GameObject optionMenu;
     [SerializeField] GameObject creditMenu;
+    public AudioSource audioClip;
+
     public void Exit()
     {
         Application.Quit();
@@ -12,6 +14,7 @@ public class ScenesManager : MonoBehaviour
 
     public void StartScene()
     {
+        audioClip.Play();
         SceneManager.LoadScene("Level_One");
     }
 
