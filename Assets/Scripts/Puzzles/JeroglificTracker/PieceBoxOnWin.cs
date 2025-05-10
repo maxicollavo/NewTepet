@@ -1,16 +1,14 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 
 public class PieceBoxOnWin : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] TrackerManager manager;
     [SerializeField] CinemachineCamera cam;
+    [SerializeField] BoxCollider pieceColl;
     private CinemachineBrain brain;
     [SerializeField] Animator boxAnim;
     [SerializeField] Transform lookAtTarget;
@@ -48,6 +46,8 @@ public class PieceBoxOnWin : MonoBehaviour
         cam.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1.5f);
+
+        pieceColl.enabled = true;
 
         GameManager.Instance.canCheck = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
