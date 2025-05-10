@@ -7,6 +7,7 @@ public class Tracker : MonoBehaviour
 {
     [Header("Start Settings")]
     public bool CanStart;
+    public bool firstHieroglyfic;
     [SerializeField] StatueManager statueManager;
 
     [Header("Nodes")]
@@ -46,12 +47,52 @@ public class Tracker : MonoBehaviour
         manager.trackerList.Add(this);
 
         if (statueManager == null) return;
-        statueManager.StatueManagerAction += OnStatueFinish;
+        statueManager.SetNodes += SetNodesMethod;
     }
 
-    private void OnStatueFinish(StatueManager manager)
+    //Pos 0 es el primer jeroglifico y pos 1 es el segundo
+    private void SetNodesMethod(StatueManager manager, int pos)
     {
-        CanStart = true;
+        if (firstHieroglyfic)
+        {
+            if (pos == 1)
+            {
+                foreach (var node in actionNodes)
+                {
+                    CanStart = false;
+                    node.SetActive(false);
+                }
+                return;
+            }
+            else
+            {
+                foreach (var node in actionNodes)
+                {
+                    CanStart = true;
+                    node.SetActive(true);
+                }
+            }
+        }
+        else
+        {
+            if (pos == 0)
+            {
+                foreach (var node in actionNodes)
+                {
+                    node.SetActive(false);
+                    CanStart = false;
+                }
+                return;
+            }
+            else
+            {
+                foreach (var node in actionNodes)
+                {
+                    CanStart = true;
+                    node.SetActive(true);
+                }
+            }
+        }
     }
 
     void Update()
