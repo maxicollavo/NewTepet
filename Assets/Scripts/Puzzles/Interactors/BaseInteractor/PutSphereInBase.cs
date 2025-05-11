@@ -1,20 +1,13 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public enum ObjectsToPick
-{
-    BoardPiece,
-    GlassSphere
-}
-
-public class PickToInventory : MonoBehaviour, Interactor
+public class PutSphereInBase : MonoBehaviour, Interactor
 {
     Outline outline;
-    [SerializeField] private ObjectsToPick obj;
 
-    [SerializeField] HandInventory handInventory;
+    [SerializeField] private Transform targetPos;
+    [SerializeField] private GameObject sphereInHand;
+    private bool canUse = true;
 
     private void Awake()
     {
@@ -24,29 +17,6 @@ public class PickToInventory : MonoBehaviour, Interactor
     private void Start()
     {
         outline.enabled = false;
-    }
-
-    public void Interact()
-    {
-        if (HandInventory.hasObjInHand)
-        {
-            StartCoroutine(CannotPick());
-            return;
-        }
-
-        DisableOutline();
-        HandInventory.hasObjInHand = true;
-        if (handInventory != null)
-        {
-            handInventory.ShowObjectInHand(obj);
-        }
-
-        gameObject.SetActive(false);
-
-        if (obj == ObjectsToPick.BoardPiece)
-        {
-            GameManager.Instance.HasPiece = true;
-        }
     }
 
     public void DisableOutline()
@@ -62,8 +32,29 @@ public class PickToInventory : MonoBehaviour, Interactor
 
     public void Aiming()
     {
+        if (!canUse) return;
+
         EnableOutline();
         UIManager.Instance.ChangeCursor(true);
+    }
+
+    public void Interact()
+    {
+        if (sphereInHand.activeInHierarchy)
+        {
+            DisableOutline();
+            sphereInHand.transform.position = targetPos.position;
+            sphereInHand.transform.rotation = targetPos.rotation;
+
+            sphereInHand.transform.SetParent(null);
+            HandInventory.hasObjInHand = false;
+            canUse = false;
+            this.enabled = false;
+        }
+        else
+        {
+            StartCoroutine(CannotPick());
+        }
     }
 
     private IEnumerator CannotPick()

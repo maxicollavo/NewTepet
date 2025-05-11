@@ -109,6 +109,7 @@ public class BoardPuzzleManager : MonoBehaviour
             pieceGo.SetActive(true);
             handPiece.SetActive(false);
             GameManager.Instance.HasPiece = false;
+            HandInventory.hasObjInHand = false;
             return;
         }
 
