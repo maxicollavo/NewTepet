@@ -5,8 +5,9 @@ using UnityEngine;
 
 public class BoardOnWin : MonoBehaviour
 {
-    [SerializeField] List<ParticleSystem> torchParticles;
+    [SerializeField] List<GameObject> torchParticles;
     [SerializeField] List<BoxCollider> colliders;
+    [SerializeField] List<GameObject> lights;
 
     [SerializeField] BoardPuzzleManager manager;
 
@@ -19,12 +20,17 @@ public class BoardOnWin : MonoBehaviour
     {
         foreach (var particle in torchParticles)
         {
-            particle.Play();
+            particle.SetActive(true);
         }
 
         foreach (var coll in colliders)
         {
             coll.enabled = true;
+        }
+
+        foreach(var light in lights)
+        {
+            light.SetActive(true);
         }
     }
 }
