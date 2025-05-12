@@ -5,8 +5,8 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 {
     Outline outline;
 
-    [SerializeField] private Transform targetPos;
     [SerializeField] private GameObject sphereInHand;
+    [SerializeField] private GameObject baseSphere;
     private bool canUse = true;
 
     private void Awake()
@@ -43,10 +43,8 @@ public class PutSphereInBase : MonoBehaviour, Interactor
         if (sphereInHand.activeInHierarchy)
         {
             DisableOutline();
-            sphereInHand.transform.position = targetPos.position;
-            sphereInHand.transform.rotation = targetPos.rotation;
-
-            sphereInHand.transform.SetParent(null);
+            sphereInHand.SetActive(false);
+            baseSphere.SetActive(true);
             HandInventory.hasObjInHand = false;
             canUse = false;
             this.enabled = false;

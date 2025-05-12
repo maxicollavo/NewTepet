@@ -19,7 +19,7 @@ RenderSettings:
   m_FogMode: 1
   m_FogDensity: 0.018
   m_LinearFogStart: 0
-  m_LinearFogEnd: 24.8
+  m_LinearFogEnd: 61
   m_AmbientSkyColor: {r: 0.0627451, g: 0.09411765, b: 0.03137255, a: 1}
   m_AmbientEquatorColor: {r: 0.6150943, g: 0.44602987, b: 0.20773935, a: 1}
   m_AmbientGroundColor: {r: 0.2830189, g: 0.21982913, b: 0.0934496, a: 1}
@@ -8503,8 +8503,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ccc7e7ec7ef2f40a89486cd49c997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPos: {fileID: 1542055866}
   sphereInHand: {fileID: 6082805577656037150}
+  baseSphere: {fileID: 0}
 --- !u!1 &223863085
 GameObject:
   m_ObjectHideFlags: 0
@@ -16854,7 +16854,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -43802,7 +43802,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -53118,7 +53118,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -91142,7 +91142,7 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -98531,6 +98531,7 @@ MonoBehaviour:
   optionMenu: {fileID: 1720918265}
   creditMenu: {fileID: 0}
   audioClip: {fileID: 0}
+  isMenu: 0
 --- !u!1 &1730582661
 GameObject:
   m_ObjectHideFlags: 0
@@ -122053,6 +122054,7 @@ MonoBehaviour:
   outline: {fileID: 744491676}
   handPyramid: {fileID: 1892981549}
   grabbedPyramid: {fileID: 2052373359}
+  coneLight: {fileID: 0}
   door: {fileID: 890861526}
 --- !u!1 &2096747056 stripped
 GameObject:
