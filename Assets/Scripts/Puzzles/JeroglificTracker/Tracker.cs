@@ -140,17 +140,22 @@ public class Tracker : MonoBehaviour
     {
         Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
 
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 0.1f);
+
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, nodeLayerMask))
         {
-            GameObject hitObj = hit.collider.gameObject;
+            Debug.Log($"Raycast HIT: '{hit.collider.gameObject.name}' (Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}) at distance {hit.distance}");
 
+            GameObject hitObj = hit.collider.gameObject;
             CheckIfValid(hitObj);
         }
         else
         {
+            Debug.Log("Raycast MISSED any node.");
             RestartTracking();
         }
     }
+
 
     private void RestartTracking()
     {
@@ -188,12 +193,13 @@ public class Tracker : MonoBehaviour
     {
         foreach (var node in actionNodes)
         {
-            node.GetComponent<BoxCollider>().enabled = false;
+            node.GetComponent<MeshCollider>().enabled = false;
         }
     }
 
     private void AddNode(GameObject node)
     {
+        Debug.Log("Add node");
         currentPath.Add(node);
         var nodeMesh = node.GetComponent<MeshRenderer>();
         currentMeshes.Add(nodeMesh);
@@ -204,6 +210,7 @@ public class Tracker : MonoBehaviour
     {
         if (state)
         {
+            Debug.Log("Enciende mesh");
             mesh.enabled = true;
         }
         else
