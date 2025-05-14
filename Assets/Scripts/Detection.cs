@@ -35,6 +35,12 @@ public class Detection : MonoBehaviour
         onClick = false;
     }
 
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * playerReach);
+    }
+
     public void PowersKeyBinding()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -52,8 +58,8 @@ public class Detection : MonoBehaviour
     void Detect()
     {
         RaycastHit hit;
-        Ray ray = new Ray(transform.position, transform.forward);
-        int layerMask = ~ignoreMask.value;
+        Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+        int layerMask = ~ignoreMask;
 
         ISwitcheable currentSwitcheable = null;
         IRead currentReadeable = null;
