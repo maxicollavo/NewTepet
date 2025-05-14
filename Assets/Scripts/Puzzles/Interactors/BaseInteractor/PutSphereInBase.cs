@@ -4,6 +4,7 @@ using UnityEngine;
 public class PutSphereInBase : MonoBehaviour, Interactor
 {
     Outline outline;
+    BoxCollider coll;
 
     [SerializeField] private GameObject sphereInHand;
     [SerializeField] private GameObject baseSphere;
@@ -12,6 +13,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
     private void Awake()
     {
         outline = GetComponent<Outline>();
+        coll = GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -47,7 +49,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
             baseSphere.SetActive(true);
             HandInventory.hasObjInHand = false;
             canUse = false;
-            this.enabled = false;
+            coll.enabled = false;
         }
         else
         {

@@ -15,6 +15,10 @@ public class FPSController : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private bool invertYAxis = false;
     [SerializeField] private Transform cameraHolder;
+    private Vector2 handRotationOffset = Vector2.zero; // x = pitch, y = yaw
+    [SerializeField] private float maxHandRotationOffset = 15f;
+    [SerializeField] private float handFollowSmoothness = 6f;
+
 
     [Header("Look Settings")]
     public float mouseSensitivity = 2f;
@@ -51,6 +55,7 @@ public class FPSController : MonoBehaviour
     private float originalHeight;
     private float crouchedHeight;
     private float currentSpeed;
+    [SerializeField] private LayerMask ceilingLayerMask;
 
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float terminalVelocity = -50f;
@@ -130,15 +135,28 @@ public class FPSController : MonoBehaviour
     {
         if (handTransform == null || cameraHolder == null) return;
 
-        float bodyYaw = transform.eulerAngles.y;
-        float targetYaw = cameraHolder.rotation.eulerAngles.y;
+        // Obtenemos la rotación de la cámara
+        Quaternion targetRotation = cameraHolder.rotation;
 
+        // Extraemos yaw (rotación en Y) del cuerpo y de la cámara
+        float bodyYaw = transform.eulerAngles.y;
+        float targetYaw = targetRotation.eulerAngles.y;
+
+        // Calculamos la diferencia de yaw y la limitamos
         float yawDifference = Mathf.DeltaAngle(bodyYaw, targetYaw);
         yawDifference = Mathf.Clamp(yawDifference, -handMaxYawAngle, handMaxYawAngle);
 
-        Quaternion limitedRotation = Quaternion.Euler(0f, bodyYaw + yawDifference, 0f);
-        handTransform.rotation = Quaternion.Slerp(handTransform.rotation, limitedRotation, Time.deltaTime * handRotationLagSpeed);
+        // Obtenemos el pitch (rotación en X) y corregimos si pasa de 180°
+        float targetPitch = cameraHolder.localEulerAngles.x;
+        if (targetPitch > 180f) targetPitch -= 360f;
+
+        // Creamos una rotación limitada con pitch y yaw
+        Quaternion limitedTargetRotation = Quaternion.Euler(targetPitch, bodyYaw + yawDifference, 0f);
+
+        // Interpolamos suavemente para dar la sensación de "lag"
+        handTransform.rotation = Quaternion.Slerp(handTransform.rotation, limitedTargetRotation, Time.deltaTime * handRotationLagSpeed);
     }
+
 
     private void HandleHandBob()
     {
@@ -245,10 +263,13 @@ public class FPSController : MonoBehaviour
 
     private bool IsCeilingAbove()
     {
-        Vector3 origin = transform.position + Vector3.up * (characterController.height / 2f);
-        float checkDistance = 0.6f;
-        bool hasHit = Physics.Raycast(origin, Vector3.up, out RaycastHit hit, checkDistance, ~0, QueryTriggerInteraction.Ignore);
-        return hasHit;
+        float checkHeight = originalHeight;
+        float radius = characterController.radius - 0.05f;
+
+        Vector3 bottom = transform.position + Vector3.up * radius;
+        Vector3 top = transform.position + Vector3.up * (checkHeight - radius);
+
+        return Physics.CheckCapsule(bottom, top, radius, ceilingLayerMask, QueryTriggerInteraction.Ignore);
     }
 
     public void SetMouseSensitivity(float newSensitivity)

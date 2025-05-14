@@ -43,11 +43,10 @@ public class WallLaser : MonoBehaviour
                 return;
             }
 
-            Interactor interactor = hit.collider.GetComponent<Interactor>();
+            ILaserInteractor interactor = hit.collider.GetComponent<ILaserInteractor>();
 
             if (interactor != null)
             {
-                Debug.Log("¡Interact encontrado!");
                 interactor.Interact();
             }
             else

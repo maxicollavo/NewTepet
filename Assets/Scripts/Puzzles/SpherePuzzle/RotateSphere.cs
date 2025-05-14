@@ -1,28 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class RotateSphere : MonoBehaviour, Interactor
 {
+    [Header("Interacción")]
     private Outline outline;
+    private SphereCollider coll;
     private bool canUse = true;
+    private bool isBeingHeld = false;
 
-    [SerializeField] Transform forwardTarget;
-    [SerializeField] Transform lookAtTarget;
-    [SerializeField] float rotationSpeed = 5f;
+    [Header("Rotación")]
+    private Transform pivot;
+    [SerializeField] private float rotationSensitivity = 3f;
 
-    private int currentTargetIndex = 0;
-    private bool isRotating = false;
+    [Header("Cinemachine")]
+    [SerializeField] private GameObject puzzleCamera;
+
+    [Header("OnWin")]
+    public Action<RotateSphere> SphereOnWinAction;
+
+    private Vector2 lastMousePos;
 
     private void Awake()
     {
         outline = GetComponent<Outline>();
+        pivot = GetComponent<Transform>();
+        coll = GetComponent<SphereCollider>();
     }
 
     private void Start()
     {
         outline.enabled = false;
+    }
+
+    private void Update()
+    {
+        if (!isBeingHeld) return;
+
+        if (Input.GetMouseButton(0))
+        {
+            float mouseDelta = Input.GetAxis("Mouse X");
+            pivot.Rotate(Vector3.up, -mouseDelta * rotationSensitivity, Space.World);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            Release();
+        }
+    }
+
+    public void Aiming()
+    {
+        if (!canUse || isBeingHeld) return;
+
+        outline.enabled = true;
+        UIManager.Instance.ChangeCursor(true);
     }
 
     public void DisableOutline()
@@ -31,50 +63,29 @@ public class RotateSphere : MonoBehaviour, Interactor
         UIManager.Instance.ChangeCursor(false);
     }
 
-    void EnableOutline()
-    {
-        outline.enabled = true;
-    }
-
-    public void Aiming()
-    {
-        if (!canUse) return;
-
-        EnableOutline();
-        UIManager.Instance.ChangeCursor(true);
-    }
-
     public void Interact()
     {
-        //if (!canUse || isRotating || forwardTarget.Count == 0) return;
+        if (!canUse || isBeingHeld) return;
+
+        //Al ganar activar objeto de Laser Interactor y apagar este collider
 
         DisableOutline();
-        //StartCoroutine(RotateToNextTarget());
+        puzzleCamera.SetActive(true);
+        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
+
+        isBeingHeld = true;
     }
 
-    //private IEnumerator RotateToNextTarget()
-    //{
-    //    isRotating = true;
+    private void Release()
+    {
+        isBeingHeld = false;
+        puzzleCamera.SetActive(false);
 
-    //    Transform target = forwardTarget[currentTargetIndex];
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+    }
 
-    //    Vector3 directionToTarget = (target.position - lookAtTarget.position);
-    //    directionToTarget.y = 0f;
-
-    //    Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-    //    Quaternion initialRotation = transform.rotation;
-
-    //    float elapsed = 0f;
-    //    while (elapsed < 1f)
-    //    {
-    //        transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsed);
-    //        elapsed += Time.deltaTime * rotationSpeed;
-    //        yield return null;
-    //    }
-
-    //    transform.rotation = targetRotation;
-
-    //    currentTargetIndex = (currentTargetIndex + 1) % forwardTarget.Count;
-    //    isRotating = false;
-    //}
+    private void OnWinMethod()
+    {
+        SphereOnWinAction?.Invoke(this);
+    }
 }
