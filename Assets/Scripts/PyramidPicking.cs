@@ -38,12 +38,12 @@ public class PyramidPicking : MonoBehaviour, Interactor
 
     private void GrabPyramid()
     {
+        OnPicking?.Invoke(this);
         handPyramid.SetActive(true);
         grabbedPyramid.SetActive(false);
         coneLight.SetActive(false);
         AudioManager.Instance.PlaySound("Grab");
         UIManager.Instance.ChangeCursor(false);
-        OnPicking?.Invoke(this);
     }
 
     public void Interact()

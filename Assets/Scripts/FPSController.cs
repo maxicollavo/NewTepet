@@ -15,9 +15,6 @@ public class FPSController : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private bool invertYAxis = false;
     [SerializeField] private Transform cameraHolder;
-    private Vector2 handRotationOffset = Vector2.zero; // x = pitch, y = yaw
-    [SerializeField] private float maxHandRotationOffset = 15f;
-    [SerializeField] private float handFollowSmoothness = 6f;
 
 
     [Header("Look Settings")]
