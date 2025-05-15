@@ -35453,6 +35453,8 @@ MonoBehaviour:
   crouchSpeed: 3.5
   invertYAxis: 0
   cameraHolder: {fileID: 490497323}
+  maxHandRotationOffset: 15
+  handFollowSmoothness: 6
   mouseSensitivity: 0.5
   clampRange: 50
   footstepAudioSource: {fileID: 596941263}
@@ -35462,6 +35464,9 @@ MonoBehaviour:
   crouchBobSpeed: 8
   crouchBobAmount: 0.1
   playerCam: {fileID: 387398287}
+  ceilingLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   gravity: -9.81
   terminalVelocity: -50
   sensSlider: {fileID: 1998374068}
