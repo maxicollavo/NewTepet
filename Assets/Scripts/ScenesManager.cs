@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
@@ -8,7 +9,10 @@ public class ScenesManager : MonoBehaviour
     public AudioSource audioClip;
 
     public bool isMenu;
-
+    private void Update()
+    {
+        changeScene();
+    }
     private void Start()
     {
         if (isMenu)
@@ -42,4 +46,16 @@ public class ScenesManager : MonoBehaviour
         optionMenu.SetActive(false);
     }
 
+    public void changeScene()
+    {
+        if (Input.GetKey(KeyCode.F1)) 
+        {
+            SceneManager.LoadScene("Level_One");
+        }
+
+        if (Input.GetKey(KeyCode.F2))
+        {
+            SceneManager.LoadScene("Bau");
+        }
+    }
 }

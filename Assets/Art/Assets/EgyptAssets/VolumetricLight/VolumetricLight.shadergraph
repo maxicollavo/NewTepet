@@ -26,6 +26,9 @@
         },
         {
             "m_Id": "bc03a970531f4d749c3fbe81d68cc1e5"
+        },
+        {
+            "m_Id": "89fa0c30aa8349b982822364eca50704"
         }
     ],
     "m_Keywords": [],
@@ -2284,10 +2287,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 801.7652587890625,
-            "y": -405.4455261230469,
-            "width": 0.0,
-            "height": 0.0
+            "x": 1202.400146484375,
+            "y": -156.800048828125,
+            "width": 105.599853515625,
+            "height": 33.60002136230469
         }
     },
     "m_Slots": [
@@ -3424,6 +3427,9 @@
         },
         {
             "m_Id": "bc03a970531f4d749c3fbe81d68cc1e5"
+        },
+        {
+            "m_Id": "89fa0c30aa8349b982822364eca50704"
         }
     ]
 }
@@ -4309,6 +4315,34 @@
         "y": 0.0
     },
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
+    "m_ObjectId": "89fa0c30aa8349b982822364eca50704",
+    "m_Guid": {
+        "m_GuidSerialized": "394024b4-f833-403d-99d5-2c0522f07d46"
+    },
+    "m_Name": "power",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "power",
+    "m_DefaultReferenceName": "_power",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_Value": 0.0,
+    "m_FloatType": 0,
+    "m_RangeValues": {
+        "x": 0.0,
+        "y": 1.0
+    }
 }
 
 {
