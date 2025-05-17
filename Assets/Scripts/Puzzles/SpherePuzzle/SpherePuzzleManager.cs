@@ -35,7 +35,6 @@ public class SpherePuzzleManager : MonoBehaviour
         if (hasWon) return;
 
         distance = Vector3.Distance(sphere.transform.position, lookATTarget.position);
-        Debug.Log(distance);
 
         if (distance >= 0.233f && distance <= 0.248f)
         {

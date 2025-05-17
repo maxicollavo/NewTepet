@@ -49,7 +49,6 @@ public class PieceBoxOnWin : MonoBehaviour
 
         pieceColl.enabled = true;
 
-        GameManager.Instance.canCheck = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,8 +25,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] CinemachineCamera playerCam;
     public bool canCheck;
 
-    public bool BlendedToPlayer = true;
-
     public bool HasPiece;
 
     public static GameManager Instance { get; private set; }
@@ -38,35 +37,40 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        EventManager.Instance.Register(GameEventTypes.OnCinematic, OnCinematicMethod);
-        EventManager.Instance.Register(GameEventTypes.OnGameplay, OnGameplayMethod);
-        EventManager.Instance.Register(GameEventTypes.OnPuzzle, OnPuzzleMethod);
+        CinemachineCore.BlendCreatedEvent.AddListener(OnBlendCreated);
+        CinemachineCore.BlendFinishedEvent.AddListener(OnBlendFinished);
 
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 
     private void OnDestroy()
     {
-        EventManager.Instance.Unregister(GameEventTypes.OnCinematic, OnCinematicMethod);
-        EventManager.Instance.Unregister(GameEventTypes.OnGameplay, OnGameplayMethod);
-        EventManager.Instance.Unregister(GameEventTypes.OnPuzzle, OnPuzzleMethod);
+        CinemachineCore.BlendCreatedEvent.RemoveListener(OnBlendCreated);
+        CinemachineCore.BlendFinishedEvent.RemoveListener(OnBlendFinished);
     }
+
+    private void OnBlendCreated(CinemachineCore.BlendEventParams evtParams)
+    {
+        if (evtParams.Blend.CamA == playerCam)
+        {
+            OnPuzzleMethod();
+        }
+    }
+
+    private void OnBlendFinished(ICinemachineMixer cam1, ICinemachineCamera cam2)
+    {
+        if (cam2 == playerCam)
+        {
+            OnGameplayMethod();
+        }
+    }
+
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseTrigger();
-        }
-
-        if (canCheck)
-        {
-            if (brain.ActiveVirtualCamera as CinemachineCamera == playerCam)
-            {
-                Debug.Log("La camara volvio al player");
-                canCheck = false;
-                EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
-            }
         }
     }
 
@@ -89,21 +93,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnCinematicMethod(object sender, EventArgs e)
+    void OnCinematicMethod()
     {
         Debug.Log("Llama a OnCinematic");
         SetGameplayElementsActive(false);
         FPController.enabled = false;
     }
 
-    public void OnPuzzleMethod(object sender, EventArgs e)
+    void OnPuzzleMethod()
     {
         Debug.Log("Llama a OnPuzzle");
         SetGameplayElementsActive(false);
         FPController.enabled = false;
     }
 
-    public void OnGameplayMethod(object sender, EventArgs e)
+    void OnGameplayMethod()
     {
         Debug.Log("Llama a OnGameplay");
         SetGameplayElementsActive(true);

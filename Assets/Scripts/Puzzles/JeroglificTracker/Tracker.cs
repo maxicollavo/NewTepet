@@ -33,7 +33,6 @@ public class Tracker : MonoBehaviour
     [Header("On Win")]
     public bool HasWon;
 
-
     private void Start()
     {
         if (validNodes == null || validNodes.Count == 0)
@@ -104,7 +103,7 @@ public class Tracker : MonoBehaviour
 
     void Update()
     {
-        if (HasWon || !CanStart) return;
+        if (HasWon || !CanStart || !manager.canInteract) return;
 
         bool currentState = manager.OnPuzzle;
 

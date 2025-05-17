@@ -52,7 +52,6 @@ public class MousePainter : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Vector2 uv = hit.textureCoord;
-            Debug.Log("UV: " + hit.textureCoord);
             if (hit.collider.gameObject == gameObject)
             {
                 if (Input.GetMouseButton(0))

@@ -53,7 +53,6 @@ public class HieroglyficManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        GameManager.Instance.canCheck = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 

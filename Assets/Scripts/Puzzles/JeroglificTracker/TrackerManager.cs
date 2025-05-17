@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class TrackerManager : MonoBehaviour
     [SerializeField] PuzzleInteractor interactor;
     public bool OnPuzzle { get; private set; }
     bool HasWon;
+    bool canGoBack;
+    public bool canInteract;
     public bool subFloor;
     public bool isTarget;
     [SerializeField] GameObject CM_PuzzleCamera;
@@ -35,6 +38,8 @@ public class TrackerManager : MonoBehaviour
 
     private void Update()
     {
+        if (!canGoBack) return;
+
         if (Input.GetKeyDown(KeyCode.Mouse1) && OnPuzzle)
         {
             BackToGameplay();
@@ -60,6 +65,16 @@ public class TrackerManager : MonoBehaviour
         TurnPuzzleCamera(OnPuzzle);
         interactor.DisableOutline();
         interactorCollider.enabled = false;
+        StartCoroutine(EnterPuzzleCoroutine());
+    }
+
+    public IEnumerator EnterPuzzleCoroutine()
+    {
+        canGoBack = false;
+        canInteract = false;
+        yield return new WaitForSeconds(1.5f);
+        canGoBack = true;
+        canInteract = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
@@ -68,8 +83,16 @@ public class TrackerManager : MonoBehaviour
         if (HasWon) return;
         OnPuzzle = false;
         TurnPuzzleCamera(OnPuzzle);
-        interactorCollider.enabled = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+        StartCoroutine(ExitPuzzleCoroutine());
+    }
+
+    public IEnumerator ExitPuzzleCoroutine()
+    {
+        canGoBack = false;
+        yield return new WaitForSeconds(1.5f);
+        interactorCollider.enabled = true;
+        canGoBack = true;
     }
 
     public void OnWinMethod()

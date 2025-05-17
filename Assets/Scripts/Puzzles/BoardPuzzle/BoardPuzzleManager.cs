@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class BoardPuzzleManager : MonoBehaviour
@@ -39,6 +40,8 @@ public class BoardPuzzleManager : MonoBehaviour
     public bool OnPuzzle { get; private set; }
     private bool HasPiece;
     private bool HasWon;
+    private bool canInteract = false;
+    private bool canGoBack;
 
     private Dictionary<BoardPiece, BoardWaypoint> pieceTargetMap = new Dictionary<BoardPiece, BoardWaypoint>();
 
@@ -88,6 +91,9 @@ public class BoardPuzzleManager : MonoBehaviour
             previousState = currentState;
         }
 
+
+        if (!canGoBack) return;
+
         if (currentState && Input.GetKeyDown(KeyCode.Mouse1))
         {
             BackToGameplay();
@@ -124,6 +130,16 @@ public class BoardPuzzleManager : MonoBehaviour
         interactorCollider.enabled = false;
         OnPuzzle = true;
         TurnPuzzleCamera(OnPuzzle);
+        StartCoroutine(EnterPuzzleCoroutine());
+    }
+
+    public IEnumerator EnterPuzzleCoroutine()
+    {
+        canGoBack = false;
+        canInteract = false;
+        yield return new WaitForSeconds(1.5f);
+        canGoBack = true;
+        canInteract = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
@@ -142,8 +158,16 @@ public class BoardPuzzleManager : MonoBehaviour
         movePiece.enabled = false;
         OnPuzzle = false;
         TurnPuzzleCamera(OnPuzzle);
-        interactorCollider.enabled = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+        StartCoroutine(ExitPuzzleCoroutine());
+    }
+
+    public IEnumerator ExitPuzzleCoroutine()
+    {
+        canGoBack = false;
+        yield return new WaitForSeconds(1.5f);
+        interactorCollider.enabled = true;
+        canGoBack = true;
     }
 
     private void TurnPuzzleCamera(bool state)
@@ -168,17 +192,20 @@ public class BoardPuzzleManager : MonoBehaviour
 
     void GetButtonPressed(Vector2 pressedDirection, IButtonInput button)
     {
-        if (isMoving) return;
+        if (!canInteract || isMoving) return;
 
         isMoving = true;
         direction = pressedDirection;
 
-        if (selectedPiece == null && currentWp == null) return;
+        if (selectedPiece == null || currentWp == null)
+        {
+            isMoving = false;
+            return;
+        }
 
         if (currentWp.neighbors.TryGetValue(direction, out BoardWaypoint nextWp) && !nextWp.IsUsing)
         {
             newWaypoint = nextWp;
-
             StartCoroutine(MoveToTarget(selectedPiece, newWaypoint.transform.position, currentWp, nextWp, button));
         }
         else
@@ -186,6 +213,7 @@ public class BoardPuzzleManager : MonoBehaviour
             StartCoroutine(CannotMove(button));
         }
     }
+
 
     void GetSelectedPiece(BoardPiece piece)
     {
