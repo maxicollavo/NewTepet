@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Detection : MonoBehaviour
 {
-    public Action<Powers> ChangePowerAction; 
+    public Action<Powers> ChangePowerAction;
 
     public float playerReach = 10f;
 
@@ -48,11 +48,12 @@ public class Detection : MonoBehaviour
             ChangePower(0);
             SendPowerSelection();
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            ChangePower(1);
-           SendPowerSelection();
-       }
+        //Descomentar esto cuando se pueda cambiar de poder
+        // else if (Input.GetKeyDown(KeyCode.Alpha2))
+        // {
+        //     ChangePower(1);
+        //    SendPowerSelection();
+        //}
     }
 
     void Detect()
