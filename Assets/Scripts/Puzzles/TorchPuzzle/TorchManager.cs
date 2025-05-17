@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,7 +6,8 @@ public class TorchManager : MonoBehaviour
 {
     [SerializeField] List<Torch> torches;
     [SerializeField] List<int> correctTorchesIndex;
-
+    [SerializeField] CameraShake shake;
+    [SerializeField] GameObject doorCeilingCollider;
     int counter;
     bool HasWon;
 
@@ -13,7 +15,8 @@ public class TorchManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var t in torches) t.TorchAction += OnInteract;
+        foreach (var t in torches) t.OnInteractAction += OnInteract;
+        foreach (var t in torches) t.OnAnimFinishAction += OnWinMethod;
     }
 
     private void OnInteract(Torch torch, int index)
@@ -37,12 +40,15 @@ public class TorchManager : MonoBehaviour
         if (!HasWon)
         {
             HasWon = true;
-            OnWin();
         }
     }
 
-    private void OnWin()
+    private void OnWinMethod(Torch torch)
     {
+        if (!HasWon) return;
+
+        doorCeilingCollider.SetActive(true);
+        shake.TriggerShake();
         doorAnim.SetTrigger("Open");
     }
 }

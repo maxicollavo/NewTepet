@@ -1,36 +1,36 @@
 using UnityEngine;
-using System.Collections;
+using Unity.Cinemachine;
 
 public class CameraShake : MonoBehaviour
 {
-    public float shakeMagnitude = 0.3f;
-    public float dampingSpeed = 1.0f;
+    private float shakeDuration = 0.75f;
+    private float shakeMagnitude = 0.3f;
 
-    private Vector3 initialPosition;
-    private float currentShakeDuration = 0f;
+    private CinemachineCameraOffset cameraOffset;
+    private float shakeTime;
+    private Vector3 originalOffset;
 
-    void OnEnable()
+    void Awake()
     {
-        initialPosition = transform.localPosition;
+        cameraOffset = GetComponent<CinemachineCameraOffset>();
+        originalOffset = cameraOffset.Offset;
     }
 
-    public void TriggerShake(float shakeDuration)
+    public void TriggerShake()
     {
-        currentShakeDuration = shakeDuration;
+        shakeTime = shakeDuration;
     }
 
     void Update()
     {
-        if (currentShakeDuration > 0)
+        if (shakeTime > 0)
         {
-            transform.localPosition = initialPosition + Random.insideUnitSphere * shakeMagnitude;
-
-            currentShakeDuration -= Time.deltaTime * dampingSpeed;
+            cameraOffset.Offset = originalOffset + Random.insideUnitSphere * shakeMagnitude;
+            shakeTime -= Time.deltaTime;
         }
         else
         {
-            currentShakeDuration = 0f;
-            transform.localPosition = initialPosition;
+            cameraOffset.Offset = originalOffset;
         }
     }
 }

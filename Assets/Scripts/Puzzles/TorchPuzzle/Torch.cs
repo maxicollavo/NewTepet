@@ -6,7 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class Torch : MonoBehaviour, Interactor
 {
-    public Action<Torch, int> TorchAction;
+    public Action<Torch, int> OnInteractAction;
+    public Action<Torch> OnAnimFinishAction;
     public bool IsUpsideDown => isUpsideDown;
     public AnimationEvent AnimationEvent;
     public int index;
@@ -81,9 +82,14 @@ public class Torch : MonoBehaviour, Interactor
         }
     }
 
+    public void OnAnimFinish()
+    {
+        OnAnimFinishAction?.Invoke(this);
+    }
+
     void SendAction()
     {
-        TorchAction?.Invoke(this, index);
+        OnInteractAction?.Invoke(this, index);
     }
 
     private IEnumerator WaitForAnimationEnd(float duration)
