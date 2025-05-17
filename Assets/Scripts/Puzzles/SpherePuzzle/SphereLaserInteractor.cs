@@ -16,7 +16,7 @@ public class SphereLaserInteractor : MonoBehaviour, ILaserInteractor
 
     private void Start()
     {
-        rotateSphere.SphereOnWinAction += EnableGameObject;
+        //rotateSphere.SphereOnWinAction += EnableGameObject;
     }
 
     private void EnableGameObject(RotateSphere sphere)

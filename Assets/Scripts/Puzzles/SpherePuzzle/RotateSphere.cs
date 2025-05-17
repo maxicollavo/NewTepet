@@ -7,7 +7,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private Outline outline;
     private SphereCollider coll;
     private bool canUse = true;
-    private bool isBeingHeld = false;
+    private bool isBeingHeld;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -16,8 +16,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     [Header("Cinemachine")]
     [SerializeField] private GameObject puzzleCamera;
 
-    [Header("OnWin")]
-    public Action<RotateSphere> SphereOnWinAction;
+    [SerializeField] SpherePuzzleManager puzzleManager;
 
     private Vector2 lastMousePos;
 
@@ -31,6 +30,8 @@ public class RotateSphere : MonoBehaviour, Interactor
     private void Start()
     {
         outline.enabled = false;
+
+        puzzleManager.OnWinAction += OnWinMethod;
     }
 
     private void Update()
@@ -53,6 +54,11 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         if (!canUse || isBeingHeld) return;
 
+        EnableOutline();
+    }
+
+    public void EnableOutline()
+    {
         outline.enabled = true;
         UIManager.Instance.ChangeCursor(true);
     }
@@ -84,8 +90,9 @@ public class RotateSphere : MonoBehaviour, Interactor
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 
-    private void OnWinMethod()
+    private void OnWinMethod(SpherePuzzleManager manager)
     {
-        SphereOnWinAction?.Invoke(this);
+        Release();
+        canUse = false;
     }
 }
