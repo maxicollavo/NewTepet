@@ -46,7 +46,7 @@ public class HandMecanism : MonoBehaviour, Interactor
         touchButton.SetTrigger("Interact");
         DisableOutline();
         yield return new WaitForSeconds(1.5f);
-        //Mirar hacia la puerta
+        //Mirar hacia la puerta 
         doorAnim.SetTrigger("Open");
         AudioManager.Instance.PlaySound("rocaMoviendose");
     }

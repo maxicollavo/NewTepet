@@ -75941,7 +75941,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1048765878}
   - component: {fileID: 1048765880}
-  - component: {fileID: 1048765879}
   m_Layer: 0
   m_Name: Decal Projector (8)
   m_TagString: Untagged
@@ -75964,20 +75963,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1945228396}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
---- !u!114 &1048765879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1048765877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 418ddd19db532844a830c074de89cf82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  subtitle: {fileID: 278083241}
-  text: Anubis obtiene su poder en la oscuridad
 --- !u!114 &1048765880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77640,7 +77625,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1084796288}
   - component: {fileID: 1084796290}
-  - component: {fileID: 1084796289}
   m_Layer: 0
   m_Name: Decal Projector (10)
   m_TagString: Untagged
@@ -77663,20 +77647,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1945228396}
   m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
---- !u!114 &1084796289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1084796287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 418ddd19db532844a830c074de89cf82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  subtitle: {fileID: 278083241}
-  text: Anubis obtiene su poder en la oscuridad
 --- !u!114 &1084796290
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104361,8 +104331,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0642377, y: 0.08125179, z: 0.004797108}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.0642377, y: 0.08125179, z: 0.010691843}
+  m_Center: {x: 2.1665978e-17, y: 0, z: 0.002947368}
 --- !u!114 &1459353452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104376,8 +104346,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 0.36037737, g: 0.5961355, b: 1, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
