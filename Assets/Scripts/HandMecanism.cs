@@ -5,10 +5,14 @@ public class HandMecanism : MonoBehaviour, Interactor
 {
     Outline outline;
     [SerializeField] Animator doorAnim;
-    
+    Animator touchButton;
+    BoxCollider coll;
+
     private void Awake()
     {
-        outline = GetComponentInParent<Outline>();
+        outline = GetComponent<Outline>();
+        touchButton = GetComponent<Animator>();
+        coll = GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -35,15 +39,20 @@ public class HandMecanism : MonoBehaviour, Interactor
         UIManager.Instance.ChangeCursor(true);
     }
 
-    private void OpenDoor()
+    private IEnumerator TouchButtonCoroutine()
     {
+        coll.enabled = false;
+        UIManager.Instance.ChangeCursor(false);
+        touchButton.SetTrigger("Interact");
+        DisableOutline();
+        yield return new WaitForSeconds(1.5f);
+        //Mirar hacia la puerta
         doorAnim.SetTrigger("Open");
         AudioManager.Instance.PlaySound("rocaMoviendose");
-        UIManager.Instance.ChangeCursor(false);
     }
 
     public void Interact()
     {
-        OpenDoor();
+        StartCoroutine(TouchButtonCoroutine());
     }
 }
