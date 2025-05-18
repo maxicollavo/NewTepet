@@ -57,20 +57,20 @@ public class Tracker : MonoBehaviour
         {
             if (pos == 1)
             {
+                CanStart = false;
+                path.SetActive(false);
                 foreach (var node in actionNodes)
                 {
-                    CanStart = false;
                     node.gameObject.SetActive(false);
-                    path.SetActive(false);
                 }
                 return;
             }
             else
             {
+                CanStart = true;
+                path.SetActive(true);
                 foreach (var node in actionNodes)
                 {
-                    CanStart = true;
-                    path.SetActive(true);
                     node.gameObject.SetActive(true);
                 }
             }
@@ -79,21 +79,21 @@ public class Tracker : MonoBehaviour
         {
             if (pos == 0)
             {
+                CanStart = false;
+                path.SetActive(false);
                 foreach (var node in actionNodes)
                 {
                     node.gameObject.SetActive(false);
-                    path.SetActive(false);
-                    CanStart = false;
                 }
                 return;
             }
             else
             {
+                CanStart = true;
+                path.SetActive(true);
                 foreach (var node in actionNodes)
                 {
-                    CanStart = true;
                     node.gameObject.SetActive(true);
-                    path.SetActive(true);
                 }
             }
         }
