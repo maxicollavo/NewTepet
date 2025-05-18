@@ -95,21 +95,18 @@ public class GameManager : MonoBehaviour
 
     void OnCinematicMethod()
     {
-        Debug.Log("Llama a OnCinematic");
         SetGameplayElementsActive(false);
         FPController.enabled = false;
     }
 
     void OnPuzzleMethod()
     {
-        Debug.Log("Llama a OnPuzzle");
         SetGameplayElementsActive(false);
         FPController.enabled = false;
     }
 
     void OnGameplayMethod()
     {
-        Debug.Log("Llama a OnGameplay");
         SetGameplayElementsActive(true);
         FPController.enabled = true;
     }

@@ -12,9 +12,9 @@ public class Tracker : MonoBehaviour
     [SerializeField] StatueManager statueManager;
 
     [Header("Nodes")]
-    [SerializeField] List<GameObject> actionNodes; //Referencia a su action
-    List<GameObject> validNodes; //Los nodos que tengo que tocar
-    private List<GameObject> currentPath = new List<GameObject>(); //Los nodos que toco
+    [SerializeField] List<Node> actionNodes; //Referencia a su action
+    List<Node> validNodes; //Los nodos que tengo que tocar
+    private List<Node> currentPath = new List<Node>(); //Los nodos que toco
     private List<MeshRenderer> currentMeshes = new List<MeshRenderer>(); //Todos los mesh renderer que toco
     [SerializeField] private LayerMask nodeLayerMask;
 
@@ -37,7 +37,7 @@ public class Tracker : MonoBehaviour
     {
         if (validNodes == null || validNodes.Count == 0)
         {
-            validNodes = new List<GameObject>(actionNodes);
+            validNodes = new List<Node>(actionNodes);
         }
 
         playerCam = Camera.main;
@@ -60,7 +60,7 @@ public class Tracker : MonoBehaviour
                 foreach (var node in actionNodes)
                 {
                     CanStart = false;
-                    node.SetActive(false);
+                    node.gameObject.SetActive(false);
                     path.SetActive(false);
                 }
                 return;
@@ -71,7 +71,7 @@ public class Tracker : MonoBehaviour
                 {
                     CanStart = true;
                     path.SetActive(true);
-                    node.SetActive(true);
+                    node.gameObject.SetActive(true);
                 }
             }
         }
@@ -81,8 +81,7 @@ public class Tracker : MonoBehaviour
             {
                 foreach (var node in actionNodes)
                 {
-                    Debug.Log("Apaga los nodos");
-                    node.SetActive(false);
+                    node.gameObject.SetActive(false);
                     path.SetActive(false);
                     CanStart = false;
                 }
@@ -92,9 +91,8 @@ public class Tracker : MonoBehaviour
             {
                 foreach (var node in actionNodes)
                 {
-                    Debug.Log("Enciende los nodos");
                     CanStart = true;
-                    node.SetActive(true);
+                    node.gameObject.SetActive(true);
                     path.SetActive(true);
                 }
             }
@@ -138,36 +136,36 @@ public class Tracker : MonoBehaviour
     private void TrackMouse()
     {
         Ray ray = playerCam.ScreenPointToRay(Input.mousePosition);
-
         Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 0.1f);
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, nodeLayerMask))
         {
-            Debug.Log($"Raycast HIT: '{hit.collider.gameObject.name}' (Layer: {LayerMask.LayerToName(hit.collider.gameObject.layer)}) at distance {hit.distance}");
-
-            GameObject hitObj = hit.collider.gameObject;
+            Node hitObj = hit.collider.GetComponent<Node>();
             CheckIfValid(hitObj);
         }
         else
         {
-            Debug.Log("Raycast MISSED any node.");
             RestartTracking();
         }
     }
 
 
+
     private void RestartTracking()
     {
         isTracking = false;
-        currentPath.Clear();
         TurnOrRestartNodes(null, false);
+        currentPath.Clear();
+        currentMeshes.Clear(); // Limpiamos la lista de meshes también
     }
 
-    private void CheckIfValid(GameObject node)
+
+    private void CheckIfValid(Node node)
     {
         if (validNodes.Contains(node) && !currentPath.Contains(node))
         {
             AddNode(node);
+            Debug.Log($"{currentPath.Count} es currentPath y {validNodes.Count} es validNodes");
             CheckWin();
         }
     }
@@ -183,6 +181,7 @@ public class Tracker : MonoBehaviour
 
     private void Win()
     {
+        Debug.Log("Gano");
         HasWon = true;
         DisableNodes();
         manager.OnWinMethod();
@@ -192,34 +191,40 @@ public class Tracker : MonoBehaviour
     {
         foreach (var node in actionNodes)
         {
-            node.GetComponent<MeshCollider>().enabled = false;
+            node.GetComponent<BoxCollider>().enabled = false;
         }
     }
 
-    private void AddNode(GameObject node)
+    private void AddNode(Node node)
     {
-        Debug.Log("Add node");
         currentPath.Add(node);
-        var nodeMesh = node.GetComponent<MeshRenderer>();
+        var nodeMesh = node.nodeMesh;
         currentMeshes.Add(nodeMesh);
+        Debug.Log($"Agregó el nodo {node} y encendió el mesh del {nodeMesh}");
         TurnOrRestartNodes(nodeMesh, true);
     }
 
+
     private void TurnOrRestartNodes(MeshRenderer mesh, bool state)
     {
-        if (state)
+        if (mesh == null) Debug.LogWarning("No hay mesh");
+
+        if (state && mesh != null)
         {
-            Debug.Log("Enciende mesh");
             mesh.enabled = true;
         }
         else
         {
             foreach (var item in currentMeshes)
             {
-                item.enabled = false;
+                if (item != null)
+                {
+                    item.enabled = false;
+                }
             }
         }
     }
+
 
     private void ParticleTracking(bool isTracking)
     {
