@@ -94,5 +94,25 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         Release();
         canUse = false;
+        transform.rotation = Quaternion.Euler(transform.rotation.x, 315f, transform.rotation.z);
+
+        SetOnWinSphereMaterials();
+    }
+
+    private void SetOnWinSphereMaterials()
+    {
+        var renderer = GetComponent<MeshRenderer>();
+        var materials = renderer.materials;
+
+        materials[3].EnableKeyword("_EMISSION");
+
+        Color originalEmission = materials[3].GetColor("_EmissionColor");
+        materials[3].SetColor("_EmissionColor", originalEmission);
+
+        Color glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * 4.816925f;
+        materials[4].SetColor("_Color", glassColor);
+        materials[4].SetFloat("_speed", 0.05f);
+
+        renderer.materials = materials;
     }
 }
