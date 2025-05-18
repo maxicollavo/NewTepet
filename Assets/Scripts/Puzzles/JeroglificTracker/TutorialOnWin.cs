@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TutorialOnWin : MonoBehaviour
@@ -13,6 +14,12 @@ public class TutorialOnWin : MonoBehaviour
 
     void Win(TrackerManager manager)
     {
+        StartCoroutine(OpenDoorCoroutine());
+    }
+
+    public IEnumerator OpenDoorCoroutine()
+    {
+        yield return new WaitForSeconds(1.2f);
         doorAnim.SetTrigger("Open");
     }
 }
