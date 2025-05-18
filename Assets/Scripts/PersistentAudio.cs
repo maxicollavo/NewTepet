@@ -1,17 +1,35 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
-public class PersistentAudio : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
-    private static PersistentAudio instance;
-
+    public static AudioManager Instance;
 
     private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
     private AudioSource audioSource;
+    private static AudioManager instance;
 
     private void Awake()
     {
+        {
+            // Asegura que solo haya una instancia
+            if (instance != null && instance != this)
+            {
+                Destroy(gameObject); // Elimina duplicados
+                return;
+            }
+
+            instance = this;
+            DontDestroyOnLoad(gameObject); // Persiste entre escenas
+        }
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            audioSource = gameObject.AddComponent<AudioSource>();
+            LoadAllAudio();
+        }
+        else
         {
             Destroy(gameObject);
         }

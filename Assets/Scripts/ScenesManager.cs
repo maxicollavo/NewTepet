@@ -11,12 +11,9 @@ public class ScenesManager : MonoBehaviour
     public bool isMenu;
     private void Update()
     {
-        changeScene();
     }
     private void Start()
     {
-        if (isMenu)
-            audioClip.Play();
     }
 
     public void Exit()
@@ -27,6 +24,7 @@ public class ScenesManager : MonoBehaviour
     public void StartScene()
     {
         SceneManager.LoadScene("Level_One");
+            audioClip.Play();
     }
 
     public void Options()
@@ -46,16 +44,5 @@ public class ScenesManager : MonoBehaviour
         optionMenu.SetActive(false);
     }
 
-    public void changeScene()
-    {
-        if (Input.GetKey(KeyCode.F1)) 
-        {
-            SceneManager.LoadScene("Level_One");
-        }
-
-        if (Input.GetKey(KeyCode.F2))
-        {
-            SceneManager.LoadScene("Bau");
-        }
-    }
+    
 }
