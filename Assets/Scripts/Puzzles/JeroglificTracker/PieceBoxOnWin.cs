@@ -7,7 +7,8 @@ public class PieceBoxOnWin : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] TrackerManager manager;
-    [SerializeField] CinemachineCamera cam;
+    [SerializeField] CinemachineCamera cinematicCam;
+    [SerializeField] BoxCollider interactorColl;
     [SerializeField] BoxCollider pieceColl;
     private CinemachineBrain brain;
     [SerializeField] Animator boxAnim;
@@ -28,33 +29,19 @@ public class PieceBoxOnWin : MonoBehaviour
 
     private IEnumerator Cinematic()
     {
-        yield return WaitForBlendEnd();
-
+        interactorColl.enabled = false;
+        cinematicCam.gameObject.SetActive(true);
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
-
-        originalLookAt = cam.LookAt;
-        cam.LookAt = lookAtTarget;
-        cam.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.3f);
+        interactorColl.enabled = false;
 
         boxAnim.SetTrigger("Open");
-
+        interactorColl.enabled = false;
         yield return new WaitForSeconds(1f);
 
-        cam.LookAt = originalLookAt;
-        cam.gameObject.SetActive(false);
-
-        yield return new WaitForSeconds(1.5f);
-
+        interactorColl.enabled = false;
+        cinematicCam.gameObject.SetActive(false);
         pieceColl.enabled = true;
-
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
-    }
-
-    private IEnumerator WaitForBlendEnd()
-    {
-        while (brain.IsBlending)
-            yield return null;
     }
 }

@@ -7,6 +7,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private Outline outline;
     private SphereCollider coll;
     private bool canUse = true;
+    public bool hasWon;
     private bool isBeingHeld;
 
     [Header("Rotación")]
@@ -17,6 +18,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     [SerializeField] private GameObject puzzleCamera;
 
     [SerializeField] SpherePuzzleManager puzzleManager;
+    [SerializeField] WallLaser laser;
 
     private Vector2 lastMousePos;
 
@@ -94,12 +96,15 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         Release();
         canUse = false;
+        hasWon = true;
         transform.rotation = Quaternion.Euler(transform.rotation.x, 315f, transform.rotation.z);
+
+        if (!laser.isEnabled) return;
 
         SetOnWinSphereMaterials();
     }
 
-    private void SetOnWinSphereMaterials()
+    public void SetOnWinSphereMaterials()
     {
         var renderer = GetComponent<MeshRenderer>();
         var materials = renderer.materials;

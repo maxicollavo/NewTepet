@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject crosshair;
     public CameraManager camManager;
     private CinemachineBrain brain;
-    [SerializeField] CinemachineCamera playerCam;
+    public CinemachineCamera playerCam;
     public bool canCheck;
 
     public bool HasPiece;

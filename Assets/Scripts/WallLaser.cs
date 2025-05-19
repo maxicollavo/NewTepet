@@ -2,10 +2,51 @@ using UnityEngine;
 
 public class WallLaser : MonoBehaviour
 {
-    [SerializeField] private Transform target;
     [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] GameObject sphere;
+    private Transform target;
     [SerializeField] private LayerMask blockLaserLayer;
     [SerializeField] private float laserMaxDistance = 50f;
+
+    public bool isDefault;
+    public bool isEnabled;
+
+    private void OnEnable()
+    {
+        target = sphere.transform;
+        ShootLaser();
+        isEnabled = true;
+
+        if (isDefault)
+        {
+            SetSphereMaterials();
+        }
+
+        if (sphere.TryGetComponent<RotateSphere>(out var sphereRot))
+        {
+            if (!sphereRot.hasWon) return;
+
+            sphereRot.SetOnWinSphereMaterials();
+        }
+    }
+
+
+    private void SetSphereMaterials()
+    {
+        var renderer = sphere.GetComponent<MeshRenderer>();
+        var materials = renderer.materials;
+
+        materials[3].EnableKeyword("_EMISSION");
+
+        Color originalEmission = materials[3].GetColor("_EmissionColor");
+        materials[3].SetColor("_EmissionColor", originalEmission);
+
+        Color glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * 4.816925f;
+        materials[4].SetColor("_Color", glassColor);
+        materials[4].SetFloat("_speed", 0.05f);
+
+        renderer.materials = materials;
+    }
 
     private void Start()
     {
@@ -16,47 +57,24 @@ public class WallLaser : MonoBehaviour
         lineRenderer.material.color = Color.red;
     }
 
-    private void Update()
-    {
-        ShootLaser();
-    }
-
     private void ShootLaser()
     {
-        Debug.Log("Laser");
+        if (target == null) return;
 
         Vector3 origin = transform.position;
-        Vector3 direction = (target.position - origin).normalized;
+        Vector3 targetPos = target.position;
+        Vector3 direction = (targetPos - origin).normalized;
+        float distanceToTarget = Vector3.Distance(origin, targetPos);
 
-        lineRenderer.SetPosition(0, origin);
-
-        RaycastHit hit;
-        if (Physics.Raycast(origin, direction, out hit, laserMaxDistance))
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, distanceToTarget, blockLaserLayer))
         {
+            lineRenderer.SetPosition(0, origin);
             lineRenderer.SetPosition(1, hit.point);
-
-            Debug.Log("Golpeé: " + hit.collider.name);
-
-            if (((1 << hit.collider.gameObject.layer) & blockLaserLayer) != 0)
-            {
-                Debug.Log("¡Golpeé un bloqueador!");
-                return;
-            }
-
-            ILaserInteractor interactor = hit.collider.GetComponent<ILaserInteractor>();
-
-            if (interactor != null)
-            {
-                interactor.Interact();
-            }
-            else
-            {
-                Debug.Log("No encontré ningún Interactor en: " + hit.collider.name);
-            }
         }
         else
         {
-            lineRenderer.SetPosition(1, target.position);
+            lineRenderer.SetPosition(0, origin);
+            lineRenderer.SetPosition(1, targetPos);
         }
     }
 }

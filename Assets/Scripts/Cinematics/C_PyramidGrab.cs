@@ -9,7 +9,8 @@ public class C_PyramidGrab : MonoBehaviour
     [SerializeField] PyramidPicking pickManager;
 
     [Header("References")]
-    [SerializeField] CinemachineCamera cam;
+    [SerializeField] CinemachineCamera lookAtDoorCam;
+    [SerializeField] CinemachineCamera lookAtStandCam;
     private CinemachineBrain brain;
     [SerializeField] Transform lookAtTarget;
     Transform originalLookAt;
@@ -33,24 +34,20 @@ public class C_PyramidGrab : MonoBehaviour
 
     private IEnumerator Cinematic()
     {
-        yield return WaitForBlendEnd();
+        lookAtStandCam.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
 
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
+        lookAtDoorCam.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1.3f);
 
-        originalLookAt = cam.LookAt;
-        cam.LookAt = lookAtTarget;
-        cam.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(1f);
         doorAnim.SetTrigger("OpenDoor");
-
         yield return new WaitForSeconds(1f);
 
-        cam.LookAt = originalLookAt;
-        cam.gameObject.SetActive(false);
+        lookAtDoorCam.gameObject.SetActive(false);
+        yield return new WaitForSeconds(2f);
 
-        yield return new WaitForSeconds(1.5f);
-
+        lookAtStandCam.gameObject.SetActive(false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 

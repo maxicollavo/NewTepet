@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class LaserReceptor : MonoBehaviour, Interactor
 {
+    [SerializeField] RotateSphere sphere;
+
     public void Aiming()
     {
         Debug.Log("Aim");
@@ -14,6 +16,6 @@ public class LaserReceptor : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        Debug.Log("interactua laser");
+        sphere.SetOnWinSphereMaterials();
     }
 }
