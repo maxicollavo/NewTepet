@@ -69021,7 +69021,7 @@ GameObject:
   - component: {fileID: 911638229}
   - component: {fileID: 911638228}
   m_Layer: 0
-  m_Name: TrackerManager
+  m_Name: DoorTrackerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69041,11 +69041,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   interactor: {fileID: 8879367954989411788}
+  interactorCollider: {fileID: 8879367954989411787}
   canInteract: 0
   subFloor: 0
   isTarget: 0
   CM_PuzzleCamera: {fileID: 1720334937}
-  hieroglyficManager: {fileID: 515309261}
+  hieroglyficManager: {fileID: 0}
 --- !u!4 &911638229
 Transform:
   m_ObjectHideFlags: 0
@@ -95009,7 +95010,7 @@ GameObject:
   - component: {fileID: 1292292390}
   - component: {fileID: 1292292391}
   m_Layer: 0
-  m_Name: TrackerManager
+  m_Name: CajaTrackerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95044,11 +95045,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   interactor: {fileID: 9043264696976161103}
+  interactorCollider: {fileID: 9043264696976161105}
   canInteract: 0
   subFloor: 0
   isTarget: 0
   CM_PuzzleCamera: {fileID: 492572514}
-  hieroglyficManager: {fileID: 515309261}
+  hieroglyficManager: {fileID: 0}
 --- !u!1001 &1292484013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -110200,7 +110202,7 @@ GameObject:
   - component: {fileID: 1530048428}
   - component: {fileID: 1530048429}
   m_Layer: 0
-  m_Name: TrackerManager
+  m_Name: PlumaTrackerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110235,6 +110237,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   interactor: {fileID: 9052607201489707363}
+  interactorCollider: {fileID: 9052607201489707362}
   canInteract: 0
   subFloor: 1
   isTarget: 1
@@ -118315,7 +118318,7 @@ GameObject:
   - component: {fileID: 1589254258}
   - component: {fileID: 1589254259}
   m_Layer: 0
-  m_Name: TrackerManager
+  m_Name: OjoTrackerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118350,6 +118353,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   interactor: {fileID: 8281560202596883433}
+  interactorCollider: {fileID: 8281560202596883432}
   canInteract: 0
   subFloor: 1
   isTarget: 0
@@ -129496,7 +129500,7 @@ GameObject:
   - component: {fileID: 1717685896}
   - component: {fileID: 1717685895}
   m_Layer: 0
-  m_Name: TrackerManager
+  m_Name: CirculoTrackerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129516,6 +129520,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   interactor: {fileID: 7218595214893031826}
+  interactorCollider: {fileID: 7218595214893031825}
   canInteract: 0
   subFloor: 1
   isTarget: 0
@@ -139345,7 +139350,7 @@ GameObject:
   - component: {fileID: 1808839926}
   - component: {fileID: 1808839927}
   m_Layer: 0
-  m_Name: TrackerManager
+  m_Name: BastonesTrackerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139380,6 +139385,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   interactor: {fileID: 9009476212814982774}
+  interactorCollider: {fileID: 9009476212814982773}
   canInteract: 0
   subFloor: 1
   isTarget: 1
@@ -163212,7 +163218,7 @@ GameObject:
   - component: {fileID: 7218595214893031824}
   - component: {fileID: 7218595214893031826}
   m_Layer: 0
-  m_Name: Figure
+  m_Name: CirculoFigure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163625,7 +163631,7 @@ GameObject:
   - component: {fileID: 9043264696976161104}
   - component: {fileID: 9043264696976161103}
   m_Layer: 0
-  m_Name: Figure
+  m_Name: CajaFigure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165114,7 +165120,7 @@ GameObject:
   - component: {fileID: 9052607201489707361}
   - component: {fileID: 9052607201489707363}
   m_Layer: 0
-  m_Name: Figure
+  m_Name: PlumaFigure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165485,7 +165491,7 @@ GameObject:
   - component: {fileID: 8281560202596883431}
   - component: {fileID: 8281560202596883433}
   m_Layer: 0
-  m_Name: Figure
+  m_Name: OjoFigure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165686,7 +165692,7 @@ GameObject:
   - component: {fileID: 8879367954989411789}
   - component: {fileID: 8879367954989411788}
   m_Layer: 0
-  m_Name: Figure
+  m_Name: DoorFigure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165809,7 +165815,7 @@ GameObject:
   - component: {fileID: 9009476212814982772}
   - component: {fileID: 9009476212814982774}
   m_Layer: 0
-  m_Name: Figure
+  m_Name: BastonesFigure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

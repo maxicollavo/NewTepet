@@ -10,6 +10,7 @@ public class TrackerManager : MonoBehaviour
     public Action<TrackerManager> JeroglificAction;
 
     [SerializeField] PuzzleInteractor interactor;
+    [SerializeField] BoxCollider interactorCollider;
     public bool OnPuzzle { get; private set; }
     bool HasWon;
     bool canGoBack;
@@ -17,16 +18,15 @@ public class TrackerManager : MonoBehaviour
     public bool subFloor;
     public bool isTarget;
     [SerializeField] GameObject CM_PuzzleCamera;
-    BoxCollider interactorCollider;
 
     [SerializeField] HieroglyficManager hieroglyficManager;
 
     private void Start()
     {
         interactor.PuzzleAction += OnPuzzleMethod;
-        hieroglyficManager.OnWinAction += OnWinMethod;
 
-        interactorCollider = interactor.GetComponent<BoxCollider>();
+        if (hieroglyficManager == null) return;
+        hieroglyficManager.OnWinAction += OnWinMethod;
     }
 
     private void OnWinMethod(HieroglyficManager manager)
