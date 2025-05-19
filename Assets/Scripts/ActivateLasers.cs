@@ -1,11 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ActivateLasers : MonoBehaviour, Interactor
 {
-    [SerializeField] LineRenderer lineRenderer1;
-    [SerializeField] LineRenderer lineRenderer2;
-    [SerializeField] WallLaser wl1;
-    [SerializeField] WallLaser wl2;
+    [SerializeField] List<GameObject> lasers;
     [SerializeField] GameObject roomLight;
 
     Outline outline;
@@ -46,11 +44,8 @@ public class ActivateLasers : MonoBehaviour, Interactor
         roomLight.SetActive(false);
         boxCol.enabled = false;
         outline.enabled = false;
-        lineRenderer1.enabled = true;
-        lineRenderer2.enabled = true;
-        wl1.enabled = true;
-        wl2.enabled = true;
-
+        foreach (var laser in lasers)
+            laser.SetActive(true);
         UIManager.Instance.ChangeCursor(false);
     }
 }

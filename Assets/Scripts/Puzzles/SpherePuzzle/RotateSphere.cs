@@ -100,7 +100,6 @@ public class RotateSphere : MonoBehaviour, Interactor
         transform.rotation = Quaternion.Euler(transform.rotation.x, 315f, transform.rotation.z);
 
         if (!laser.isEnabled) return;
-
         SetOnWinSphereMaterials();
     }
 

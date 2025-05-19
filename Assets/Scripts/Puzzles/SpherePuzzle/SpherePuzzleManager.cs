@@ -11,9 +11,9 @@ public class SpherePuzzleManager : MonoBehaviour
     [SerializeField] private Transform lookATTarget;
 
     [Header("Acciones al ganar")]
-    [SerializeField] private Animator openDoor;
+    public Animator openDoor;
     [SerializeField] private MeshRenderer sphereRenderer;
-
+    [SerializeField] private WallLaser laser;
     private Material emissiveMat;
     private float distance;
     private bool hasWon;
@@ -70,7 +70,7 @@ public class SpherePuzzleManager : MonoBehaviour
         emissiveMat.SetColor("_EmissionColor", Color.yellow);
         yield return new WaitForSeconds(0.5f);
 
-        if (openDoor != null)
+        if (openDoor != null && laser.isEnabled)
         {
             openDoor.SetTrigger("Open");
         }

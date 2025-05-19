@@ -4,6 +4,7 @@ public class WallLaser : MonoBehaviour
 {
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] GameObject sphere;
+    [SerializeField] SpherePuzzleManager manager;
     private Transform target;
     [SerializeField] private LayerMask blockLaserLayer;
     [SerializeField] private float laserMaxDistance = 50f;
@@ -27,6 +28,11 @@ public class WallLaser : MonoBehaviour
             if (!sphereRot.hasWon) return;
 
             sphereRot.SetOnWinSphereMaterials();
+
+            if (manager == null) return;
+
+            manager.openDoor.SetTrigger("Open");
+            
         }
     }
 
