@@ -7,6 +7,7 @@ public class BoardOnWin : MonoBehaviour
 {
     [SerializeField] List<GameObject> torchParticles;
     [SerializeField] List<BoxCollider> colliders;
+    [SerializeField] List<BoxCollider> boardColliders;
     [SerializeField] List<GameObject> lights;
 
     [SerializeField] BoardPuzzleManager manager;
@@ -31,6 +32,11 @@ public class BoardOnWin : MonoBehaviour
         foreach(var light in lights)
         {
             light.SetActive(true);
+        }
+
+        foreach (var colls in boardColliders)
+        {
+            colls.enabled = false;
         }
     }
 }

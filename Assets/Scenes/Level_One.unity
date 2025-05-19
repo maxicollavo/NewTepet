@@ -10657,7 +10657,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 180.59859, y: 3.33, z: 160.73439}
+  m_LocalPosition: {x: 180.29858, y: 3.33, z: 143.6344}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45945,7 +45945,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 180.6, y: 1.91, z: 160.7}
+  m_LocalPosition: {x: 180.3, y: 1.91, z: 143.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -57666,6 +57666,16 @@ MonoBehaviour:
   - {fileID: 1785625448}
   - {fileID: 1162177488}
   - {fileID: 1544785954}
+  boardColliders:
+  - {fileID: 1077213603}
+  - {fileID: 829450124}
+  - {fileID: 1130535087}
+  - {fileID: 1593032176}
+  - {fileID: 1216779429}
+  - {fileID: 1256819364}
+  - {fileID: 895491776}
+  - {fileID: 2079486373}
+  - {fileID: 814340391}
   lights:
   - {fileID: 939031555}
   - {fileID: 699584606}
@@ -59301,7 +59311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 0.2924527, g: 0.9780707, b: 1, a: 1}
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
@@ -119316,7 +119326,7 @@ MonoBehaviour:
   camManager: {fileID: 525338988}
   playerCam: {fileID: 387398287}
   canCheck: 0
-  HasPiece: 0
+  HasPiece: 1
 --- !u!4 &1600673506
 Transform:
   m_ObjectHideFlags: 0
@@ -129162,6 +129172,7 @@ MonoBehaviour:
   lineRenderer2: {fileID: 1334968968}
   wl1: {fileID: 1898347464}
   wl2: {fileID: 1334968969}
+  roomLight: {fileID: 0}
 --- !u!114 &1706436475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129175,7 +129186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 0.33773577, b: 0.33773577, a: 1}
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
   outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []

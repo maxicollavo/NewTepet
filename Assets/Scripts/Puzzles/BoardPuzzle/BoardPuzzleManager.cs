@@ -166,8 +166,10 @@ public class BoardPuzzleManager : MonoBehaviour
     {
         canGoBack = false;
         yield return new WaitForSeconds(1.5f);
-        interactorCollider.enabled = true;
         canGoBack = true;
+
+        if (!HasWon)
+            interactorCollider.enabled = true;
     }
 
     private void TurnPuzzleCamera(bool state)
@@ -328,8 +330,8 @@ public class BoardPuzzleManager : MonoBehaviour
     void Win()
     {
         HasWon = true;
+        BackToGameplay();
         OnWin?.Invoke(this);
         foreach (var piece in pieces) piece.DisableOutline();
-        BackToGameplay();
     }
 }

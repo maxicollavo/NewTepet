@@ -6,6 +6,7 @@ public class ActivateLasers : MonoBehaviour, Interactor
     [SerializeField] LineRenderer lineRenderer2;
     [SerializeField] WallLaser wl1;
     [SerializeField] WallLaser wl2;
+    [SerializeField] GameObject roomLight;
 
     Outline outline;
     BoxCollider boxCol;
@@ -41,9 +42,10 @@ public class ActivateLasers : MonoBehaviour, Interactor
 
     public void Interact()
     {
+        anim.SetTrigger("Interact");
+        roomLight.SetActive(false);
         boxCol.enabled = false;
         outline.enabled = false;
-        anim.SetTrigger("Interact");
         lineRenderer1.enabled = true;
         lineRenderer2.enabled = true;
         wl1.enabled = true;
