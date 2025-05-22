@@ -33,7 +33,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _EDG1
+  m_LockedProperties: _EDG1 _Edge
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -117,8 +117,8 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EDG1: 0.97
-    - _Edge: 0
+    - _EDG1: -1.37
+    - _Edge: -1.77
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -130,7 +130,7 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _SmoothStepOP: 0.27
-    - _SmoothStepOP_1: 0.1
+    - _SmoothStepOP_1: 3.42
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
