@@ -13,7 +13,7 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -46,13 +46,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _DecalMeshBiasType: 0
+    - _DecalMeshDepthBias: 0
+    - _DecalMeshViewBias: 0
+    - _DrawOrder: 0
     - _PaintRadius: 0.64
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ShowPaint: 0.536
+    - _ShowPaint: 0.5
     m_Colors:
     - _MouseUV: {r: 0, g: 0, b: 0, a: 0}
-    - _PaintColor: {r: 0, g: 0, b: 0, a: 0}
+    - _PaintColor: {r: 1, g: 0, b: 0, a: 0}
     - _RaycastPos: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
