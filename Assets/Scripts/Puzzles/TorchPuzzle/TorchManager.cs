@@ -37,10 +37,7 @@ public class TorchManager : MonoBehaviour
             }
         }
 
-        if (!HasWon)
-        {
-            HasWon = true;
-        }
+        HasWon = true;
     }
 
     private void OnWinMethod(Torch torch)
