@@ -34,7 +34,7 @@ public class PieceBoxOnWin : MonoBehaviour
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
         yield return new WaitForSeconds(1.3f);
         interactorColl.enabled = false;
-        OpenBox.Play();
+        AudioManager.Instance.PlaySound("rocaMoviendose");
         boxAnim.SetTrigger("Open");
         interactorColl.enabled = false;
         yield return new WaitForSeconds(1f);

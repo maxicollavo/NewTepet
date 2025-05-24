@@ -6,15 +6,8 @@ public class ScenesManager : MonoBehaviour
 {
     [SerializeField] GameObject optionMenu;
     [SerializeField] GameObject creditMenu;
-    public AudioSource audioClip;
 
     public bool isMenu;
-    private void Update()
-    {
-    }
-    private void Start()
-    {
-    }
 
     public void Exit()
     {
@@ -24,7 +17,6 @@ public class ScenesManager : MonoBehaviour
     public void StartScene()
     {
         SceneManager.LoadScene("Level_One");
-            audioClip.Play();
     }
 
     public void Options()
@@ -44,5 +36,5 @@ public class ScenesManager : MonoBehaviour
         optionMenu.SetActive(false);
     }
 
-    
+
 }

@@ -1,17 +1,23 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-
-public class PersistentAudio : MonoBehaviour
+public class AudioManager : MonoBehaviour
 {
-    private static PersistentAudio instance;
-
+    public static AudioManager Instance;
 
     private Dictionary<string, AudioClip> audioClips = new Dictionary<string, AudioClip>();
     private AudioSource audioSource;
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            audioSource = gameObject.AddComponent<AudioSource>();
+            LoadAllAudio();
+        }
+        else
         {
             Destroy(gameObject);
         }
@@ -36,19 +42,5 @@ public class PersistentAudio : MonoBehaviour
         {
             Debug.LogWarning($"AudioClip {clipName} no encontrado!");
         }
-    }
-    public void PlaySound(AudioClip clip)
-    {
-        AudioSource audio = GetComponent<AudioSource>();
-        if (audio != null && clip != null)
-        {
-            audio.clip = clip;
-            audio.Play();
-        }
-    }
-
-public void StopMusic()
-    {
-        audioSource.Stop();
     }
 }

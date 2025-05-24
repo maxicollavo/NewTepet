@@ -13,7 +13,6 @@ public class BoardPiece : MonoBehaviour
     public BoxCollider coll;
     public bool IsSelected;
     public bool OnPositionWinner;
-    public AudioSource ClickSound;
 
     private void Awake()
     {
@@ -50,7 +49,6 @@ public class BoardPiece : MonoBehaviour
     public void SelectedPiece()
     {
         IsSelected = true;
-        ClickSound.Play();
         EnableOutline();
         OnPieceSelected?.Invoke(this);
     }
