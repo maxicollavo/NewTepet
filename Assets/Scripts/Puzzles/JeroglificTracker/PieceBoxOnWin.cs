@@ -38,7 +38,6 @@ public class PieceBoxOnWin : MonoBehaviour
         boxAnim.SetTrigger("Open");
         interactorColl.enabled = false;
         yield return new WaitForSeconds(1f);
-
         interactorColl.enabled = false;
         cinematicCam.gameObject.SetActive(false);
         pieceColl.enabled = true;

@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     private CinemachineBrain brain;
     public CinemachineCamera playerCam;
     public bool canCheck;
+    private bool requiresHand;
 
     public bool HasPiece;
 
@@ -53,7 +54,24 @@ public class GameManager : MonoBehaviour
     {
         if (evtParams.Blend.CamA == playerCam)
         {
-            OnPuzzleMethod();
+            var camA = evtParams.Blend.CamB as CinemachineCamera;
+
+            if (camA != null)
+            {
+                GameObject camObject = camA.gameObject;
+                Debug.Log(camObject);
+
+                PuzzleDefiner definer = camObject.GetComponent<PuzzleDefiner>();
+                Debug.Log(definer);
+
+                if (definer != null)
+                {
+                    requiresHand = definer.requiresHand;
+                    Debug.Log(requiresHand);
+                }
+            }
+
+            OnPuzzleMethod(requiresHand);
         }
     }
 
@@ -95,26 +113,26 @@ public class GameManager : MonoBehaviour
 
     void OnCinematicMethod()
     {
-        SetGameplayElementsActive(false);
+        SetGameplayElementsActive(false, false);
         FPController.enabled = false;
     }
 
-    void OnPuzzleMethod()
+    void OnPuzzleMethod(bool requiresHand)
     {
-        SetGameplayElementsActive(false);
+        SetGameplayElementsActive(false, requiresHand);
         FPController.enabled = false;
     }
 
     void OnGameplayMethod()
     {
-        SetGameplayElementsActive(true);
+        SetGameplayElementsActive(true, true);
         FPController.enabled = true;
     }
 
-    private void SetGameplayElementsActive(bool active)
+    private void SetGameplayElementsActive(bool active, bool requiresHand)
     {
-        hand.SetActive(active);
         crosshair.SetActive(active);
+        hand.SetActive(requiresHand);
     }
 }
 
