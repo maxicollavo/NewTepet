@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
 
     public bool HasPiece;
 
+    [SerializeField] Animator pyramidOnEnterAnim;
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -133,6 +135,11 @@ public class GameManager : MonoBehaviour
     {
         crosshair.SetActive(active);
         hand.SetActive(requiresHand);
+
+        if (requiresHand)
+        {
+            pyramidOnEnterAnim.SetTrigger("EnterPuzzle");
+        }
     }
 }
 
