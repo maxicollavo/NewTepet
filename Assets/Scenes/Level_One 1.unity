@@ -10939,7 +10939,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.99996847, z: 0, w: 0.007945427}
-  m_LocalPosition: {x: 181.00912, y: 2.52, z: 148.53441}
+  m_LocalPosition: {x: 177.00414, y: 2.03, z: 132.04541}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -46400,7 +46400,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.99996847, z: -0, w: 0.007945427}
-  m_LocalPosition: {x: 181.01, y: 1.1, z: 148.5}
+  m_LocalPosition: {x: 177.005, y: 0.61, z: 132.011}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -62979,7 +62979,6 @@ MonoBehaviour:
   coll: {fileID: 0}
   IsSelected: 0
   OnPositionWinner: 0
-  ClickSound: {fileID: 1417800628}
 --- !u!1 &814665101
 GameObject:
   m_ObjectHideFlags: 0
@@ -68454,7 +68453,6 @@ MonoBehaviour:
   coll: {fileID: 0}
   IsSelected: 0
   OnPositionWinner: 0
-  ClickSound: {fileID: 1417800628}
 --- !u!1 &895960458
 GameObject:
   m_ObjectHideFlags: 0
@@ -93846,7 +93844,6 @@ MonoBehaviour:
   coll: {fileID: 0}
   IsSelected: 0
   OnPositionWinner: 0
-  ClickSound: {fileID: 1417800628}
 --- !u!1001 &1258717741
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -129337,6 +129334,7 @@ MonoBehaviour:
   playerCam: {fileID: 387398287}
   canCheck: 0
   HasPiece: 0
+  pyramidOnEnterAnim: {fileID: 0}
 --- !u!4 &1600673506
 Transform:
   m_ObjectHideFlags: 0
@@ -140729,7 +140727,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionMenu: {fileID: 1720918265}
   creditMenu: {fileID: 0}
-  audioClip: {fileID: 0}
   isMenu: 0
 --- !u!1 &1730582661
 GameObject:
@@ -170308,7 +170305,6 @@ MonoBehaviour:
   coll: {fileID: 0}
   IsSelected: 0
   OnPositionWinner: 0
-  ClickSound: {fileID: 1417800628}
 --- !u!1001 &2081824669
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -174275,7 +174271,7 @@ GameObject:
   - component: {fileID: 5983105163004430154}
   - component: {fileID: 3018246581445398076}
   m_Layer: 0
-  m_Name: DustParticle (2)
+  m_Name: DustParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
