@@ -24,8 +24,8 @@ public class RotateSphere : MonoBehaviour, Interactor
     [Header("Puzzle")]
     [SerializeField] private SpherePuzzleManager puzzleManager;
     [SerializeField] private WallLaser laser;
-    [SerializeField] private Transform[] imagePoints; // Puntos de referencia para las imágenes
-    [SerializeField] private float frontTolerance = 15f; // Ángulo de tolerancia
+    [SerializeField] private Transform[] imagePoints;
+    [SerializeField] private float frontTolerance = 15f;
 
     private Vector2 lastMousePos;
     private int currentImageIndex = 0;
@@ -43,7 +43,6 @@ public class RotateSphere : MonoBehaviour, Interactor
         outline.enabled = false;
         puzzleManager.OnWinAction += OnWinMethod;
 
-        // Ordena las imágenes por nombre para asegurarse del orden deseado
         imagePoints = imagePoints.OrderBy(p => p.name).ToArray();
     }
 
@@ -141,7 +140,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
         Debug.Log("Distancia al frente de la cámara: " + distance);
 
-        float proximityTolerance = 0.54f; // Puedes ajustar este valor
+        float proximityTolerance = 0.54f;
 
         if (distance < proximityTolerance)
         {
@@ -154,6 +153,10 @@ public class RotateSphere : MonoBehaviour, Interactor
                 canScore = false;
                 puzzleManager.OnWin();
             }
+        }
+        else
+        {
+            currentImageIndex = 0;
         }
     }
 }
