@@ -10,6 +10,7 @@ public class TorchManager : MonoBehaviour
     [SerializeField] GameObject doorCeilingCollider;
     int counter;
     bool HasWon;
+    bool canEnter = true;
 
     [SerializeField] Animator doorAnim;
 
@@ -26,6 +27,7 @@ public class TorchManager : MonoBehaviour
 
     private void CheckPuzzleState(Torch torch)
     {
+        Debug.Log(HasWon);
         foreach (var t in torches)
         {
             bool shouldBeDown = correctTorchesIndex.Contains(t.index);
@@ -38,14 +40,18 @@ public class TorchManager : MonoBehaviour
         }
 
         HasWon = true;
+        Debug.Log(HasWon);
     }
 
     private void OnWinMethod(Torch torch)
     {
         if (!HasWon) return;
 
-        doorCeilingCollider.SetActive(true);
-        shake.TriggerShake();
-        doorAnim.SetTrigger("Open");
+        if (canEnter)
+        {
+            shake.TriggerShake();
+            doorAnim.SetTrigger("Open");
+            canEnter = false;
+        }
     }
 }
