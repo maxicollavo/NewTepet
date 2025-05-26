@@ -8,6 +8,7 @@ public class TrackerManager : MonoBehaviour
 {
     [HideInInspector] public List<Tracker> trackerList = new List<Tracker>();
     public Action<TrackerManager> JeroglificAction;
+    public FollowMouseClick trail;
 
     [SerializeField] PuzzleInteractor interactor;
     [SerializeField] BoxCollider interactorCollider;
@@ -84,6 +85,7 @@ public class TrackerManager : MonoBehaviour
         OnPuzzle = false;
         TurnPuzzleCamera(OnPuzzle);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+        trail.gameObject.SetActive(false);
         StartCoroutine(ExitPuzzleCoroutine());
     }
 

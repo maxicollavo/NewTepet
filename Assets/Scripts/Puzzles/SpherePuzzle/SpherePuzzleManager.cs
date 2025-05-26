@@ -6,10 +6,6 @@ public class SpherePuzzleManager : MonoBehaviour
 {
     public Action<SpherePuzzleManager> OnWinAction;
 
-    [Header("Objetivo")]
-    [SerializeField] private Transform sphere;
-    [SerializeField] private Transform lookATTarget;
-
     [Header("Acciones al ganar")]
     public Animator openDoor;
     [SerializeField] private MeshRenderer sphereRenderer;
@@ -30,29 +26,17 @@ public class SpherePuzzleManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void OnWin()
     {
         if (hasWon) return;
+        hasWon = true;
 
-        distance = Vector3.Distance(sphere.transform.position, lookATTarget.position);
-
-        if (distance >= 0.233f && distance <= 0.248f)
-        {
-            hasWon = true;
-            Win();
-        }
-    }
-
-    private void Win()
-    {
-        Debug.Log("Puzzle resuelto!");
+        Debug.Log("¡Puzzle resuelto!");
         OnWinAction?.Invoke(this);
 
         emissiveMat = sphereRenderer.material;
-
         StartCoroutine(WinSequence());
     }
-
 
     private IEnumerator WinSequence()
     {
@@ -78,5 +62,4 @@ public class SpherePuzzleManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
-
 }

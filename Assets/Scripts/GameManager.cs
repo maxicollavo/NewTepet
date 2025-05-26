@@ -61,19 +61,17 @@ public class GameManager : MonoBehaviour
             if (camA != null)
             {
                 GameObject camObject = camA.gameObject;
-                Debug.Log(camObject);
-
                 PuzzleDefiner definer = camObject.GetComponent<PuzzleDefiner>();
-                Debug.Log(definer);
 
                 if (definer != null)
                 {
                     requiresHand = definer.requiresHand;
-                    Debug.Log(requiresHand);
+                    OnPuzzleMethod(requiresHand);
+                    return;
                 }
             }
 
-            OnPuzzleMethod(requiresHand);
+            OnPuzzleMethod(false);
         }
     }
 
@@ -113,12 +111,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void OnCinematicMethod()
-    {
-        SetGameplayElementsActive(false, false);
-        FPController.enabled = false;
-    }
-
     void OnPuzzleMethod(bool requiresHand)
     {
         SetGameplayElementsActive(false, requiresHand);
@@ -129,6 +121,7 @@ public class GameManager : MonoBehaviour
     {
         SetGameplayElementsActive(true, true);
         FPController.enabled = true;
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 
     private void SetGameplayElementsActive(bool active, bool requiresHand)
