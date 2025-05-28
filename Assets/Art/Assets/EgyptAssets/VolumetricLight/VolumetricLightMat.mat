@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: VolumetricLightMat
-  m_Shader: {fileID: -6465566751694194690, guid: 983bdf16abf03064882b093d4e1b3053, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 2913b1bc678737847b66d6b444db2175, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -33,7 +33,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _EDG1 _Edge
+  m_LockedProperties: _Color _Color_1 _EDG1 _Edge _SmoothStepOP_1
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -109,6 +109,7 @@ Material:
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
+    - _CastShadows: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -117,20 +118,30 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EDG1: -1.37
-    - _Edge: -1.77
+    - _EDG1: -2.26
+    - _Edge: 172.7
     - _EnvironmentReflections: 1
+    - _Float: 5.7
+    - _FresnelEffect: 0.91
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Lerp1: 1.45
     - _Metallic: 0
+    - _Min: 16.33
+    - _MinClamp: 0.31
+    - _MxCamlp: 10.16
+    - _NoiseScale: 23.36
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _ScatterIntensity: 10
+    - _ScatterIntensity_1: 100
+    - _SmoothStep: 30.06
     - _SmoothStepOP: 0.27
-    - _SmoothStepOP_1: 3.42
+    - _SmoothStepOP_1: -0.2
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -138,18 +149,30 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _WorkflowMode: 1
+    - _ZTest: 4
     - _ZWrite: 1
-    - _featherpower: 1.091
-    - _noisescale: 12.4
-    - _power: 5.14
-    - _speed: 0.25
+    - _ZWriteControl: 0
+    - _alpha: 9.35
+    - _alpha2: 45.12
+    - _bloom: 88.55
+    - _edge: 50.46
+    - _edgeBlend: 2.22
+    - _featherpower: 0.5
+    - _lerp2: 1.88
+    - _max: 5.37
+    - _noisescale: 5.51
+    - _power: -0.57
+    - _speed: 0.1
+    - _tress: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.97735846, g: 0.72459084, b: 0.38909924, a: 1}
+    - _Color: {r: 0.44905648, g: 0.3402494, b: 0.14827332, a: 0.9490196}
+    - _Color_1: {r: 17.68639, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Emmisive: {r: 1, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _edge: {r: 0, g: 0, b: 0, a: 0}
-    - _opacity: {r: 0.17, g: 0, b: 0, a: 0}
+    - _opacity: {r: 4.4, g: 0, b: 0, a: 0}
+    - _opacity_1: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
