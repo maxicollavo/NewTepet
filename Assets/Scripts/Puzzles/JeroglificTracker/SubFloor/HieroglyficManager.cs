@@ -8,7 +8,7 @@ public class HieroglyficManager : MonoBehaviour
 {
     public Action<HieroglyficManager> OnWinAction;
 
-    public int counter;
+    private int counter;
     [SerializeField] PlayableDirector cinematic;
 
     [Header("References")]
@@ -17,18 +17,37 @@ public class HieroglyficManager : MonoBehaviour
     [SerializeField] Transform lookAtTarget;
     Transform originalLookAt;
 
+    private bool hasEndedCinematic;
+
+    public static HieroglyficManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         brain = Camera.main.GetComponent<CinemachineBrain>();
     }
 
-    public void AddToCounter()
+    public void CheckToUpdateCounter()
     {
-        counter++;
+        if (hasEndedCinematic) return;
 
-        if (counter == 2)
+        counter++;
+        CheckPuzzleWin();
+    }
+
+    public void CheckPuzzleWin()
+    {
+        if (hasEndedCinematic) return;
+
+        if (counter == 2 & OwlManager.Instance.hasWon)
         {
             OnWinAction?.Invoke(this);
+            OwlManager.Instance.DeactivateColliders();
+            Debug.Log("Se activa la cinemática del cuenco");
             StartCoroutine(Cinematic());
         }
     }
@@ -53,6 +72,7 @@ public class HieroglyficManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
+        hasEndedCinematic = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 

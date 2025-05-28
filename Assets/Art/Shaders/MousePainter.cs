@@ -5,7 +5,6 @@ using UnityEngine;
 public class MousePainter : MonoBehaviour
 {
     [SerializeField] private Camera cam;
-    [SerializeField] private float radius = 0.1f;
     [SerializeField] private Texture2D brushTex;
     private Renderer rend;
     public MaterialPropertyBlock propBlock;

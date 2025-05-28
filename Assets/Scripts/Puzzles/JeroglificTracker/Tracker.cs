@@ -44,6 +44,7 @@ public class Tracker : MonoBehaviour
 
         particle = tracker.GetComponent<ParticleSystem>();
 
+        //Añadimos el o los trackers del jeroglifico a la lista de su propio manager
         manager.trackerList.Add(this);
 
         if (statueManager == null) return;
@@ -181,10 +182,9 @@ public class Tracker : MonoBehaviour
 
     private void Win()
     {
-        Debug.Log("Gano");
-        HasWon = true;
-        DisableNodes();
-        manager.OnWinMethod();
+        HasWon = true; //Para que no vuelva a entrar al update
+        DisableNodes(); //Se deshabilitan los colliders de los nodos
+        manager.OnWinMethod(); //Se chequea si el otro tracker también ganó
     }
 
     void DisableNodes()

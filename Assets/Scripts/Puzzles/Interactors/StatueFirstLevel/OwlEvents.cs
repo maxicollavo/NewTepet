@@ -10,8 +10,17 @@ public class OwlEvents : MonoBehaviour
     [SerializeField] GameObject path;
     [SerializeField] List<GameObject> nodes;
     [SerializeField] List<Tracker> tracker;
+    [SerializeField] bool isFirstWinPos;
+
+    [SerializeField] int winningPosition;
+    private int currentPosition = -1;
 
     private bool firstInteract = true;
+
+    public bool IsInWinningPosition()
+    {
+        return currentPosition == winningPosition;
+    }
 
     public void ColliderCallback()
     {
@@ -19,6 +28,12 @@ public class OwlEvents : MonoBehaviour
 
         if (firstInteract)
         {
+            if (isFirstWinPos)
+            {
+                currentPosition = 0;
+                AnimFinishAction?.Invoke(this, currentPosition);
+            }
+
             path.SetActive(true);
             foreach (var node in nodes)
             {
@@ -36,11 +51,13 @@ public class OwlEvents : MonoBehaviour
 
     public void FirstCallback()
     {
-        AnimFinishAction?.Invoke(this, 0);
+        currentPosition = 0;
+        AnimFinishAction?.Invoke(this, currentPosition);
     }
 
     public void SecondCallback()
     {
-        AnimFinishAction?.Invoke(this, 1);
+        currentPosition = 1;
+        AnimFinishAction?.Invoke(this, currentPosition);
     }
 }

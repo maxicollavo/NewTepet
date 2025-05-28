@@ -25,7 +25,6 @@ public class RotateSphere : MonoBehaviour, Interactor
     [SerializeField] private SpherePuzzleManager puzzleManager;
     [SerializeField] private WallLaser laser;
     [SerializeField] private Transform[] imagePoints;
-    [SerializeField] private float frontTolerance = 15f;
 
     private Vector2 lastMousePos;
     private int currentImageIndex = 0;

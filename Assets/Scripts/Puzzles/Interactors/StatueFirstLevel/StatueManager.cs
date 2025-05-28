@@ -27,14 +27,7 @@ public class StatueManager : MonoBehaviour
         lights.SetActive(false);
         statueInteractor.InteractorAction += OnStatueInteract;
         owlEvents.AnimFinishAction += OnAnimFinish;
-        hieroManager.OnWinAction += OnWinMethod;
         firstInteract = true;
-    }
-
-    private void OnWinMethod(HieroglyficManager manager)
-    {
-        var owlColl = statueInteractor.gameObject.GetComponent<BoxCollider>();
-        owlColl.enabled = false;
     }
 
     private void OnAnimFinish(OwlEvents events, int pos)

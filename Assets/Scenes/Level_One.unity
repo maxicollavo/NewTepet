@@ -5389,7 +5389,6 @@ MonoBehaviour:
   - {fileID: 1473822137}
   - {fileID: 1912631336}
   - {fileID: 482845935}
-  frontTolerance: 2
 --- !u!135 &75284115
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7401,7 +7400,7 @@ GameObject:
   - component: {fileID: 115764656}
   - component: {fileID: 115764657}
   m_Layer: 0
-  m_Name: Tracker
+  m_Name: BastonesTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8439,7 +8438,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 202247506}
-  radius: 2.1
   brushTex: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   textureSize: 1024
 --- !u!43 &139360604
@@ -11400,7 +11398,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 202247506}
-  radius: 0.1
   brushTex: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   textureSize: 1024
 --- !u!1 &174439529
@@ -44884,6 +44881,57 @@ Transform:
   - {fileID: 1660881056}
   m_Father: {fileID: 522256586}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &474704335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 474704336}
+  - component: {fileID: 474704337}
+  m_Layer: 0
+  m_Name: OwlManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &474704336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474704335}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 612402292}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &474704337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 474704335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0800aa91f6bdc4db64a6ee3ac9c45f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owlEvents:
+  - {fileID: 1977446195}
+  - {fileID: 499858078}
+  hasWon: 0
+  colliders:
+  - {fileID: 36379122}
+  - {fileID: 1468112838}
 --- !u!1 &476101515
 GameObject:
   m_ObjectHideFlags: 0
@@ -51396,6 +51444,8 @@ MonoBehaviour:
   tracker:
   - {fileID: 1095870656}
   - {fileID: 153400096}
+  isFirstWinPos: 0
+  winningPosition: 1
 --- !u!95 &499858079
 Animator:
   serializedVersion: 7
@@ -68856,6 +68906,7 @@ Transform:
   - {fileID: 249747449}
   - {fileID: 695955254}
   - {fileID: 1001383467}
+  - {fileID: 474704336}
   m_Father: {fileID: 1262956763}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &618194524
@@ -124998,7 +125049,6 @@ MonoBehaviour:
   blockLaserLayer:
     serializedVersion: 2
     m_Bits: 4
-  laserMaxDistance: 300
   isDefault: 0
   isEnabled: 0
 --- !u!23 &1334968970
@@ -167904,7 +167954,7 @@ GameObject:
   - component: {fileID: 1705464225}
   - component: {fileID: 1705464226}
   m_Layer: 0
-  m_Name: Tracker
+  m_Name: PlumaTracker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -187409,7 +187459,6 @@ MonoBehaviour:
   blockLaserLayer:
     serializedVersion: 2
     m_Bits: 4
-  laserMaxDistance: 150
   isDefault: 1
   isEnabled: 0
 --- !u!23 &1898347465
@@ -197061,6 +197110,8 @@ MonoBehaviour:
   - {fileID: 1706135064}
   tracker:
   - {fileID: 1705464226}
+  isFirstWinPos: 1
+  winningPosition: 0
 --- !u!1001 &1977824717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -217687,7 +217738,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 202247506}
-  radius: 0.05
   brushTex: {fileID: 10912, guid: 0000000000000000f000000000000000, type: 0}
   textureSize: 1024
 --- !u!4 &9002132862891376004

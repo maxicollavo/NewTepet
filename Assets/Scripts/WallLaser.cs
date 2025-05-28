@@ -7,7 +7,6 @@ public class WallLaser : MonoBehaviour
     [SerializeField] SpherePuzzleManager manager;
     private Transform target;
     [SerializeField] private LayerMask blockLaserLayer;
-    [SerializeField] private float laserMaxDistance = 50f;
 
     public bool isDefault;
     public bool isEnabled;

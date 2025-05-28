@@ -82,6 +82,7 @@ public class TrackerManager : MonoBehaviour
     private void BackToGameplay()
     {
         if (HasWon) return;
+        Debug.Log("Vuelve a gameplay");
         OnPuzzle = false;
         TurnPuzzleCamera(OnPuzzle);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
@@ -97,18 +98,21 @@ public class TrackerManager : MonoBehaviour
         canGoBack = true;
     }
 
+    //Chequea si se ganó el jeroglifico
     public void OnWinMethod()
     {
         if (trackerList.All(t => t.HasWon))
         {
             JeroglificAction?.Invoke(this);
             BackToGameplay();
-            interactorCollider.enabled = false;
-            HasWon = true;
+            interactorCollider.enabled = false; //Desactivamos el collider de ese jeroglifico
+            HasWon = true; //Ponemos ese jeroglifico en GANADO
 
+            //Preguntamos si el jeroglifico se encuentra en la parte de abajo y si además es un target
             if (subFloor && isTarget)
             {
-                hieroglyficManager.AddToCounter();
+                //Si es así entonces chequeamos la victoria
+                hieroglyficManager.CheckToUpdateCounter();
             }
         }
     }
