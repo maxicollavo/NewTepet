@@ -7,12 +7,10 @@ public class TorchManager : MonoBehaviour
     [SerializeField] List<Torch> torches;
     [SerializeField] List<int> correctTorchesIndex;
     [SerializeField] CameraShake shake;
-    [SerializeField] GameObject doorCeilingCollider;
-    int counter;
     bool HasWon;
     bool canEnter = true;
 
-    [SerializeField] Animator doorAnim;
+    [SerializeField] MimicInteraction mimic;
 
     private void Start()
     {
@@ -27,20 +25,17 @@ public class TorchManager : MonoBehaviour
 
     private void CheckPuzzleState(Torch torch)
     {
-        Debug.Log(HasWon);
         foreach (var t in torches)
         {
             bool shouldBeDown = correctTorchesIndex.Contains(t.index);
 
             if (shouldBeDown != t.IsUpsideDown)
             {
-                Debug.Log("Puzzle incorrecto");
                 return;
             }
         }
 
         HasWon = true;
-        Debug.Log(HasWon);
     }
 
     private void OnWinMethod(Torch torch)
@@ -50,7 +45,8 @@ public class TorchManager : MonoBehaviour
         if (canEnter)
         {
             shake.TriggerShake();
-            doorAnim.SetTrigger("Open");
+            mimic.canInteract = true;
+            mimic.SetSphereMaterials();
             canEnter = false;
         }
     }

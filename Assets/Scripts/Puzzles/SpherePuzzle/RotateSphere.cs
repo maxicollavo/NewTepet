@@ -7,11 +7,10 @@ public class RotateSphere : MonoBehaviour, Interactor
 {
     [Header("Interacción")]
     private Outline outline;
-    private SphereCollider coll;
     private bool canUse = true;
     public bool hasWon;
     private bool isBeingHeld;
-    [SerializeField] ParticleSystem particle;
+    //[SerializeField] ParticleSystem particle;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -19,7 +18,6 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     [Header("Cinemachine")]
     [SerializeField] private GameObject puzzleCamera;
-    private Vector3 cameraMidPoint;
 
     [Header("Puzzle")]
     [SerializeField] private SpherePuzzleManager puzzleManager;
@@ -34,7 +32,6 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         outline = GetComponent<Outline>();
         pivot = GetComponent<Transform>();
-        coll = GetComponent<SphereCollider>();
     }
 
     private void Start()
@@ -144,7 +141,7 @@ public class RotateSphere : MonoBehaviour, Interactor
         if (distance < proximityTolerance)
         {
             currentImageIndex++;
-            particle.Play();
+            //particle.Play();
             Debug.Log("Imagen detectada al frente, avanzando...");
 
             if (currentImageIndex >= imagePoints.Length)
