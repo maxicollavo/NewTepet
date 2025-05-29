@@ -9,6 +9,7 @@ public class BoardOnWin : MonoBehaviour
     [SerializeField] List<BoxCollider> colliders;
     [SerializeField] List<BoxCollider> boardColliders;
     [SerializeField] List<GameObject> lights;
+    [SerializeField] List<GameObject> heatShaders;
 
     [SerializeField] BoardPuzzleManager manager;
 
@@ -37,6 +38,11 @@ public class BoardOnWin : MonoBehaviour
         foreach (var colls in boardColliders)
         {
             colls.enabled = false;
+        }
+
+        foreach (var heat in heatShaders)
+        {
+            heat.SetActive(true);
         }
     }
 }

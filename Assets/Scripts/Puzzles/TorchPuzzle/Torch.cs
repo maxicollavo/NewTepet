@@ -17,6 +17,7 @@ public class Torch : MonoBehaviour, Interactor
     BoxCollider coll;
     private bool CanInteract = true;
     public ParticleSystem ParticleSystem;
+    public GameObject heatShader;
     public GameObject torchLight;
     private Light torchLightSource;
     private float originalLightIntensity;
@@ -70,7 +71,7 @@ public class Torch : MonoBehaviour, Interactor
 
         if (isUpsideDown)
         {
-            DisableParticleSystem();
+            DisableParticleSystemAndHeatShader();
             anim.Play("Interact", 0, 0f);
             StartCoroutine(WaitForAnimationEnd(animDuration));
 
@@ -100,16 +101,16 @@ public class Torch : MonoBehaviour, Interactor
 
         if (!IsUpsideDown)
         {
-            EnableParticleSystem();
+            EnableParticleSystemAndHeatShader();
         }
     }
 
-    public void EnableParticleSystem()
+    public void EnableParticleSystemAndHeatShader()
     {
         StartCoroutine(FadeParticleAlpha(0f, 1f, 1f)); // De alpha 0 a 1 en 1 segundo
     }
 
-    public void DisableParticleSystem()
+    public void DisableParticleSystemAndHeatShader()
     {
         StartCoroutine(FadeParticleAlpha(1f, 0f, 0.3f)); // De alpha 1 a 0 en 1 segundo
     }
@@ -122,6 +123,7 @@ public class Torch : MonoBehaviour, Interactor
         if (!ParticleSystem.isPlaying)
         {
             ParticleSystem.Play();
+            heatShader.SetActive(true);
         }
 
         torchLight.SetActive(true);
@@ -156,6 +158,7 @@ public class Torch : MonoBehaviour, Interactor
         if (Mathf.Approximately(toAlpha, 0f))
         {
             ParticleSystem.Stop();
+            heatShader.SetActive(false);
             torchLight.SetActive(false);
         }
     }

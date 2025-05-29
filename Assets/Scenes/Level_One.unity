@@ -12674,7 +12674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &120629860
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -12757,12 +12757,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120629859}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.70710707, z: -0, w: 0.7071066}
-  m_LocalPosition: {x: 188.46, y: 3.9198742, z: 134.733}
+  m_LocalRotation: {x: -0, y: 0.7070819, z: -0, w: 0.70713174}
+  m_LocalPosition: {x: -0.39649054, y: 1.0230932, z: 0.020086251}
   m_LocalScale: {x: 1.7707, y: 1.7707, z: 1.7707}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 748406933}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &123436142
 PrefabInstance:
@@ -32360,7 +32360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &276551776
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -32444,11 +32444,11 @@ Transform:
   m_GameObject: {fileID: 276551775}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.70710653, z: -0, w: 0.7071071}
-  m_LocalPosition: {x: 171.42, y: 3.9198742, z: 134.73}
+  m_LocalPosition: {x: -0.37451243, y: 1.1100931, z: -0.030119896}
   m_LocalScale: {x: 1.7707, y: 1.7707, z: 1.7707}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1125350241}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &278083239
 GameObject:
@@ -54091,6 +54091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   ParticleSystem: {fileID: 1971898479}
+  heatShader: {fileID: 1184966311}
   torchLight: {fileID: 939031555}
 --- !u!65 &453112641
 BoxCollider:
@@ -73817,6 +73818,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1184966315}
   - {fileID: 453112635}
   m_Father: {fileID: 334669904}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -80645,6 +80647,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1544785948}
+  - {fileID: 2043872791}
   m_Father: {fileID: 334669904}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &634821825
@@ -86997,6 +87000,11 @@ MonoBehaviour:
   - {fileID: 699584606}
   - {fileID: 361839268}
   - {fileID: 1634348318}
+  heatShaders:
+  - {fileID: 1184966311}
+  - {fileID: 120629859}
+  - {fileID: 276551775}
+  - {fileID: 2043872787}
   manager: {fileID: 1719674621}
 --- !u!1 &727217770
 GameObject:
@@ -88706,6 +88714,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1785625442}
+  - {fileID: 120629863}
   m_Father: {fileID: 334669904}
   m_LocalEulerAnglesHint: {x: 0, y: -179.996, z: 0}
 --- !u!95 &748406934
@@ -114501,6 +114510,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1162177482}
+  - {fileID: 276551779}
   m_Father: {fileID: 334669904}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1125350242
@@ -121824,6 +121834,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 2
   ParticleSystem: {fileID: 904728909}
+  heatShader: {fileID: 276551775}
   torchLight: {fileID: 361839268}
 --- !u!65 &1162177488
 BoxCollider:
@@ -124008,11 +124019,11 @@ Transform:
   m_GameObject: {fileID: 1184966311}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.70710707, z: -0, w: 0.7071066}
-  m_LocalPosition: {x: 188.46, y: 3.9198742, z: 143.7}
-  m_LocalScale: {x: 1.7707, y: 1.7707, z: 1.7707}
+  m_LocalPosition: {x: 0.29948902, y: 1.0430932, z: 0.03988123}
+  m_LocalScale: {x: 1.7707, y: 1.7707001, z: 1.7707}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 599543134}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1001 &1185762373
 PrefabInstance:
@@ -160477,6 +160488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 3
   ParticleSystem: {fileID: 2062576673}
+  heatShader: {fileID: 2043872787}
   torchLight: {fileID: 1634348318}
 --- !u!65 &1544785954
 BoxCollider:
@@ -185892,6 +185904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 1
   ParticleSystem: {fileID: 649808895}
+  heatShader: {fileID: 120629859}
   torchLight: {fileID: 699584606}
 --- !u!65 &1785625448
 BoxCollider:
@@ -213939,7 +213952,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &2043872788
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -214023,11 +214036,11 @@ Transform:
   m_GameObject: {fileID: 2043872787}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.70710653, z: -0, w: 0.7071071}
-  m_LocalPosition: {x: 171.42, y: 3.9198742, z: 143.654}
+  m_LocalPosition: {x: -0.42852044, y: 1.0970931, z: -0.0041086674}
   m_LocalScale: {x: 1.7707, y: 1.7707, z: 1.7707}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 634821824}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &2044728861
 GameObject:
@@ -225818,7 +225831,3 @@ SceneRoots:
   - {fileID: 399987395}
   - {fileID: 2092120272}
   - {fileID: 1462056844}
-  - {fileID: 1184966315}
-  - {fileID: 120629863}
-  - {fileID: 276551779}
-  - {fileID: 2043872791}
