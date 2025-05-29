@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     private void OnBlendCreated(CinemachineCore.BlendEventParams evtParams)
     {
-        if (evtParams.Blend.CamA == playerCam)
+        if (evtParams.Blend.CamA == playerCam as ICinemachineCamera)
         {
             var camA = evtParams.Blend.CamB as CinemachineCamera;
 
@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
 
     private void OnBlendFinished(ICinemachineMixer cam1, ICinemachineCamera cam2)
     {
-        if (cam2 == playerCam)
+        if (cam2 == playerCam as ICinemachineCamera)
         {
             OnGameplayMethod();
         }
