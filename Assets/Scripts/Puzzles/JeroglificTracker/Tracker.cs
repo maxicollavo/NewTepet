@@ -166,7 +166,6 @@ public class Tracker : MonoBehaviour
         if (validNodes.Contains(node) && !currentPath.Contains(node))
         {
             AddNode(node);
-            Debug.Log($"{currentPath.Count} es currentPath y {validNodes.Count} es validNodes");
             CheckWin();
         }
     }
@@ -200,15 +199,12 @@ public class Tracker : MonoBehaviour
         currentPath.Add(node);
         var nodeMesh = node.nodeMesh;
         currentMeshes.Add(nodeMesh);
-        Debug.Log($"Agregó el nodo {node} y encendió el mesh del {nodeMesh}");
         TurnOrRestartNodes(nodeMesh, true);
     }
 
 
     private void TurnOrRestartNodes(MeshRenderer mesh, bool state)
     {
-        if (mesh == null) Debug.LogWarning("No hay mesh");
-
         if (state && mesh != null)
         {
             mesh.enabled = true;

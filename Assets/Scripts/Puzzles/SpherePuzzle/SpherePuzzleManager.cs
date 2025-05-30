@@ -9,9 +9,7 @@ public class SpherePuzzleManager : MonoBehaviour
     [Header("Acciones al ganar")]
     public Animator openDoor;
     [SerializeField] private MeshRenderer sphereRenderer;
-    [SerializeField] private WallLaser laser;
     private Material emissiveMat;
-    private float distance;
     private bool hasWon;
 
     private void Start()
@@ -30,10 +28,7 @@ public class SpherePuzzleManager : MonoBehaviour
     {
         if (hasWon) return;
         hasWon = true;
-
         Debug.Log("¡Puzzle resuelto!");
-        OnWinAction?.Invoke(this);
-
         emissiveMat = sphereRenderer.material;
         StartCoroutine(WinSequence());
     }
@@ -53,11 +48,7 @@ public class SpherePuzzleManager : MonoBehaviour
 
         emissiveMat.SetColor("_EmissionColor", Color.yellow);
         yield return new WaitForSeconds(0.5f);
-
-        if (openDoor != null /*&& laser.isEnabled*/)
-        {
-            openDoor.SetTrigger("Open");
-        }
+        openDoor.SetTrigger("Open");
 
         yield return new WaitForSeconds(1f);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);

@@ -24,7 +24,6 @@ public class RotateSphere : MonoBehaviour, Interactor
     [SerializeField] private WallLaser laser;
     [SerializeField] private Transform[] imagePoints;
 
-    private Vector2 lastMousePos;
     private int currentImageIndex = 0;
     private bool canScore = true;
 
@@ -37,7 +36,6 @@ public class RotateSphere : MonoBehaviour, Interactor
     private void Start()
     {
         outline.enabled = false;
-        puzzleManager.OnWinAction += OnWinMethod;
 
         imagePoints = imagePoints.OrderBy(p => p.name).ToArray();
     }
@@ -99,13 +97,11 @@ public class RotateSphere : MonoBehaviour, Interactor
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 
-    private void OnWinMethod(SpherePuzzleManager manager)
+    private void OnWinMethod()
     {
         Release();
         canUse = false;
         hasWon = true;
-
-        //if (!laser.isEnabled) return;
         SetOnWinSphereMaterials();
     }
 
@@ -148,6 +144,7 @@ public class RotateSphere : MonoBehaviour, Interactor
             {
                 canScore = false;
                 puzzleManager.OnWin();
+                OnWinMethod();
             }
         }
         else
