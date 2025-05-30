@@ -10,7 +10,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private bool canUse = true;
     public bool hasWon;
     private bool isBeingHeld;
-    //[SerializeField] ParticleSystem particle;
+    [SerializeField] ParticleSystem particle;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -21,7 +21,6 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     [Header("Puzzle")]
     [SerializeField] private SpherePuzzleManager puzzleManager;
-    [SerializeField] private WallLaser laser;
     [SerializeField] private Transform[] imagePoints;
 
     private int currentImageIndex = 0;
@@ -137,7 +136,7 @@ public class RotateSphere : MonoBehaviour, Interactor
         if (distance < proximityTolerance)
         {
             currentImageIndex++;
-            //particle.Play();
+            particle.Play();
             Debug.Log("Imagen detectada al frente, avanzando...");
 
             if (currentImageIndex >= imagePoints.Length)
