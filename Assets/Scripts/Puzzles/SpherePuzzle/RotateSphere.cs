@@ -105,7 +105,7 @@ public class RotateSphere : MonoBehaviour, Interactor
         canUse = false;
         hasWon = true;
 
-        if (!laser.isEnabled) return;
+        //if (!laser.isEnabled) return;
         SetOnWinSphereMaterials();
     }
 

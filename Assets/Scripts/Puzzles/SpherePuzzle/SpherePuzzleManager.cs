@@ -54,7 +54,7 @@ public class SpherePuzzleManager : MonoBehaviour
         emissiveMat.SetColor("_EmissionColor", Color.yellow);
         yield return new WaitForSeconds(0.5f);
 
-        if (openDoor != null && laser.isEnabled)
+        if (openDoor != null /*&& laser.isEnabled*/)
         {
             openDoor.SetTrigger("Open");
         }
