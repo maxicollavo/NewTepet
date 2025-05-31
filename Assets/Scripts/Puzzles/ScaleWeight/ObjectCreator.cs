@@ -10,13 +10,13 @@ public class ObjectCreator : MonoBehaviour
 
     public static ObjectCreator Instance;
 
-    private Dictionary<ObjectTypeEnum, GameObject> prefabDict;
+    private Dictionary<ObjectsToPick, GameObject> prefabDict;
 
     private void Awake()
     {
         Instance = this;
 
-        prefabDict = new Dictionary<ObjectTypeEnum, GameObject>();
+        prefabDict = new Dictionary<ObjectsToPick, GameObject>();
         foreach (var pair in prefabsByType)
         {
             if (!prefabDict.ContainsKey(pair.type))
@@ -24,7 +24,7 @@ public class ObjectCreator : MonoBehaviour
         }
     }
 
-    public void InstantiateObject(ObjectTypeEnum type, Vector3 position)
+    public void InstantiateObject(ObjectsToPick type, Vector3 position)
     {
         if (!prefabDict.TryGetValue(type, out var prefab))
         {
@@ -52,6 +52,6 @@ public class ObjectCreator : MonoBehaviour
 [System.Serializable]
 public class ObjectPrefabPair
 {
-    public ObjectTypeEnum type;
+    public ObjectsToPick type;
     public GameObject prefab;
 }

@@ -7,6 +7,8 @@ public class ScaleManager : MonoBehaviour
     [HideInInspector]
     public List<OnScaleActions> onScaleActions;
 
+    public Transform[] spawnPos;
+
     private void Awake()
     {
         foreach (var action in onScaleActions)
@@ -15,11 +17,12 @@ public class ScaleManager : MonoBehaviour
 
     private void OnInteractMethod(Plate plate)
     {
-        if ()
+        if (!HandInventory.hasObjInHand) return;
 
         if (plate == Plate.Left)
+
         {
-            ObjectCreator.Instance.InstantiateObject();
+            //ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, spawnPos[0].position);
         }
         else
         {

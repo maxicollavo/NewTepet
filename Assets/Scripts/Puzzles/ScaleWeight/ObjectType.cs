@@ -7,15 +7,5 @@ public class ObjectType : MonoBehaviour
     [HideInInspector]
     public float weight;
     [HideInInspector]
-    public ObjectTypeEnum type;
-}
-
-public enum ObjectTypeEnum
-{
-    Feather,
-    Stone,
-    Knife,
-    Canopo,
-    Djed,
-    Heart
+    public ObjectsToPick type;
 }
