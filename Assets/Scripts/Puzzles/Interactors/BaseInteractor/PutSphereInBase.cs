@@ -10,6 +10,8 @@ public class PutSphereInBase : MonoBehaviour, Interactor
     [SerializeField] private GameObject baseSphere;
     private bool canUse = true;
 
+    [SerializeField] ObjectsToPick requiredObj;
+
     private void Awake()
     {
         outline = GetComponent<Outline>();
@@ -42,12 +44,12 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        if (sphereInHand.activeInHierarchy)
+        if (PickedObjData.Instance.WasPicked(requiredObj))
         {
             DisableOutline();
             sphereInHand.SetActive(false);
             baseSphere.SetActive(true);
-            HandInventory.hasObjInHand = false;
+            PickedObjData.Instance.MarkAsThrowed(requiredObj);
             canUse = false;
             coll.enabled = false;
         }

@@ -30,4 +30,9 @@ public class HandInventory : MonoBehaviour
             Debug.LogWarning($"No se encontró el objeto en mano para: {obj}");
         }
     }
+
+    public static bool IsHoldingSomething()
+    {
+        return hasObjInHand;
+    }
 }

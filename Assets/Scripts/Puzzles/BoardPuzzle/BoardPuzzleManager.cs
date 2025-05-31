@@ -43,6 +43,8 @@ public class BoardPuzzleManager : MonoBehaviour
     private bool canInteract = false;
     private bool canGoBack;
 
+    [SerializeField] ObjectsToPick requiredObj;
+
     private Dictionary<BoardPiece, BoardWaypoint> pieceTargetMap = new Dictionary<BoardPiece, BoardWaypoint>();
 
     [SerializeField] PuzzleInteractor interactor;
@@ -109,13 +111,12 @@ public class BoardPuzzleManager : MonoBehaviour
     {
         if (HasWon) return;
 
-        if (GameManager.Instance.HasPiece)
+        if (PickedObjData.Instance.WasPicked(requiredObj))
         {
             HasPiece = true;
             pieceGo.SetActive(true);
             handPiece.SetActive(false);
-            GameManager.Instance.HasPiece = false;
-            HandInventory.hasObjInHand = false;
+            PickedObjData.Instance.MarkAsThrowed(requiredObj);
             return;
         }
 

@@ -4,7 +4,13 @@ using UnityEngine;
 public enum ObjectsToPick
 {
     BoardPiece,
-    GlassSphere
+    GlassSphere,
+    Feather,
+    Stone,
+    Knife,
+    Canopo,
+    Djed,
+    Heart
 }
 
 public class PickToInventory : MonoBehaviour, Interactor
@@ -26,25 +32,21 @@ public class PickToInventory : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        if (HandInventory.hasObjInHand)
+        if (HandInventory.IsHoldingSomething())
         {
             StartCoroutine(CannotPick());
             return;
         }
 
+        //Marcamos que pickeamos un objeto y cual es
+        PickedObjData.Instance.MarkAsPicked(obj);
+        //Deshabilitamos el Outline
         DisableOutline();
-        HandInventory.hasObjInHand = true;
+        //Encendemos el objeto de la mano
         if (handInventory != null)
-        {
             handInventory.ShowObjectInHand(obj);
-        }
-
+        //Deshabilitamos el objeto pickeado
         gameObject.SetActive(false);
-
-        if (obj == ObjectsToPick.BoardPiece)
-        {
-            GameManager.Instance.HasPiece = true;
-        }
     }
 
     public void DisableOutline()

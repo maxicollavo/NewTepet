@@ -4,27 +4,54 @@ using UnityEngine;
 
 public class ObjectCreator : MonoBehaviour
 {
-    [SerializeField] private GameObject prefabToInstantiate;
+    [SerializeField] private List<ObjectPrefabPair> prefabsByType;
+
     [SerializeField] private WeightData weightData;
 
     public static ObjectCreator Instance;
 
+    private Dictionary<ObjectTypeEnum, GameObject> prefabDict;
+
     private void Awake()
     {
         Instance = this;
+
+        prefabDict = new Dictionary<ObjectTypeEnum, GameObject>();
+        foreach (var pair in prefabsByType)
+        {
+            if (!prefabDict.ContainsKey(pair.type))
+                prefabDict.Add(pair.type, pair.prefab);
+        }
     }
 
     public void InstantiateObject(ObjectTypeEnum type, Vector3 position)
     {
-        GameObject obj = Instantiate(prefabToInstantiate, position, Quaternion.identity);
+        if (!prefabDict.TryGetValue(type, out var prefab))
+        {
+            Debug.LogWarning($"No se encontró prefab para tipo {type}");
+            return;
+        }
+
+        GameObject obj = Instantiate(prefab, position, Quaternion.identity);
 
         if (obj.TryGetComponent(out ObjectType objectType))
         {
             objectType.type = type;
-
             objectType.weight = weightData.GetWeight(type);
 
             Debug.Log($"Instanciado: {type} con peso {objectType.weight}");
         }
+        else
+        {
+            Debug.LogWarning("El prefab instanciado no tiene componente ObjectType");
+        }
     }
+}
+
+
+[System.Serializable]
+public class ObjectPrefabPair
+{
+    public ObjectTypeEnum type;
+    public GameObject prefab;
 }

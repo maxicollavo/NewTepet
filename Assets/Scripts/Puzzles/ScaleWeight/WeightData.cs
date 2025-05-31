@@ -26,7 +26,6 @@ public class WeightData : ScriptableObject
             }
         }
 
-        // Retorna el peso si existe, o 0 como valor por defecto.
         if (weightDict.TryGetValue(type, out var weight))
             return weight;
         else

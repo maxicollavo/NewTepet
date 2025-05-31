@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlateCollision : MonoBehaviour
 {
     [SerializeField] private Plate position;
-    [SerializeField] private WeightData weightData; // referencia al ScriptableObject
+    [SerializeField] private WeightData weightData;
 
     public Action<Plate, float> OnCollisionAction;
 
@@ -21,7 +21,6 @@ public class PlateCollision : MonoBehaviour
         }
     }
 }
-
 
 public enum Plate
 {

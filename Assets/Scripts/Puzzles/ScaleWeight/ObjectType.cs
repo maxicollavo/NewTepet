@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ObjectType : MonoBehaviour
 {
+    [HideInInspector]
     public float weight;
+    [HideInInspector]
     public ObjectTypeEnum type;
 }
 
