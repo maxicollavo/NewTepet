@@ -51,7 +51,6 @@ public class OnScaleActions : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        Debug.Log("Interactua y envia el Action");
         plateInteractAction?.Invoke(sidePlate, this);
     }
 }

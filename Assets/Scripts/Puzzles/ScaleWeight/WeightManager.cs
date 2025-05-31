@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class WeightManager : MonoBehaviour
 {
+    public Action<float> OnResultAction;
     [SerializeField] private PlateCollision[] collisions;
 
     public float leftWeight = 0f;
@@ -36,6 +37,6 @@ public class WeightManager : MonoBehaviour
         }
 
         float result = leftWeight - rightWeight;
-        Debug.Log($"Diferencia de peso: {result} (Izquierda - Derecha)");
+        OnResultAction?.Invoke(result);
     }
 }
