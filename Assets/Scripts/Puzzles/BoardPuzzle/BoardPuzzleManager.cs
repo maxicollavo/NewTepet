@@ -277,9 +277,10 @@ public class BoardPuzzleManager : MonoBehaviour
         if (button is IOutlineButton ob)
         {
             ob.EnableOutline();
+            var originalColor = ob.outline.OutlineColor;
             ob.outline.OutlineColor = Color.red;
             yield return new WaitForSeconds(0.5f);
-            ob.outline.OutlineColor = Color.white;
+            ob.outline.OutlineColor = originalColor;
             ob.DisableOutline();
         }
         else

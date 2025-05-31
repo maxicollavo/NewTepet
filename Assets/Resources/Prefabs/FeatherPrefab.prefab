@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 330753959515550666}
   - component: {fileID: 8509075823690283803}
   - component: {fileID: 5859390398026215750}
+  - component: {fileID: 3666950528928691108}
   m_Layer: 0
   m_Name: FeatherPrefab
   m_TagString: Untagged
@@ -165,3 +166,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj: 2
   handInventory: {fileID: 0}
+--- !u!114 &3666950528928691108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3996150634034309804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.97919375, b: 0.4039216, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

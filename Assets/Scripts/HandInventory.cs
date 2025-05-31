@@ -7,9 +7,12 @@ public class HandInventory : MonoBehaviour
     private Dictionary<ObjectsToPick, GameObject> handObj = new();
 
     public static bool hasObjInHand;
+    public static HandInventory Instance;
 
     private void Awake()
     {
+        Instance = this;
+
         foreach (var entry in handObjectList)
         {
             if (!handObj.ContainsKey(entry.key))
@@ -19,11 +22,25 @@ public class HandInventory : MonoBehaviour
         }
     }
 
+    public void DisableObjectInHand(ObjectsToPick obj)
+    {
+        if (handObj.TryGetValue(obj, out GameObject go))
+        {
+            go.SetActive(false);
+            hasObjInHand = false;
+        }
+        else
+        {
+            Debug.LogWarning($"No se encontró el objeto en mano para: {obj}");
+        }
+    }
+
     public void ShowObjectInHand(ObjectsToPick obj)
     {
         if (handObj.TryGetValue(obj, out GameObject go))
         {
             go.SetActive(true);
+            hasObjInHand = true;
         }
         else
         {

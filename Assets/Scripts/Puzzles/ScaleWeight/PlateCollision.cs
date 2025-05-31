@@ -16,7 +16,6 @@ public class PlateCollision : MonoBehaviour
 
             float weight = weightData.GetWeight(type);
 
-            Debug.Log($"Objeto {type} tiene peso {weight}");
             OnCollisionAction?.Invoke(position, weight);
         }
     }

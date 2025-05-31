@@ -10,7 +10,8 @@ public enum ObjectsToPick
     Knife,
     Canopo,
     Djed,
-    Heart
+    Heart,
+    None
 }
 
 public class PickToInventory : MonoBehaviour, Interactor
@@ -18,11 +19,18 @@ public class PickToInventory : MonoBehaviour, Interactor
     Outline outline;
     [SerializeField] private ObjectsToPick obj;
 
-    [SerializeField] HandInventory handInventory;
+    [HideInInspector]
+    public bool isOnScale;
+
+    [HideInInspector]
+    public Plate plateSide;
+
+    private ObjectType type;
 
     private void Awake()
     {
         outline = GetComponent<Outline>();
+        type = gameObject.GetComponent<ObjectType>();
     }
 
     private void Start()
@@ -43,10 +51,23 @@ public class PickToInventory : MonoBehaviour, Interactor
         //Deshabilitamos el Outline
         DisableOutline();
         //Encendemos el objeto de la mano
-        if (handInventory != null)
-            handInventory.ShowObjectInHand(obj);
+        HandInventory.Instance.ShowObjectInHand(obj);
         //Deshabilitamos el objeto pickeado
         gameObject.SetActive(false);
+
+        if (isOnScale)
+        {
+            if (plateSide == Plate.Left)
+            {
+                WeightManager.Instance.leftWeight -= type.weight;
+                Debug.Log($"El weight izquierdo es de {WeightManager.Instance.leftWeight}");
+            }
+            else
+            {
+                WeightManager.Instance.rightWeight -= type.weight;
+                Debug.Log($"El weight derecho es de {WeightManager.Instance.rightWeight}");
+            }
+        }
     }
 
     public void DisableOutline()
@@ -69,9 +90,10 @@ public class PickToInventory : MonoBehaviour, Interactor
     private IEnumerator CannotPick()
     {
         EnableOutline();
+        var originalColor = outline.OutlineColor;
         outline.OutlineColor = Color.red;
         yield return new WaitForSeconds(0.5f);
-        outline.OutlineColor = Color.white;
+        outline.OutlineColor = originalColor;
         DisableOutline();
     }
 }

@@ -24,7 +24,7 @@ public class ObjectCreator : MonoBehaviour
         }
     }
 
-    public void InstantiateObject(ObjectsToPick type, Vector3 position)
+    public void InstantiateObject(ObjectsToPick type, Vector3 position, Plate sidePlate)
     {
         if (!prefabDict.TryGetValue(type, out var prefab))
         {
@@ -41,13 +41,14 @@ public class ObjectCreator : MonoBehaviour
 
             Debug.Log($"Instanciado: {type} con peso {objectType.weight}");
         }
-        else
+
+        if (obj.TryGetComponent(out PickToInventory pick))
         {
-            Debug.LogWarning("El prefab instanciado no tiene componente ObjectType");
+            pick.isOnScale = true;
+            pick.plateSide = sidePlate;
         }
     }
 }
-
 
 [System.Serializable]
 public class ObjectPrefabPair

@@ -9,24 +9,36 @@ public class ScaleManager : MonoBehaviour
 
     public Transform[] spawnPos;
 
-    private void Awake()
+    void Start()
     {
-        foreach (var action in onScaleActions)
-            action.plateInteractAction += OnInteractMethod;
+        foreach (var onScale in onScaleActions)
+        {
+            onScale.plateInteractAction += OnInteractMethod;
+        }
     }
 
-    private void OnInteractMethod(Plate plate)
+    private void OnInteractMethod(Plate plate, OnScaleActions onScale)
     {
-        if (!HandInventory.hasObjInHand) return;
+        if (!HandInventory.hasObjInHand)
+        {
+            StartCoroutine(onScale.CannotEnter());
+            return;
+        }
+        if (PickedObjData.Instance.CurrentPickedObj == ObjectsToPick.BoardPiece || PickedObjData.Instance.CurrentPickedObj == ObjectsToPick.GlassSphere)
+        {
+            StartCoroutine(onScale.CannotEnter());
+            return;
+        }
 
         if (plate == Plate.Left)
-
         {
-            //ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, spawnPos[0].position);
+            ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, spawnPos[0].position, plate);
         }
         else
         {
-
+            ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, spawnPos[1].position, plate);
         }
+
+        PickedObjData.Instance.MarkAsThrowed(PickedObjData.Instance.CurrentPickedObj);
     }
 }

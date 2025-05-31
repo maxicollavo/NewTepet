@@ -62,9 +62,10 @@ public class PutSphereInBase : MonoBehaviour, Interactor
     private IEnumerator CannotPick()
     {
         EnableOutline();
+        var originalColor = outline.OutlineColor;
         outline.OutlineColor = Color.red;
         yield return new WaitForSeconds(0.5f);
-        outline.OutlineColor = Color.white;
+        outline.OutlineColor = originalColor;
         DisableOutline();
     }
 }

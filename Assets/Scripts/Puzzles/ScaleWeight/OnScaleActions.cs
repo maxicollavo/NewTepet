@@ -1,11 +1,12 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class OnScaleActions : MonoBehaviour, Interactor
 {
     [SerializeField] Plate sidePlate;
     [SerializeField] ScaleManager manager;
-    public Action<Plate> plateInteractAction;
+    public Action<Plate, OnScaleActions> plateInteractAction;
 
     Outline outline;
 
@@ -32,14 +33,25 @@ public class OnScaleActions : MonoBehaviour, Interactor
         UIManager.Instance.ChangeCursor(false);
     }
 
+    public IEnumerator CannotEnter()
+    {
+        EnableOutline();
+        var originalColor = outline.OutlineColor;
+        outline.OutlineColor = Color.red;
+        yield return new WaitForSeconds(0.5f);
+        outline.OutlineColor = originalColor;
+        DisableOutline();
+    }
+
     public void EnableOutline()
     {
-        outline.enabled = false;
+        outline.enabled = true;
         UIManager.Instance.ChangeCursor(true);
     }
 
     public void Interact()
     {
-        plateInteractAction?.Invoke(sidePlate);
+        Debug.Log("Interactua y envia el Action");
+        plateInteractAction?.Invoke(sidePlate, this);
     }
 }

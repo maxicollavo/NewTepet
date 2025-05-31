@@ -7,9 +7,9 @@ public class PickedObjData : MonoBehaviour
 
     private Dictionary<ObjectsToPick, bool> pickedObjects = new Dictionary<ObjectsToPick, bool>();
 
-    private ObjectsToPick? currentPickedObj = null;
+    private ObjectsToPick currentPickedObj = ObjectsToPick.None;
     //Consultar a esta variable para saber el objeto que se tiene en la mano
-    public ObjectsToPick? CurrentPickedObj => currentPickedObj;
+    public ObjectsToPick CurrentPickedObj => currentPickedObj;
 
     private void Awake()
     {
@@ -36,7 +36,7 @@ public class PickedObjData : MonoBehaviour
         {
             pickedObjects[obj] = true;
             currentPickedObj = obj;
-            HandInventory.hasObjInHand = true;
+            HandInventory.Instance.ShowObjectInHand(currentPickedObj);
         }
     }
 
@@ -46,11 +46,11 @@ public class PickedObjData : MonoBehaviour
         if (pickedObjects.ContainsKey(obj))
         {
             pickedObjects[obj] = false;
-            HandInventory.hasObjInHand = false;
+            HandInventory.Instance.DisableObjectInHand(currentPickedObj);
 
             if (currentPickedObj == obj)
             {
-                currentPickedObj = null;
+                currentPickedObj = ObjectsToPick.None;
             }
         }
     }
