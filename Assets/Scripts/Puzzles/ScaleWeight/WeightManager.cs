@@ -36,7 +36,8 @@ public class WeightManager : MonoBehaviour
                 break;
         }
 
-        float result = leftWeight - rightWeight;
+        float result = leftWeight > rightWeight ? leftWeight - rightWeight : rightWeight - leftWeight;
+        Debug.Log(result);
         OnResultAction?.Invoke(result);
     }
 }
