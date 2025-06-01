@@ -18242,7 +18242,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -18274,8 +18274,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 0.62352943, g: 0.47843137, b: 1, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -19700,8 +19700,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.068498634, y: -0.85786015, z: 0.11864317, w: 0.49528554}
-  m_LocalPosition: {x: 155.97144, y: 1.586, z: 96.258514}
+  m_LocalRotation: {x: 0, y: 0.86450833, z: -0, w: -0.50261855}
+  m_LocalPosition: {x: 155.6088, y: 2.058, z: 95.85066}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25747,6 +25747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationSpeed: 50
+  enterPuzzle: {fileID: 1544771843}
 --- !u!1001 &217038131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -124713,7 +124714,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -124745,8 +124746,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
+  outlineColor: {r: 0.62352943, g: 0.47843137, b: 1, a: 1}
+  outlineWidth: 5
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
@@ -200265,8 +200266,10 @@ GameObject:
   - component: {fileID: 1544771841}
   - component: {fileID: 1544771840}
   - component: {fileID: 1544771839}
+  - component: {fileID: 1544771844}
+  - component: {fileID: 1544771843}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: EnterPuzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -200360,6 +200363,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 623056879}
   m_LocalEulerAnglesHint: {x: 0, y: -29, z: 0}
+--- !u!114 &1544771843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544771838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02a109d2e651c24da022a95aa6a8457, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  columnColliders:
+  - {fileID: 191333411}
+  - {fileID: 963424044}
+  CM_PuzzleCamera: {fileID: 1582082288}
+--- !u!114 &1544771844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544771838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1001 &1544785947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202589,7 +202626,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1582082289
 Transform:
   m_ObjectHideFlags: 0

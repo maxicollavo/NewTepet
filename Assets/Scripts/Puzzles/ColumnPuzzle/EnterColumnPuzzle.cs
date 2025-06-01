@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
@@ -8,23 +9,20 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 {
     [SerializeField] List<BoxCollider> columnColliders;
     [SerializeField] GameObject CM_PuzzleCamera;
-    public Outline outline;
+
+    Outline outline;
 
     private void Start()
     {
         outline = GetComponent<Outline>();
 
         outline.enabled = false;
+        EnableColumnColliders(false);
     }
 
     public void Interact()
     {
-        TurnPuzzleCamera(true);
-
-        foreach (BoxCollider collider in columnColliders)
-        {
-            collider.enabled = true;
-        }
+        EnterPuzzle(true);
     }
 
     public void DisableOutline()
@@ -46,15 +44,31 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
         UIManager.Instance.ChangeCursor(true);
     }
 
-    public void TurnPuzzleCamera(bool state)
+    public void EnterPuzzle(bool state)
     {
+        EnterPuzzleCamera(state);
+        EnableColumnColliders(state);
+
         if (state)
         {
-            CM_PuzzleCamera.SetActive(true);
+            EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
         }
         else
         {
-            CM_PuzzleCamera.SetActive(false);
+            EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+        }
+    }
+
+    private void EnterPuzzleCamera(bool state)
+    {
+        CM_PuzzleCamera.SetActive(state);
+    }
+
+    private void EnableColumnColliders(bool state)
+    {
+        foreach (var collider in columnColliders)
+        {
+            collider.enabled = state;
         }
     }
 }

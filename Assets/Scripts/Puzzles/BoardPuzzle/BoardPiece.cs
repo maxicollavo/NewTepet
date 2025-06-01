@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class BoardPiece : MonoBehaviour
 {
-    //Va a llamar a un action y enviar la figura seleccionada y su waypoint al manager
-
     public Action<BoardPiece> OnPieceSelected;
     public BoardWaypoint currentWp;
 

@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Outline))]
-public class ColumnSelected : MonoBehaviour, Interactor
+public class ColumnSelected : MonoBehaviour
 {
     public Action<bool, ColumnSelected> OnSelectedAction;
 
@@ -14,6 +14,7 @@ public class ColumnSelected : MonoBehaviour, Interactor
     private void Awake()
     {
         outline = GetComponent<Outline>();
+        outline.enabled = false;
 
         if (!interactManager.columnSelecteds.ContainsKey(this))
         {
@@ -21,30 +22,46 @@ public class ColumnSelected : MonoBehaviour, Interactor
         }
     }
 
-    public void Aiming()
+    private void OnMouseDown()
+    {
+        if (isSelected) return;
+        SelectedPiece();
+    }
+
+    private void OnMouseEnter()
     {
         if (isSelected) return;
 
-        EnableOutline();
+        outline.enabled = true;
+    }
+
+    private void OnMouseExit()
+    {
+        if (isSelected) return;
+
+        outline.enabled = false;
     }
 
     public void EnableOutline()
     {
         outline.enabled = true;
-        UIManager.Instance.ChangeCursor(true);
     }
 
     public void DisableOutline()
     {
         outline.enabled = false;
-        UIManager.Instance.ChangeCursor(false);
     }
 
-    public void Interact()
+    public void SelectedPiece()
     {
-        if (isSelected) return;
-
         isSelected = true;
+        EnableOutline();
         OnSelectedAction?.Invoke(isSelected, this);
+    }
+
+    public void DeselectPiece()
+    {
+        isSelected = false;
+        DisableOutline();
     }
 }

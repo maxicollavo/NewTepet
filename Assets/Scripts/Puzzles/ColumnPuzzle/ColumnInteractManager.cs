@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ColumnInteractManager : MonoBehaviour
 {
-    // Diccionario que guarda los ColumnSelected y su estado de "seleccionado"
     [HideInInspector] public Dictionary<ColumnSelected, bool> columnSelecteds = new Dictionary<ColumnSelected, bool>();
 
     [SerializeField] float rotationSpeed;
@@ -19,11 +18,23 @@ public class ColumnInteractManager : MonoBehaviour
 
     private void OnSelectedMethod(bool isSelected, ColumnSelected selected)
     {
+        var keys = new List<ColumnSelected>(columnSelecteds.Keys);
+
+        foreach (var column in keys)
+        {
+            if (column != selected && columnSelecteds[column])
+            {
+                column.DeselectPiece();
+                columnSelecteds[column] = false;
+            }
+        }
+
         if (columnSelecteds.ContainsKey(selected))
         {
             columnSelecteds[selected] = isSelected;
         }
     }
+
 
     private void Update()
     {
@@ -43,6 +54,11 @@ public class ColumnInteractManager : MonoBehaviour
                 }
                 break;
             }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            enterPuzzle.EnterPuzzle(false);
         }
     }
 }
