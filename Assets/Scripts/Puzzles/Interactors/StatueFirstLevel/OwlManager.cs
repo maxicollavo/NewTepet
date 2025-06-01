@@ -50,6 +50,7 @@ public class OwlManager : MonoBehaviour
     {
         foreach (var coll in colliders)
         {
+            Debug.Log("Desactiva los colliders de los buhos");
             coll.enabled = false;
         }
     }

@@ -24,8 +24,6 @@ public class OwlEvents : MonoBehaviour
 
     public void ColliderCallback()
     {
-        manager.SetCollider();
-
         if (firstInteract)
         {
             if (isFirstWinPos)
@@ -47,6 +45,8 @@ public class OwlEvents : MonoBehaviour
 
             firstInteract = false;
         }
+        if (OwlManager.Instance.hasWon) return;
+        manager.SetCollider();
     }
 
     public void FirstCallback()

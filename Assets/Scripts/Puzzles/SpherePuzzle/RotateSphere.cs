@@ -11,6 +11,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     public bool hasWon;
     private bool isBeingHeld;
     [SerializeField] ParticleSystem particle;
+    [SerializeField] SphereCollider mimicSphereColl;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -43,13 +44,16 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         if (!isBeingHeld) return;
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetKey(KeyCode.A))
         {
-            float mouseDelta = Input.GetAxis("Mouse X");
-            pivot.Rotate(Vector3.up, -mouseDelta * rotationSensitivity, Space.World);
+            pivot.Rotate(Vector3.up, -rotationSensitivity, Space.World);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            pivot.Rotate(Vector3.up, rotationSensitivity, Space.World);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             CheckFrontImage();
         }
@@ -99,6 +103,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private void OnWinMethod()
     {
         Release();
+        mimicSphereColl.enabled = false;
         canUse = false;
         hasWon = true;
         SetOnWinSphereMaterials();
