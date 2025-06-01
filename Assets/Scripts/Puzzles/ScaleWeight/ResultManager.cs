@@ -24,10 +24,10 @@ public class ResultManager : MonoBehaviour
                 Debug.Log("Se abre la puerta con peso 7");
                 break;
             case 9:
-                Debug.Log("Se abre la puerta con peso 2");
+                Debug.Log("Se abre la puerta con peso 9");
                 break;
             case 15:
-                Debug.Log("Se abre la puerta con peso 7");
+                Debug.Log("Se abre la puerta con peso 15");
                 break;
             case 50:
                 Debug.Log("Se abre la puerta con peso 50");
