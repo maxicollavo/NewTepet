@@ -9,7 +9,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 {
     [SerializeField] List<BoxCollider> columnColliders;
     [SerializeField] GameObject CM_PuzzleCamera;
-
+    [SerializeField] ColumnInteractManager columnInteractManager;
     Outline outline;
 
     private void Start()
@@ -18,6 +18,11 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 
         outline.enabled = false;
         EnableColumnColliders(false);
+    }
+
+    private void Update()
+    {
+        Debug.Log($"La referencia del Manager es {columnInteractManager}");
     }
 
     public void Interact()
@@ -52,12 +57,17 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
         if (state)
         {
             EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
+            columnInteractManager.canRotate = true;
         }
         else
         {
             EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+            columnInteractManager.canRotate = false;
+
+            columnInteractManager.ClearSelection();
         }
     }
+
 
     private void EnterPuzzleCamera(bool state)
     {

@@ -11359,7 +11359,7 @@ PrefabInstance:
       objectReference: {fileID: -5546347261141537002, guid: e3a1a6c3bcc1f0342976077a0333d6f3, type: 3}
     - target: {fileID: 919132149155446097, guid: 74ec802d2c24b91479446639ece6de9a, type: 3}
       propertyPath: m_Name
-      value: LeftMidToRotate (1)
+      value: LeftMidToRotate
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -18260,6 +18260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884ce31a2d6481541a8c77d036fd3b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  columnToRotate: {fileID: 1984632288}
   interactManager: {fileID: 211521730}
 --- !u!114 &191333413
 MonoBehaviour:
@@ -25746,8 +25747,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56780322898c23d43a00021acc88e788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 50
-  enterPuzzle: {fileID: 1544771843}
+  rotationSpeed: 75
+  enterPuzzle: {fileID: 962070027}
+  canRotate: 0
 --- !u!1001 &217038131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -84458,7 +84460,6 @@ Transform:
   - {fileID: 1990306218}
   - {fileID: 1673488886}
   - {fileID: 748511853}
-  - {fileID: 1544771842}
   - {fileID: 211521729}
   - {fileID: 1371120111}
   - {fileID: 97065661}
@@ -124532,6 +124533,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1775276411}
   m_LocalEulerAnglesHint: {x: 0, y: 449.999, z: 0}
+--- !u!1 &958412240 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74ec802d2c24b91479446639ece6de9a, type: 3}
+  m_PrefabInstance: {fileID: 1141992185}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &960649767
 GameObject:
   m_ObjectHideFlags: 0
@@ -124716,6 +124722,7 @@ MonoBehaviour:
   - {fileID: 191333411}
   - {fileID: 963424044}
   CM_PuzzleCamera: {fileID: 1582082288}
+  columnInteractManager: {fileID: 211521730}
 --- !u!65 &962070031
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -124862,6 +124869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 884ce31a2d6481541a8c77d036fd3b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  columnToRotate: {fileID: 958412240}
   interactManager: {fileID: 211521730}
 --- !u!114 &963424046
 MonoBehaviour:
@@ -148779,7 +148787,7 @@ PrefabInstance:
       objectReference: {fileID: -5546347261141537002, guid: e3a1a6c3bcc1f0342976077a0333d6f3, type: 3}
     - target: {fileID: 919132149155446097, guid: 74ec802d2c24b91479446639ece6de9a, type: 3}
       propertyPath: m_Name
-      value: LeftMidToRotate (2)
+      value: RightMidToRotate
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -152764,7 +152772,7 @@ Transform:
   m_GameObject: {fileID: 1188955380}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.2588186, z: -0, w: 0.965926}
-  m_LocalPosition: {x: 7.851, y: 2.312, z: 13.742}
+  m_LocalPosition: {x: 7.859, y: 2.356, z: 13.727}
   m_LocalScale: {x: 0.18792069, y: 0.27600402, z: 0.18792069}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -200384,149 +200392,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2956554, y: 1.7638923, z: 1.4025326}
   m_Center: {x: -0.14782529, y: 0.3819459, z: -0.20126617}
---- !u!1 &1544771838
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1544771842}
-  - component: {fileID: 1544771841}
-  - component: {fileID: 1544771840}
-  - component: {fileID: 1544771839}
-  - component: {fileID: 1544771844}
-  - component: {fileID: 1544771843}
-  m_Layer: 0
-  m_Name: EnterPuzzle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!65 &1544771839
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544771838}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1544771840
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544771838}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &1544771841
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544771838}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1544771842
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544771838}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.25038, z: -0, w: 0.9681477}
-  m_LocalPosition: {x: 8.250717, y: 0.5106338, z: 13.189827}
-  m_LocalScale: {x: 1, y: 1.6908, z: 2.6760008}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 623056879}
-  m_LocalEulerAnglesHint: {x: 0, y: -29, z: 0}
---- !u!114 &1544771843
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544771838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c02a109d2e651c24da022a95aa6a8457, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  columnColliders:
-  - {fileID: 191333411}
-  - {fileID: 963424044}
-  CM_PuzzleCamera: {fileID: 1582082288}
---- !u!114 &1544771844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1544771838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  outlineMode: 0
-  outlineColor: {r: 1, g: 1, b: 1, a: 1}
-  outlineWidth: 2
-  precomputeOutline: 0
-  bakeKeys: []
-  bakeValues: []
 --- !u!1001 &1544785947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209169,7 +209034,7 @@ Transform:
   m_GameObject: {fileID: 1669122321}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.2588186, z: -0, w: 0.965926}
-  m_LocalPosition: {x: 8.332, y: 2.312, z: 12.845}
+  m_LocalPosition: {x: 8.332, y: 2.356, z: 12.845}
   m_LocalScale: {x: 0.18792069, y: 0.27600402, z: 0.18792069}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -248884,6 +248749,11 @@ MonoBehaviour:
   m_Offset: {x: 0.033902407, y: 0.009912729, z: 0.255}
   m_Size: {x: 5.8878064, y: 5.42674, z: 0.51}
   m_FadeFactor: 1
+--- !u!1 &1984632288 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 74ec802d2c24b91479446639ece6de9a, type: 3}
+  m_PrefabInstance: {fileID: 84313469}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1984648623
 GameObject:
   m_ObjectHideFlags: 0

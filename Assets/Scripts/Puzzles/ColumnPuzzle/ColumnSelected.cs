@@ -8,6 +8,8 @@ public class ColumnSelected : MonoBehaviour
 
     private bool isSelected;
 
+    public GameObject columnToRotate;
+
     Outline outline;
     [SerializeField] ColumnInteractManager interactManager;
 
@@ -20,13 +22,20 @@ public class ColumnSelected : MonoBehaviour
         {
             interactManager.columnSelecteds.Add(this, false);
         }
+
+        OnSelectedAction += interactManager.OnSelectedMethod;
     }
+
+
 
     private void OnMouseDown()
     {
+        Debug.Log($"OnMouseDown en {gameObject.name}");
         if (isSelected) return;
+
         SelectedPiece();
     }
+
 
     private void OnMouseEnter()
     {
@@ -54,14 +63,21 @@ public class ColumnSelected : MonoBehaviour
 
     public void SelectedPiece()
     {
+        Debug.Log("Entra al SelectedPiece");
         isSelected = true;
+        Debug.Log($"is Selected es {isSelected}");
         EnableOutline();
+        Debug.Log($"activa el outline");
         OnSelectedAction?.Invoke(isSelected, this);
+        Debug.Log($"Se llama al Action");
     }
 
     public void DeselectPiece()
     {
+        if (!isSelected) return;
+
         isSelected = false;
         DisableOutline();
+        OnSelectedAction?.Invoke(isSelected, this);
     }
 }

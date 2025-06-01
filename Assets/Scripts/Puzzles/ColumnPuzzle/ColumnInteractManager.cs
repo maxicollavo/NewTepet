@@ -8,57 +8,65 @@ public class ColumnInteractManager : MonoBehaviour
     [SerializeField] float rotationSpeed;
     [SerializeField] EnterColumnPuzzle enterPuzzle;
 
-    private void Awake()
-    {
-        foreach (var column in columnSelecteds)
-        {
-            column.Key.OnSelectedAction += OnSelectedMethod;
-        }
-    }
+    private ColumnSelected currentlySelected;
+    public bool canRotate;
 
-    private void OnSelectedMethod(bool isSelected, ColumnSelected selected)
+    public void OnSelectedMethod(bool isSelected, ColumnSelected selected)
     {
-        var keys = new List<ColumnSelected>(columnSelecteds.Keys);
+        Debug.Log($"OnSelectedMethod llamado por: {selected.name} con isSelected: {isSelected}");
 
-        foreach (var column in keys)
+        if (currentlySelected != null && currentlySelected != selected)
         {
-            if (column != selected && columnSelecteds[column])
-            {
-                column.DeselectPiece();
-                columnSelecteds[column] = false;
-            }
+            Debug.Log($"Deseleccionando {currentlySelected.name}");
+            currentlySelected.DeselectPiece();
         }
 
-        if (columnSelecteds.ContainsKey(selected))
+        if (isSelected)
         {
-            columnSelecteds[selected] = isSelected;
+            Debug.Log($"Seleccionando {selected.name}");
+            currentlySelected = selected;
+        }
+        else
+        {
+            Debug.Log($"Desmarcando {selected.name}");
+            currentlySelected = null;
         }
     }
 
 
     private void Update()
     {
-        foreach (var kvp in columnSelecteds)
-        {
-            if (kvp.Value)
-            {
-                var selectedTransform = kvp.Key.transform;
+        if (!canRotate) return;
 
-                if (Input.GetKey(KeyCode.A))
-                {
-                    selectedTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    selectedTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-                }
-                break;
+        if (currentlySelected != null)
+        {
+            var selectedTransform = currentlySelected.columnToRotate.transform;
+
+            if (Input.GetKey(KeyCode.A))
+            {
+                selectedTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                selectedTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
             }
         }
 
         if (Input.GetMouseButtonDown(1))
         {
             enterPuzzle.EnterPuzzle(false);
+
+            if (currentlySelected == null) return;
+            currentlySelected.DeselectPiece();
+        }
+    }
+
+    public void ClearSelection()
+    {
+        if (currentlySelected != null)
+        {
+            currentlySelected.DeselectPiece();
+            currentlySelected = null;
         }
     }
 }
