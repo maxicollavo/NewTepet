@@ -36,5 +36,9 @@ public class ScenesManager : MonoBehaviour
         optionMenu.SetActive(false);
     }
 
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
 
 }
