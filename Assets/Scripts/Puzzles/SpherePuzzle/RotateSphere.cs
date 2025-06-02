@@ -13,6 +13,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private bool isBeingHeld;
     [SerializeField] ParticleSystem particle;
     [SerializeField] SphereCollider mimicSphereColl;
+    [SerializeField] private float emissionIntensity;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -27,6 +28,11 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     private int currentImageIndex = 0;
     private bool canScore = true;
+
+    private void OnEnable()
+    {
+        SetSphereMaterials(SphereStates.Idle);
+    }
 
     private void Awake()
     {
@@ -67,7 +73,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     public void Aiming()
     {
-        if (!canUse || isBeingHeld) return;
+        if (!canUse || isBeingHeld || hasWon) return;
         EnableOutline();
     }
 
@@ -85,7 +91,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        if (!canUse || isBeingHeld) return;
+        if (!canUse || isBeingHeld || hasWon) return;
 
         DisableOutline();
         puzzleCamera.SetActive(true);
@@ -107,40 +113,53 @@ public class RotateSphere : MonoBehaviour, Interactor
         mimicSphereColl.enabled = false;
         canUse = false;
         hasWon = true;
-        SetOnWinSphereMaterials("Win");
+        SetSphereMaterials(SphereStates.Win);
     }
 
-    public void SetOnWinSphereMaterials(string state)
+    public enum SphereStates
+    {
+        Win,
+        Idle,
+        Loose
+    }
+
+    public void SetSphereMaterials(SphereStates state)
     {
         var renderer = GetComponent<MeshRenderer>();
         var materials = renderer.materials;
 
-        Color emissionColor;
+        Color emissionColor = Color.black;
         Color glassColor;
 
         switch (state)
         {
-            case "Win":
-                emissionColor = materials[3].GetColor("_EmissionColor");
-                glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * 4.816925f;
+            case SphereStates.Win:
+                materials[3].EnableKeyword("_EMISSION");
+                emissionColor = new Color(1f, 235f / 255f, 0f) * emissionIntensity;
+                glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * emissionIntensity;
                 break;
-            case "Idle":
-                emissionColor = Color.red * 4.816925f;
-                glassColor = Color.red * 4.816925f;
+            case SphereStates.Loose:
+                materials[3].EnableKeyword("_EMISSION");
+                emissionColor = Color.red * emissionIntensity;
+                glassColor = Color.red * emissionIntensity;
                 break;
-            case "Loose":
-                emissionColor = new Color(1f, 0.5f, 0f, 1f) * 4.816925f;
-                glassColor = new Color(1f, 0.5f, 0f, 1f) * 4.816925f;
+            case SphereStates.Idle:
+                // Desactivar emission
+                materials[3].DisableKeyword("_EMISSION");
+                glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f);
                 break;
             default:
                 Debug.LogWarning("Modo no reconocido. Usando el color azul por defecto.");
+                materials[3].EnableKeyword("_EMISSION");
                 emissionColor = materials[3].GetColor("_EmissionColor");
-                glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * 4.816925f;
+                glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * emissionIntensity;
                 break;
         }
 
-        materials[3].EnableKeyword("_EMISSION");
-        materials[3].SetColor("_EmissionColor", emissionColor);
+        if (state != SphereStates.Idle)
+        {
+            materials[3].SetColor("_EmissionColor", emissionColor);
+        }
 
         materials[4].SetColor("_Color", glassColor);
         materials[4].SetFloat("_speed", 0.05f);
@@ -165,6 +184,7 @@ public class RotateSphere : MonoBehaviour, Interactor
         {
             currentImageIndex++;
             particle.Play();
+            StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
             Debug.Log("Imagen detectada al frente, avanzando...");
 
             if (currentImageIndex >= imagePoints.Length)
@@ -177,19 +197,23 @@ public class RotateSphere : MonoBehaviour, Interactor
         else
         {
             currentImageIndex = 0;
-            StartCoroutine(WrongMovement());
+            //Cuando hacemos mal el movimiento
+            StartCoroutine(ConfirmMovement(SphereStates.Loose, SphereStates.Idle));
         }
     }
 
-    private IEnumerator WrongMovement()
+    private IEnumerator ConfirmMovement(SphereStates first, SphereStates second)
     {
-        //Cambiar el emmisive del mat a rojo
-        SetOnWinSphereMaterials("Win");
-        //Deshabilitamos la esfera
         canUse = false;
+        SetSphereMaterials(first);
         yield return new WaitForSeconds(0.5f);
-        //Cambiar el emmisive del mat al original
-        //outline.OutlineColor = originalColor;
-        DisableOutline();
+
+        if (!hasWon)
+        {
+            SetSphereMaterials(second);
+        }
+
+        canUse = true;
     }
+
 }

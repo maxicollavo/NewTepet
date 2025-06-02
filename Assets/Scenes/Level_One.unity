@@ -10408,7 +10408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &75284111
 Transform:
   m_ObjectHideFlags: 0
@@ -10499,7 +10499,8 @@ MonoBehaviour:
   hasWon: 0
   particle: {fileID: 1099236480}
   mimicSphereColl: {fileID: 8482479570098739054}
-  rotationSensitivity: 3
+  emissionIntensity: 1.5
+  rotationSensitivity: 2
   puzzleCamera: {fileID: 729408277}
   puzzleManager: {fileID: 1005585399}
   imagePoints:
@@ -151245,7 +151246,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 520.93, y: 388.3416, z: 437.36856}
   m_Center: {x: -0.015625, y: -0.00024414062, z: 0}
