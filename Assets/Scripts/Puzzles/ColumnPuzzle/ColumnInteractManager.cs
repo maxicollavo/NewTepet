@@ -1,10 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ColumnInteractManager : MonoBehaviour
 {
     [HideInInspector] public Dictionary<ColumnSelected, bool> columnSelecteds = new Dictionary<ColumnSelected, bool>();
-
+    public Action<ColumnInteractManager> OnWinAction;
     [SerializeField] float rotationSpeed;
     [SerializeField] EnterColumnPuzzle enterPuzzle;
 
@@ -13,26 +14,20 @@ public class ColumnInteractManager : MonoBehaviour
 
     public void OnSelectedMethod(bool isSelected, ColumnSelected selected)
     {
-        Debug.Log($"OnSelectedMethod llamado por: {selected.name} con isSelected: {isSelected}");
-
         if (currentlySelected != null && currentlySelected != selected)
         {
-            Debug.Log($"Deseleccionando {currentlySelected.name}");
             currentlySelected.DeselectPiece();
         }
 
         if (isSelected)
         {
-            Debug.Log($"Seleccionando {selected.name}");
             currentlySelected = selected;
         }
         else
         {
-            Debug.Log($"Desmarcando {selected.name}");
             currentlySelected = null;
         }
     }
-
 
     private void Update()
     {
@@ -42,6 +37,8 @@ public class ColumnInteractManager : MonoBehaviour
         {
             var selectedTransform = currentlySelected.columnToRotate.transform;
 
+            if (currentlySelected.hasWon) return;
+
             if (Input.GetKey(KeyCode.A))
             {
                 selectedTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
@@ -49,6 +46,20 @@ public class ColumnInteractManager : MonoBehaviour
             if (Input.GetKey(KeyCode.D))
             {
                 selectedTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+            }
+
+            float yRotation = selectedTransform.eulerAngles.y;
+            if (yRotation > 180f) yRotation -= 360f;
+
+            if (currentlySelected.isLeft && Mathf.Abs(yRotation - (-17f)) < 0.5f)
+            {
+                currentlySelected.OnWin();
+                CheckIfPuzzleCompleted();
+            }
+            else if (!currentlySelected.isLeft && Mathf.Abs(yRotation - (-22f)) < 0.5f)
+            {
+                currentlySelected.OnWin();
+                CheckIfPuzzleCompleted();
             }
         }
 
@@ -59,6 +70,18 @@ public class ColumnInteractManager : MonoBehaviour
             if (currentlySelected == null) return;
             currentlySelected.DeselectPiece();
         }
+    }
+
+    private void CheckIfPuzzleCompleted()
+    {
+        foreach (var pair in columnSelecteds)
+        {
+            if (!pair.Key.hasWon) return;
+        }
+
+        OnWinAction?.Invoke(this);
+
+        canRotate = false;
     }
 
     public void ClearSelection()

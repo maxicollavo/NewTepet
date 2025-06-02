@@ -7,26 +7,25 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class EnterColumnPuzzle : MonoBehaviour, Interactor
 {
-    [SerializeField] List<BoxCollider> columnColliders;
+    [SerializeField] List<ColumnSelected> columns;
     [SerializeField] GameObject CM_PuzzleCamera;
     [SerializeField] ColumnInteractManager columnInteractManager;
     Outline outline;
 
+    [HideInInspector] public bool canInteract;
+
     private void Start()
     {
         outline = GetComponent<Outline>();
-
+        canInteract = true;
         outline.enabled = false;
         EnableColumnColliders(false);
     }
 
-    private void Update()
-    {
-        Debug.Log($"La referencia del Manager es {columnInteractManager}");
-    }
-
     public void Interact()
     {
+        Debug.Log("Interact() called on EnterColumnPuzzle");
+        if (!canInteract) return;
         EnterPuzzle(true);
     }
 
@@ -44,8 +43,9 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 
     public void Aiming()
     {
-        EnableOutline();
+        if (!canInteract) return;
 
+        EnableOutline();
         UIManager.Instance.ChangeCursor(true);
     }
 
@@ -68,7 +68,6 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
         }
     }
 
-
     private void EnterPuzzleCamera(bool state)
     {
         CM_PuzzleCamera.SetActive(state);
@@ -76,9 +75,11 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 
     private void EnableColumnColliders(bool state)
     {
-        foreach (var collider in columnColliders)
+        foreach (var column in columns)
         {
-            collider.enabled = state;
+            if (column.hasWon) return;
+
+            column.coll.enabled = state;
         }
     }
 }

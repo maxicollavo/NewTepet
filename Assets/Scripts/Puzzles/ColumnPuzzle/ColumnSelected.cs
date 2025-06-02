@@ -7,15 +7,20 @@ public class ColumnSelected : MonoBehaviour
     public Action<bool, ColumnSelected> OnSelectedAction;
 
     private bool isSelected;
+    public bool isLeft;
+
+    [HideInInspector] public bool hasWon;
 
     public GameObject columnToRotate;
 
     Outline outline;
+    [HideInInspector] public BoxCollider coll;
     [SerializeField] ColumnInteractManager interactManager;
 
     private void Awake()
     {
         outline = GetComponent<Outline>();
+        coll = GetComponent<BoxCollider>();
         outline.enabled = false;
 
         if (!interactManager.columnSelecteds.ContainsKey(this))
@@ -26,8 +31,6 @@ public class ColumnSelected : MonoBehaviour
         OnSelectedAction += interactManager.OnSelectedMethod;
     }
 
-
-
     private void OnMouseDown()
     {
         Debug.Log($"OnMouseDown en {gameObject.name}");
@@ -35,7 +38,6 @@ public class ColumnSelected : MonoBehaviour
 
         SelectedPiece();
     }
-
 
     private void OnMouseEnter()
     {
@@ -63,13 +65,9 @@ public class ColumnSelected : MonoBehaviour
 
     public void SelectedPiece()
     {
-        Debug.Log("Entra al SelectedPiece");
         isSelected = true;
-        Debug.Log($"is Selected es {isSelected}");
         EnableOutline();
-        Debug.Log($"activa el outline");
         OnSelectedAction?.Invoke(isSelected, this);
-        Debug.Log($"Se llama al Action");
     }
 
     public void DeselectPiece()
@@ -79,5 +77,12 @@ public class ColumnSelected : MonoBehaviour
         isSelected = false;
         DisableOutline();
         OnSelectedAction?.Invoke(isSelected, this);
+    }
+
+    public void OnWin()
+    {
+        hasWon = true;
+        DeselectPiece();
+        coll.enabled = false;
     }
 }
