@@ -24,5 +24,6 @@ public class PlateCollision : MonoBehaviour
 public enum Plate
 {
     Right,
-    Left
+    Left,
+    None
 }

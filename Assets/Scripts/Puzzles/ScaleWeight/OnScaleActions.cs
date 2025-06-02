@@ -12,6 +12,7 @@ public class OnScaleActions : MonoBehaviour, Interactor
 
     public bool isScale;
     Outline outline;
+    [HideInInspector] public bool canInteract;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class OnScaleActions : MonoBehaviour, Interactor
     private void Start()
     {
         outline.enabled = false;
+        canInteract = true;
     }
 
     public void Aiming()
@@ -38,12 +40,14 @@ public class OnScaleActions : MonoBehaviour, Interactor
 
     public IEnumerator CannotEnter()
     {
+        canInteract = false;
         EnableOutline();
         var originalColor = outline.OutlineColor;
         outline.OutlineColor = Color.red;
         yield return new WaitForSeconds(0.5f);
         outline.OutlineColor = originalColor;
         DisableOutline();
+        canInteract = true;
     }
 
     public void EnableOutline()

@@ -57,6 +57,8 @@ public class PickToInventory : MonoBehaviour, Interactor
 
         if (isOnScale)
         {
+            if (plateSide == Plate.None) return;
+
             if (plateSide == Plate.Left)
             {
                 WeightManager.Instance.leftWeight -= type.weight;
