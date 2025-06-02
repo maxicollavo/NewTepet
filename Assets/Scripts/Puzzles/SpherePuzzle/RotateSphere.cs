@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Linq;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -106,25 +107,47 @@ public class RotateSphere : MonoBehaviour, Interactor
         mimicSphereColl.enabled = false;
         canUse = false;
         hasWon = true;
-        SetOnWinSphereMaterials();
+        SetOnWinSphereMaterials("Win");
     }
 
-    public void SetOnWinSphereMaterials()
+    public void SetOnWinSphereMaterials(string state)
     {
         var renderer = GetComponent<MeshRenderer>();
         var materials = renderer.materials;
 
+        Color emissionColor;
+        Color glassColor;
+
+        switch (state)
+        {
+            case "Win":
+                emissionColor = materials[3].GetColor("_EmissionColor");
+                glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * 4.816925f;
+                break;
+            case "Idle":
+                emissionColor = Color.red * 4.816925f;
+                glassColor = Color.red * 4.816925f;
+                break;
+            case "Loose":
+                emissionColor = new Color(1f, 0.5f, 0f, 1f) * 4.816925f;
+                glassColor = new Color(1f, 0.5f, 0f, 1f) * 4.816925f;
+                break;
+            default:
+                Debug.LogWarning("Modo no reconocido. Usando el color azul por defecto.");
+                emissionColor = materials[3].GetColor("_EmissionColor");
+                glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * 4.816925f;
+                break;
+        }
+
         materials[3].EnableKeyword("_EMISSION");
+        materials[3].SetColor("_EmissionColor", emissionColor);
 
-        Color originalEmission = materials[3].GetColor("_EmissionColor");
-        materials[3].SetColor("_EmissionColor", originalEmission);
-
-        Color glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * 4.816925f;
         materials[4].SetColor("_Color", glassColor);
         materials[4].SetFloat("_speed", 0.05f);
 
         renderer.materials = materials;
     }
+
 
     private void CheckFrontImage()
     {
@@ -154,6 +177,19 @@ public class RotateSphere : MonoBehaviour, Interactor
         else
         {
             currentImageIndex = 0;
+            StartCoroutine(WrongMovement());
         }
+    }
+
+    private IEnumerator WrongMovement()
+    {
+        //Cambiar el emmisive del mat a rojo
+        SetOnWinSphereMaterials("Win");
+        //Deshabilitamos la esfera
+        canUse = false;
+        yield return new WaitForSeconds(0.5f);
+        //Cambiar el emmisive del mat al original
+        //outline.OutlineColor = originalColor;
+        DisableOutline();
     }
 }
