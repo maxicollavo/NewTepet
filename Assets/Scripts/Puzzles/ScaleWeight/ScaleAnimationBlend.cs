@@ -22,20 +22,18 @@ public class ScaleAnimationBlend : MonoBehaviour
         float difference = Mathf.Abs(left - right);
 
         float normalized = Mathf.Clamp01(difference / maxWeightDifference);
+        normalized = Mathf.Pow(normalized, 0.5f);
 
         float targetBlend = 0.5f;
 
         if (left > right)
-        {
             targetBlend = Mathf.Lerp(0.5f, 0f, normalized);
-        }
         else if (right > left)
-        {
             targetBlend = Mathf.Lerp(0.5f, 1f, normalized);
-        }
 
         float currentBlend = animator.GetFloat("Blend");
         float newBlend = Mathf.Lerp(currentBlend, targetBlend, Time.deltaTime * smoothSpeed);
         animator.SetFloat("Blend", newBlend);
     }
+
 }

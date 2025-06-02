@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(Outline))]
 public class OnScaleActions : MonoBehaviour, Interactor
 {
     [SerializeField] Plate sidePlate;
     [SerializeField] ScaleManager manager;
     public Action<Plate, OnScaleActions> plateInteractAction;
+    public Action<OnScaleActions> garbageInteractAction;
 
+    public bool isScale;
     Outline outline;
 
     private void Awake()
@@ -51,6 +54,9 @@ public class OnScaleActions : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        plateInteractAction?.Invoke(sidePlate, this);
+        if (isScale)
+            plateInteractAction?.Invoke(sidePlate, this);
+        else
+            garbageInteractAction?.Invoke(this);
     }
 }
