@@ -9,6 +9,7 @@ public class HieroglyficManager : MonoBehaviour
     public Action<HieroglyficManager> OnWinAction;
 
     private int counter;
+    [HideInInspector] public bool hasWonPuzzle;
     [SerializeField] PlayableDirector cinematic;
 
     [Header("References")]
@@ -45,6 +46,7 @@ public class HieroglyficManager : MonoBehaviour
 
         if (counter == 2 & OwlManager.Instance.hasWon)
         {
+            hasWonPuzzle = true;
             OnWinAction?.Invoke(this);
             OwlManager.Instance.DeactivateColliders();
             Debug.Log("Se activa la cinemática del cuenco");

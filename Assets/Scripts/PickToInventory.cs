@@ -17,6 +17,7 @@ public enum ObjectsToPick
 public class PickToInventory : MonoBehaviour, Interactor
 {
     Outline outline;
+    Color originalColor;
     [SerializeField] private ObjectsToPick obj;
 
     [HideInInspector]
@@ -36,6 +37,7 @@ public class PickToInventory : MonoBehaviour, Interactor
     private void Start()
     {
         outline.enabled = false;
+        originalColor = outline.OutlineColor;
     }
 
     public void Interact()
@@ -92,7 +94,6 @@ public class PickToInventory : MonoBehaviour, Interactor
     private IEnumerator CannotPick()
     {
         EnableOutline();
-        var originalColor = outline.OutlineColor;
         outline.OutlineColor = Color.red;
         yield return new WaitForSeconds(0.5f);
         outline.OutlineColor = originalColor;

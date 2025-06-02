@@ -19,15 +19,11 @@ public class GarbageManager : MonoBehaviour
     {
         if (!HandInventory.hasObjInHand)
         {
-            if (!actions.canInteract) return;
-
             StartCoroutine(actions.CannotEnter());
             return;
         }
         if (PickedObjData.Instance.CurrentPickedObj == ObjectsToPick.BoardPiece || PickedObjData.Instance.CurrentPickedObj == ObjectsToPick.GlassSphere)
         {
-            if (!actions.canInteract) return;
-
             StartCoroutine(actions.CannotEnter());
             return;
         }

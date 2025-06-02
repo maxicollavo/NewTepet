@@ -39,9 +39,11 @@ public class OwlManager : MonoBehaviour
         }
 
         hasWon = allOwlsCorrect;
+        Debug.Log("Todos los buhos ganaron");
 
         if (hasWon)
         {
+            Debug.Log("Chequea Puzzle Win");
             HieroglyficManager.Instance.CheckPuzzleWin();
         }
     }

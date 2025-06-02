@@ -45,18 +45,21 @@ public class OwlEvents : MonoBehaviour
 
             firstInteract = false;
         }
-        if (OwlManager.Instance.hasWon) return;
+        if (HieroglyficManager.Instance.hasWonPuzzle) return;
+        Debug.Log("activa collider");
         manager.SetCollider();
     }
 
     public void FirstCallback()
     {
+        Debug.Log("Se llama al primer callback");
         currentPosition = 0;
         AnimFinishAction?.Invoke(this, currentPosition);
     }
 
     public void SecondCallback()
     {
+        Debug.Log("Se llama al segundo callback");
         currentPosition = 1;
         AnimFinishAction?.Invoke(this, currentPosition);
     }
