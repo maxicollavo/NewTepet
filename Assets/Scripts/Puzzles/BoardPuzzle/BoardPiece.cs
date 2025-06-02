@@ -47,6 +47,7 @@ public class BoardPiece : MonoBehaviour
     public void SelectedPiece()
     {
         IsSelected = true;
+        AudioManager.Instance.PlaySound("SelectPiece");
         EnableOutline();
         OnPieceSelected?.Invoke(this);
     }

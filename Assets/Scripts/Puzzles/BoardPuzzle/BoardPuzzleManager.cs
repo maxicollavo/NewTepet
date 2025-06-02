@@ -250,7 +250,7 @@ public class BoardPuzzleManager : MonoBehaviour
 
         currentW.IsUsing = false;
         nextW.IsUsing = true;
-
+        AudioManager.Instance.PlaySound("MovePieceBoard");
         piece.currentWp = nextW;
         currentWp = nextW;
         isMoving = false;

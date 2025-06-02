@@ -14,7 +14,6 @@ public class PieceBoxOnWin : MonoBehaviour
     [SerializeField] Animator boxAnim;
     [SerializeField] Transform lookAtTarget;
     Transform originalLookAt;
-    public AudioSource OpenBox;
     void Start()
     {
         manager.JeroglificAction += Win;
@@ -32,10 +31,11 @@ public class PieceBoxOnWin : MonoBehaviour
         interactorColl.enabled = false;
         cinematicCam.gameObject.SetActive(true);
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
+        AudioManager.Instance.PlaySound("SlideClick");
         yield return new WaitForSeconds(1.3f);
         interactorColl.enabled = false;
-        AudioManager.Instance.PlaySound("rocaMoviendose");
         boxAnim.SetTrigger("Open");
+        AudioManager.Instance.PlaySound("OpenBoxSound");
         interactorColl.enabled = false;
         yield return new WaitForSeconds(1f);
         interactorColl.enabled = false;
