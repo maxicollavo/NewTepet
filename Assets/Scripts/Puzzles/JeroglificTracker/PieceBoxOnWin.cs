@@ -35,7 +35,7 @@ public class PieceBoxOnWin : MonoBehaviour
         yield return new WaitForSeconds(1.3f);
         interactorColl.enabled = false;
         boxAnim.SetTrigger("Open");
-        AudioManager.Instance.PlaySound("OpenBoxSound");
+        AudioManager.Instance.PlaySound("OpenBox");
         interactorColl.enabled = false;
         yield return new WaitForSeconds(1f);
         interactorColl.enabled = false;

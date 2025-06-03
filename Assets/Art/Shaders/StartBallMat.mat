@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: StartBallMat
-  m_Shader: {fileID: -6465566751694194690, guid: 7d00506402dbd8c409f1346d21d1485c, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 04805898c7ba8914a96796b37c3f21e1, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -46,15 +46,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fill: 0.486
+    - _Fill: 0.077
     - _OffsetPoint: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Speed: 1
-    - _bloom: 1.14
+    - _bloom: 1.2
+    - _llenado: 0
+    - _speed: 2
     m_Colors:
     - _Color: {r: 1, g: 0.7916667, b: 0, a: 0}
-    - _Vector2: {r: -0.3, g: 1, b: 0, a: 0}
+    - _Vector2: {r: 0.2, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &4015178658508336669

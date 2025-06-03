@@ -66,13 +66,20 @@ public class HieroglyficManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
         cinematic.Play();
+        AudioManager.Instance.PlaySound("OpenTramp");
+        yield return new WaitForSeconds(0.5f);
+        
+        AudioManager.Instance.PlaySound("StoneParticleSound");
+        yield return new WaitForSeconds(0.5f);
 
+        AudioManager.Instance.PlaySound("StopBall");
         yield return new WaitForSeconds(2f);
 
         cam.LookAt = originalLookAt;
         cam.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1.5f);
+
 
         hasEndedCinematic = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);

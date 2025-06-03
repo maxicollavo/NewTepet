@@ -198,6 +198,7 @@ public class BoardPuzzleManager : MonoBehaviour
         if (!canInteract || isMoving) return;
 
         isMoving = true;
+        AudioManager.Instance.PlaySound("MoveStone2");
         direction = pressedDirection;
 
         if (selectedPiece == null || currentWp == null)
