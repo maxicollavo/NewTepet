@@ -187,13 +187,33 @@ public class RotateSphere : MonoBehaviour, Interactor
         return closestImage;
     }
 
+    private void RotateAndCenterCurrentImage()
+    {
+        var currentImage = GetClosestImage();
+
+        Vector3 direccionDeseada = puzzleCamera.transform.position - this.transform.position;
+        direccionDeseada.y = 0;
+        direccionDeseada.Normalize();
+
+        Vector3 direccionActual = currentImage.position - this.transform.position;
+        direccionActual.y = 0;
+        direccionActual.Normalize();
+
+        Quaternion rotacionNecesaria = Quaternion.FromToRotation(direccionActual, direccionDeseada);
+
+        this.transform.rotation = rotacionNecesaria * this.transform.rotation;
+    }
+
+
     private void CheckFrontImage()
     {
         if (!canScore || currentImageIndex >= winImagePoints.Length) return;
 
-        Transform currentImage = winImagePoints[currentImageIndex];
+        RotateAndCenterCurrentImage();
 
+        Transform currentImage = winImagePoints[currentImageIndex];
         float distance = Vector3.Distance(puzzleCamera.transform.position, currentImage.position);
+
 
         Debug.Log("Distancia al frente de la cámara: " + distance);
 
