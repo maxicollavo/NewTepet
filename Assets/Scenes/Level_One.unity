@@ -10402,6 +10402,7 @@ GameObject:
   - component: {fileID: 75284115}
   - component: {fileID: 75284116}
   - component: {fileID: 75284114}
+  - component: {fileID: 75284117}
   m_Layer: 0
   m_Name: LeftSphere
   m_TagString: Untagged
@@ -10425,6 +10426,8 @@ Transform:
   - {fileID: 1473822137}
   - {fileID: 1912631336}
   - {fileID: 482845935}
+  - {fileID: 414068836}
+  - {fileID: 374550852}
   m_Father: {fileID: 177376965}
   m_LocalEulerAnglesHint: {x: 0, y: -297.263, z: 0}
 --- !u!23 &75284112
@@ -10503,10 +10506,16 @@ MonoBehaviour:
   rotationSensitivity: 2
   puzzleCamera: {fileID: 729408277}
   puzzleManager: {fileID: 1005585399}
-  imagePoints:
+  winImagePoints:
   - {fileID: 1473822137}
   - {fileID: 1912631336}
   - {fileID: 482845935}
+  allImages:
+  - {fileID: 1473822137}
+  - {fileID: 1912631336}
+  - {fileID: 482845935}
+  - {fileID: 414068836}
+  - {fileID: 374550852}
 --- !u!135 &75284115
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -10546,6 +10555,28 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!95 &75284117
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 75284110}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 75a5708a18ab16d4baefee18384de68f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &76085868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45568,6 +45599,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 224.42818, y: 700.2289, z: 231.29065}
   m_Center: {x: 0.00390625, y: -0.001953125, z: -0.00390625}
+--- !u!1 &374550851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 374550852}
+  m_Layer: 0
+  m_Name: Escarabajo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &374550852
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374550851}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.92002475, z: -0, w: 0.39186028}
+  m_LocalPosition: {x: 0.0081, y: 0.00262, z: -0.00475}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75284111}
+  m_LocalEulerAnglesHint: {x: 0, y: 133.859, z: 0}
 --- !u!1001 &374679499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54159,6 +54221,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8101d595c5b854f4dbe49c93d7575acc, type: 3}
   m_PrefabInstance: {fileID: 560516485}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &414068835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 414068836}
+  m_Layer: 0
+  m_Name: Ojo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &414068836
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414068835}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.92002475, z: -0, w: 0.39186028}
+  m_LocalPosition: {x: -0.00444, y: 0.00262, z: 0.0085}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 75284111}
+  m_LocalEulerAnglesHint: {x: 0, y: 133.859, z: 0}
 --- !u!1 &414082913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3003667422707367484, guid: 4661422ec87b8ca4db89e142587b6f8e, type: 3}
@@ -59176,7 +59269,7 @@ GameObject:
   m_Component:
   - component: {fileID: 482845935}
   m_Layer: 0
-  m_Name: Image3
+  m_Name: 3-BuhoGanador
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185180,7 +185273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1473822137}
   m_Layer: 0
-  m_Name: Image1
+  m_Name: 1-OjoGanador
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237464,7 +237557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1912631336}
   m_Layer: 0
-  m_Name: Image2
+  m_Name: 2-PiramideGanadora
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

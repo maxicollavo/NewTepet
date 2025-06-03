@@ -24,7 +24,8 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     [Header("Puzzle")]
     [SerializeField] private SpherePuzzleManager puzzleManager;
-    [SerializeField] private Transform[] imagePoints;
+    [SerializeField] private Transform[] winImagePoints;
+    [SerializeField] private Transform[] allImages;
 
     private int currentImageIndex = 0;
     private bool canScore = true;
@@ -44,7 +45,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         outline.enabled = false;
 
-        imagePoints = imagePoints.OrderBy(p => p.name).ToArray();
+        winImagePoints = winImagePoints.OrderBy(p => p.name).ToArray();
     }
 
     private void Update()
@@ -167,12 +168,30 @@ public class RotateSphere : MonoBehaviour, Interactor
         renderer.materials = materials;
     }
 
+    private Transform GetClosestImage()
+    {
+        float closestDistance = Mathf.Infinity;
+        Transform closestImage = null;
+
+        foreach (var image in allImages)
+        {
+            float distance = Vector3.Distance(image.position, puzzleCamera.transform.position);
+
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestImage = image;
+            }
+        }
+
+        return closestImage;
+    }
 
     private void CheckFrontImage()
     {
-        if (!canScore || currentImageIndex >= imagePoints.Length) return;
+        if (!canScore || currentImageIndex >= winImagePoints.Length) return;
 
-        Transform currentImage = imagePoints[currentImageIndex];
+        Transform currentImage = winImagePoints[currentImageIndex];
 
         float distance = Vector3.Distance(puzzleCamera.transform.position, currentImage.position);
 
@@ -187,7 +206,7 @@ public class RotateSphere : MonoBehaviour, Interactor
             StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
             Debug.Log("Imagen detectada al frente, avanzando...");
 
-            if (currentImageIndex >= imagePoints.Length)
+            if (currentImageIndex >= winImagePoints.Length)
             {
                 canScore = false;
                 puzzleManager.OnWin();
