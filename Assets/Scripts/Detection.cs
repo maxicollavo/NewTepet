@@ -60,7 +60,7 @@ public class Detection : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-        int layerMask = ~ignoreMask;
+        int layerMask = ~ignoreMask.value;
 
         ISwitcheable currentSwitcheable = null;
         IRead currentReadeable = null;

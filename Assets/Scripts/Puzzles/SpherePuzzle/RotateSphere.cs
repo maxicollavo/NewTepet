@@ -248,7 +248,6 @@ public class RotateSphere : MonoBehaviour, Interactor
             fillCounter++;
             particle.Play();
             StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
-            Debug.Log("Imagen detectada al frente, avanzando...");
 
             if (currentImageIndex >= winImagePoints.Length)
             {

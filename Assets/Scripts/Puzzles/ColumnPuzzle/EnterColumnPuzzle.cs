@@ -24,7 +24,6 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        Debug.Log("Interact() called on EnterColumnPuzzle");
         if (!canInteract) return;
         EnterPuzzle(true);
     }

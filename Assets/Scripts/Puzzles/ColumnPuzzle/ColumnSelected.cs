@@ -4,11 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class ColumnSelected : MonoBehaviour
 {
-    public Action<bool, ColumnSelected> OnSelectedAction;
+    public Action<bool, ColumnSelected, Transform, Transform> OnSelectedAction;
 
     private bool isSelected;
-    public bool isLeft;
-
     [HideInInspector] public bool hasWon;
 
     public GameObject columnToRotate;
@@ -16,6 +14,9 @@ public class ColumnSelected : MonoBehaviour
     Outline outline;
     [HideInInspector] public BoxCollider coll;
     [SerializeField] ColumnInteractManager interactManager;
+
+    public Transform forward;
+    public Transform lookAtTarget;
 
     private void Awake()
     {
@@ -33,7 +34,6 @@ public class ColumnSelected : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log($"OnMouseDown en {gameObject.name}");
         if (isSelected) return;
 
         SelectedPiece();
@@ -67,7 +67,7 @@ public class ColumnSelected : MonoBehaviour
     {
         isSelected = true;
         EnableOutline();
-        OnSelectedAction?.Invoke(isSelected, this);
+        OnSelectedAction?.Invoke(isSelected, this, forward, lookAtTarget);
     }
 
     public void DeselectPiece()
@@ -76,7 +76,7 @@ public class ColumnSelected : MonoBehaviour
 
         isSelected = false;
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this);
+        OnSelectedAction?.Invoke(isSelected, this, forward, lookAtTarget);
     }
 
     public void OnWin()
