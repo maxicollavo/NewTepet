@@ -95463,12 +95463,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 674575477}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.84, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: 1.323489e-23, w: 1}
+  m_LocalPosition: {x: 0.49062976, y: 0.2773668, z: 0.4906406}
+  m_LocalScale: {x: 1.0901887, y: 1.3036534, z: 1.0901887}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1892981548}
+  m_Father: {fileID: 1892981551}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &674575479
 LineRenderer:
@@ -289982,7 +289982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3658571929996731453, guid: 3aabec4780b0f0a47bd1acf02e4c9041, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3658571929996731453, guid: 3aabec4780b0f0a47bd1acf02e4c9041, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -290081,8 +290081,8 @@ PrefabInstance:
     - {fileID: 7909936757997533725, guid: 3aabec4780b0f0a47bd1acf02e4c9041, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 26889617720061386, guid: 3aabec4780b0f0a47bd1acf02e4c9041, type: 3}
-      insertIndex: 0
+    - targetCorrespondingSourceObject: {fileID: 6002678292694019068, guid: 3aabec4780b0f0a47bd1acf02e4c9041, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 674575478}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3658571929996731453, guid: 3aabec4780b0f0a47bd1acf02e4c9041, type: 3}
@@ -290121,6 +290121,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &1892981551 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6002678292694019068, guid: 3aabec4780b0f0a47bd1acf02e4c9041, type: 3}
+  m_PrefabInstance: {fileID: 1892981547}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1894205572
 GameObject:
   m_ObjectHideFlags: 0
