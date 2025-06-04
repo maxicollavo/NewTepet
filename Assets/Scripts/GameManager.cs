@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     public GameObject hand;
     public GameObject crosshair;
     public CameraManager camManager;
-    private CinemachineBrain brain;
     public CinemachineCamera playerCam;
     public bool canCheck;
     private bool requiresHand;
@@ -35,7 +34,6 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        brain = Camera.main.GetComponent<CinemachineBrain>();
     }
 
     private void Start()

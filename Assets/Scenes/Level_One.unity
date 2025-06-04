@@ -73400,7 +73400,7 @@ Transform:
   m_GameObject: {fileID: 519764089}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000051755038, y: 0.0000004768371, z: -0.00000018966087, w: 1}
-  m_LocalPosition: {x: 0, y: -0.1811, z: 0.52229667}
+  m_LocalPosition: {x: -3.038, y: -0.761, z: -12.224}
   m_LocalScale: {x: 0.0013640429, y: 0.0013640429, z: 0.0015054031}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -73423,7 +73423,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 213.71494, y: 260.37384, z: 104.337296}
   m_Center: {x: -12.600821, y: -8.538392, z: 2.1686103}
@@ -84397,7 +84397,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3d3058716ccc7f43b69c625049564fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiresHand: 0
+  requiresHand: 1
 --- !u!1 &602984313
 GameObject:
   m_ObjectHideFlags: 0
@@ -129090,7 +129090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &895491775
 Transform:
   m_ObjectHideFlags: 0
@@ -210270,7 +210270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1365967027
 Transform:
   m_ObjectHideFlags: 0
@@ -268742,7 +268742,7 @@ MonoBehaviour:
   - {fileID: 814340396}
   pieceGo: {fileID: 895491774}
   handPiece: {fileID: 1365967026}
-  pieceTravelToBoard: {fileID: 0}
+  pieceTravelToBoard: {fileID: 1502238430}
   targets:
   - {fileID: 1650459181}
   - {fileID: 1984648628}
@@ -268787,7 +268787,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1719674621}
           m_TargetAssemblyTypeName: BoardPuzzleManager, Assembly-CSharp
-          m_MethodName: OnPieceTravelAnimationEnd
+          m_MethodName: CanInteractWithPuzzle
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

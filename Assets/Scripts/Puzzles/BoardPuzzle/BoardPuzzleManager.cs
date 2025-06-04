@@ -45,6 +45,7 @@ public class BoardPuzzleManager : MonoBehaviour
     private bool canInteract = false;
     private bool canGoBack;
     private bool pieceOnBoard;
+    private bool isFirstTime = true;
 
     [SerializeField] ObjectsToPick requiredObj;
 
@@ -107,73 +108,53 @@ public class BoardPuzzleManager : MonoBehaviour
 
     void OnPuzzleMethod(PuzzleInteractor interactor)
     {
-        if (!HasPiece)
-            SetPieceOnBoard();
-        else
-            EnterPuzzle();
-
-    }
-
-    public void SetPieceOnBoard()
-    {
-        if (HasWon) return;
-
-        if (!pieceOnBoard)
-        {
-            if (PickedObjData.Instance.WasPicked(requiredObj))
-            {
-                StartCoroutine(EnterPuzzleCoroutine(true));
-                return;
-            }
-        }
-        else
-        {
-            StartCoroutine(CannotEnter(interactor));
-        }
-    }
-
-    public void OnPieceTravelAnimationEnd()
-    {
         EnterPuzzle();
     }
 
-    private void EnterPuzzle()
+    public void EnterPuzzle()
     {
         if (HasWon) return;
 
-        movePiece.enabled = true;
-        interactor.DisableOutline();
-        interactorCollider.enabled = false;
-        OnPuzzle = true;
-        TurnPuzzleCamera(OnPuzzle);
-        StartCoroutine(EnterPuzzleCoroutine(false));
+        if (PickedObjData.Instance.WasPicked(requiredObj) || pieceOnBoard)
+        {
+            StartCoroutine(EnterPuzzleCoroutine());
+            return;
+        }
+
+        StartCoroutine(CannotEnter(interactor));
     }
 
-    public IEnumerator EnterPuzzleCoroutine(bool isFirstTime)
+    public IEnumerator EnterPuzzleCoroutine()
     {
+        TurnPuzzleCamera(true);
+        interactor.DisableOutline();
+        interactorCollider.enabled = false;
         canGoBack = false;
         canInteract = false;
-
         yield return new WaitForSeconds(1.5f);
-
         canGoBack = true;
         canInteract = true;
-
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
 
         if (isFirstTime)
         {
             pieceTravelToBoard.Play();
-            PickedObjData.Instance.MarkAsThrowed(requiredObj);
             HasPiece = true;
             pieceOnBoard = true;
+            PickedObjData.Instance.MarkAsThrowed(requiredObj);
+            isFirstTime = false;
         }
         else
         {
-            EnterPuzzle();
+            CanInteractWithPuzzle();
         }
     }
 
+    public void CanInteractWithPuzzle()
+    {
+        movePiece.enabled = true;
+        OnPuzzle = true;
+    }
 
     public void BackToGameplay()
     {
@@ -229,7 +210,6 @@ public class BoardPuzzleManager : MonoBehaviour
         if (!canInteract || isMoving) return;
 
         isMoving = true;
-        AudioManager.Instance.PlaySound("MoveStone2");
         direction = pressedDirection;
 
         if (selectedPiece == null || currentWp == null)
@@ -270,6 +250,7 @@ public class BoardPuzzleManager : MonoBehaviour
         }
 
         SetPiecesTrigger(false);
+        AudioManager.Instance.PlaySound("MoveStone2");
 
         while (Vector3.Distance(piece.transform.position, targetPos) > 0.01f)
         {
@@ -282,7 +263,6 @@ public class BoardPuzzleManager : MonoBehaviour
 
         currentW.IsUsing = false;
         nextW.IsUsing = true;
-        //AudioManager.Instance.PlaySound("MovePieceBoard");
         piece.currentWp = nextW;
         currentWp = nextW;
         isMoving = false;
