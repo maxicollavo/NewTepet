@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class C_PyramidGrab : MonoBehaviour
 {
@@ -9,16 +10,10 @@ public class C_PyramidGrab : MonoBehaviour
     [SerializeField] PyramidPicking pickManager;
 
     [Header("References")]
-    [SerializeField] CinemachineCamera lookAtDoorCam;
-    [SerializeField] CinemachineCamera lookAtStandCam;
-    private CinemachineBrain brain;
-    [SerializeField] Transform lookAtTarget;
-    Transform originalLookAt;
-    [SerializeField] Animator doorAnim;
+    [SerializeField] PlayableDirector pickPyramidTimeline;
 
     private void Start()
     {
-        brain = Camera.main.GetComponent<CinemachineBrain>();
         pickManager.OnPicking += OnPyramidPicking;
     }
 
@@ -29,31 +24,18 @@ public class C_PyramidGrab : MonoBehaviour
 
     public void OnPyramidPicking(PyramidPicking manager)
     {
-        StartCoroutine(Cinematic());
+        Cinematic();
     }
 
-    private IEnumerator Cinematic()
+    private void Cinematic()
     {
-        lookAtStandCam.gameObject.SetActive(true);
-        yield return new WaitForSeconds(2f);
-
+        pickPyramidTimeline.Play();
+        AudioManager.Instance.PlaySound("Grab");
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
-        lookAtDoorCam.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1.3f);
-
-        doorAnim.SetTrigger("OpenDoor");
-        yield return new WaitForSeconds(1f);
-
-        lookAtDoorCam.gameObject.SetActive(false);
-        yield return new WaitForSeconds(2f);
-
-        lookAtStandCam.gameObject.SetActive(false);
-        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 
-    private IEnumerator WaitForBlendEnd()
+    public void CallOnGameplay()
     {
-        while (brain.IsBlending)
-            yield return null;
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 }

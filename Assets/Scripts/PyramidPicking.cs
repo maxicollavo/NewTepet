@@ -7,11 +7,6 @@ public class PyramidPicking : MonoBehaviour, Interactor
 
     [SerializeField] Outline outline;
 
-    [SerializeField] GameObject handPyramid;
-    [SerializeField] GameObject grabbedPyramid;
-    [SerializeField] GameObject coneLight;
-    [SerializeField] Animator door;
-
     private void Start()
     {
         outline.enabled = false;
@@ -39,10 +34,6 @@ public class PyramidPicking : MonoBehaviour, Interactor
     private void GrabPyramid()
     {
         OnPicking?.Invoke(this);
-        handPyramid.SetActive(true);
-        grabbedPyramid.SetActive(false);
-        coneLight.SetActive(false);
-        AudioManager.Instance.PlaySound("Grab");
         UIManager.Instance.ChangeCursor(false);
     }
 
