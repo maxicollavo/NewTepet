@@ -150,8 +150,6 @@ public class Tracker : MonoBehaviour
         }
     }
 
-
-
     private void RestartTracking()
     {
         isTracking = false;
@@ -160,14 +158,24 @@ public class Tracker : MonoBehaviour
         currentMeshes.Clear(); // Limpiamos la lista de meshes también
     }
 
-
     private void CheckIfValid(Node node)
     {
-        if (validNodes.Contains(node) && !currentPath.Contains(node))
+        if (node == null || !validNodes.Contains(node) || currentPath.Contains(node))
+            return;
+
+        if (currentPath.Count == 0)
         {
-            AddNode(node);
-            CheckWin();
+            // Si es el primer nodo, debe ser el que tenga isFirst == true
+            if (!node.isFirst)
+            {
+                // Reiniciamos el tracking si no empieza por el primer nodo correcto
+                RestartTracking();
+                return;
+            }
         }
+
+        AddNode(node);
+        CheckWin();
     }
 
     private void CheckWin()
@@ -202,7 +210,6 @@ public class Tracker : MonoBehaviour
         TurnOrRestartNodes(nodeMesh, true);
     }
 
-
     private void TurnOrRestartNodes(MeshRenderer mesh, bool state)
     {
         if (state && mesh != null)
@@ -220,7 +227,6 @@ public class Tracker : MonoBehaviour
             }
         }
     }
-
 
     private void ParticleTracking(bool isTracking)
     {
