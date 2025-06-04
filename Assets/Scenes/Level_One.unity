@@ -18729,6 +18729,7 @@ MonoBehaviour:
   - {fileID: 1118649836}
   pieceGo: {fileID: 1851686644}
   handPiece: {fileID: 1365967026}
+  pieceTravelToBoard: {fileID: 0}
   targets:
   - {fileID: 1726563009}
   - {fileID: 76043878}
@@ -129089,7 +129090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &895491775
 Transform:
   m_ObjectHideFlags: 0
@@ -210262,13 +210263,14 @@ GameObject:
   - component: {fileID: 1365967027}
   - component: {fileID: 1365967032}
   - component: {fileID: 1365967031}
+  - component: {fileID: 1365967033}
   m_Layer: 18
   m_Name: Hand_Owl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1365967027
 Transform:
   m_ObjectHideFlags: 0
@@ -210283,7 +210285,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1621302990}
-  m_LocalEulerAnglesHint: {x: -128.166, y: -89.528015, z: -170.575}
+  m_LocalEulerAnglesHint: {x: -0.000001577858, y: 0.407345, z: -0.0000008666243}
 --- !u!23 &1365967031
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -210336,6 +210338,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1365967026}
   m_Mesh: {fileID: 7384328630774979640, guid: 14714a32dd8bfb6418d43fb7999a70f4, type: 3}
+--- !u!95 &1365967033
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1365967026}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1366327451
 GameObject:
   m_ObjectHideFlags: 0
@@ -221630,6 +221654,63 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &1502238428
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1502238429}
+  - component: {fileID: 1502238430}
+  m_Layer: 0
+  m_Name: PieceTravelToBoard
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1502238429
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502238428}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1976487090}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &1502238430
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1502238428}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: bfa2f788e8a53dc488baead456738724, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 9158338709376015205, guid: bfa2f788e8a53dc488baead456738724, type: 2}
+    value: {fileID: 1365967033}
+  - key: {fileID: -8153743745798977949, guid: bfa2f788e8a53dc488baead456738724, type: 2}
+    value: {fileID: 895491774}
+  - key: {fileID: 5286002765272587745, guid: bfa2f788e8a53dc488baead456738724, type: 2}
+    value: {fileID: 1365967026}
+  - key: {fileID: -8250230224469120800, guid: bfa2f788e8a53dc488baead456738724, type: 2}
+    value: {fileID: 1719674622}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1001 &1502697769
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -268566,6 +268647,7 @@ GameObject:
   - component: {fileID: 1719674620}
   - component: {fileID: 1719674619}
   - component: {fileID: 1719674621}
+  - component: {fileID: 1719674622}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -268660,6 +268742,7 @@ MonoBehaviour:
   - {fileID: 814340396}
   pieceGo: {fileID: 895491774}
   handPiece: {fileID: 1365967026}
+  pieceTravelToBoard: {fileID: 0}
   targets:
   - {fileID: 1650459181}
   - {fileID: 1984648628}
@@ -268684,6 +268767,36 @@ MonoBehaviour:
   CM_PuzzleCamera: {fileID: 601596046}
   requiredObj: 0
   interactor: {fileID: 1077213605}
+--- !u!114 &1719674622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719674617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: 93228154af483f6499fa11cc8fc8853e, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1719674621}
+          m_TargetAssemblyTypeName: BoardPuzzleManager, Assembly-CSharp
+          m_MethodName: OnPieceTravelAnimationEnd
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1001 &1719871411
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -306990,6 +307103,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1975843540}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1976487089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1976487090}
+  m_Layer: 0
+  m_Name: Timelines
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1976487090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976487089}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 196.33359, y: 3.1906471, z: 155.72122}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1502238429}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1977332381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -346199,6 +346344,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1580862476}
+  - {fileID: 1976487090}
   - {fileID: 202247502}
   - {fileID: 596941262}
   - {fileID: 1760953790}

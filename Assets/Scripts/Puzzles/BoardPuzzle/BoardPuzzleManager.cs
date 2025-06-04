@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class BoardPuzzleManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class BoardPuzzleManager : MonoBehaviour
     private BoardPiece selectedPiece;
     public GameObject pieceGo;
     public GameObject handPiece;
+    [SerializeField] PlayableDirector pieceTravelToBoard;
 
     [Header("Waypoints")]
     private BoardWaypoint currentWp;
@@ -42,6 +44,7 @@ public class BoardPuzzleManager : MonoBehaviour
     private bool HasWon;
     private bool canInteract = false;
     private bool canGoBack;
+    private bool pieceOnBoard;
 
     [SerializeField] ObjectsToPick requiredObj;
 
@@ -104,45 +107,73 @@ public class BoardPuzzleManager : MonoBehaviour
 
     void OnPuzzleMethod(PuzzleInteractor interactor)
     {
-        SetOnPuzzle();
+        if (!HasPiece)
+            SetPieceOnBoard();
+        else
+            EnterPuzzle();
+
     }
 
-    private void SetOnPuzzle()
+    public void SetPieceOnBoard()
     {
         if (HasWon) return;
 
-        if (PickedObjData.Instance.WasPicked(requiredObj))
+        if (!pieceOnBoard)
         {
-            HasPiece = true;
-            pieceGo.SetActive(true);
-            handPiece.SetActive(false);
-            PickedObjData.Instance.MarkAsThrowed(requiredObj);
-            return;
+            if (PickedObjData.Instance.WasPicked(requiredObj))
+            {
+                StartCoroutine(EnterPuzzleCoroutine(true));
+                return;
+            }
         }
-
-        if (!HasPiece)
+        else
         {
             StartCoroutine(CannotEnter(interactor));
-            return;
         }
+    }
+
+    public void OnPieceTravelAnimationEnd()
+    {
+        EnterPuzzle();
+    }
+
+    private void EnterPuzzle()
+    {
+        if (HasWon) return;
 
         movePiece.enabled = true;
         interactor.DisableOutline();
         interactorCollider.enabled = false;
         OnPuzzle = true;
         TurnPuzzleCamera(OnPuzzle);
-        StartCoroutine(EnterPuzzleCoroutine());
+        StartCoroutine(EnterPuzzleCoroutine(false));
     }
 
-    public IEnumerator EnterPuzzleCoroutine()
+    public IEnumerator EnterPuzzleCoroutine(bool isFirstTime)
     {
         canGoBack = false;
         canInteract = false;
+
         yield return new WaitForSeconds(1.5f);
+
         canGoBack = true;
         canInteract = true;
+
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
+
+        if (isFirstTime)
+        {
+            pieceTravelToBoard.Play();
+            PickedObjData.Instance.MarkAsThrowed(requiredObj);
+            HasPiece = true;
+            pieceOnBoard = true;
+        }
+        else
+        {
+            EnterPuzzle();
+        }
     }
+
 
     public void BackToGameplay()
     {
