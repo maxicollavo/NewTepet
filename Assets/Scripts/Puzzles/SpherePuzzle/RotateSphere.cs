@@ -14,6 +14,9 @@ public class RotateSphere : MonoBehaviour, Interactor
     [SerializeField] ParticleSystem particle;
     [SerializeField] SphereCollider mimicSphereColl;
     [SerializeField] private float emissionIntensity;
+    Material fillMat;
+    private float fillAmount;
+    private int fillCounter;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -33,6 +36,9 @@ public class RotateSphere : MonoBehaviour, Interactor
     private void OnEnable()
     {
         SetSphereMaterials(SphereStates.Idle);
+
+        var renderer = GetComponent<MeshRenderer>();
+        fillMat = renderer.materials[5];
     }
 
     private void Awake()
@@ -204,6 +210,27 @@ public class RotateSphere : MonoBehaviour, Interactor
         this.transform.rotation = rotacionNecesaria * this.transform.rotation;
     }
 
+    private void CheckFillAmount()
+    {
+        switch (fillCounter)
+        {
+            case 0:
+                fillMat.SetFloat("_FillAmount", 0f);
+                break;
+            case 1:
+                fillMat.SetFloat("_FillAmount", 0.28f);
+                break;
+            case 2:
+                fillMat.SetFloat("_FillAmount", 0.35f);
+                break;
+            case 3:
+                fillMat.SetFloat("_FillAmount", 1f);
+                break;
+            default:
+                break;
+        }
+    }
+
 
     private void CheckFrontImage()
     {
@@ -213,15 +240,12 @@ public class RotateSphere : MonoBehaviour, Interactor
 
         Transform currentImage = winImagePoints[currentImageIndex];
         float distance = Vector3.Distance(puzzleCamera.transform.position, currentImage.position);
-
-
-        Debug.Log("Distancia al frente de la cámara: " + distance);
-
         float proximityTolerance = 0.54f;
 
         if (distance < proximityTolerance)
         {
             currentImageIndex++;
+            fillCounter++;
             particle.Play();
             StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
             Debug.Log("Imagen detectada al frente, avanzando...");
@@ -236,9 +260,12 @@ public class RotateSphere : MonoBehaviour, Interactor
         else
         {
             currentImageIndex = 0;
+            fillCounter = 0;
             //Cuando hacemos mal el movimiento
             StartCoroutine(ConfirmMovement(SphereStates.Loose, SphereStates.Idle));
         }
+
+        CheckFillAmount();
     }
 
     private IEnumerator ConfirmMovement(SphereStates first, SphereStates second)
