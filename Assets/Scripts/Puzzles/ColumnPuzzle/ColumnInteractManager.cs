@@ -98,15 +98,12 @@ public class ColumnInteractManager : MonoBehaviour
     {
         if (forward == null || lookAtTarget == null || currentlySelected == null) return;
 
-        Vector3 diff = lookAtTarget.position - forward.position;
-        diff.y = 0;
-        float distance = diff.magnitude;
+        var desiredForward = lookAtTarget.position - currentlySelected.transform.position;
+        var actualForward = forward.position - currentlySelected.transform.position;
+        var angle = Vector3.Angle(desiredForward, actualForward);
 
-        if (distance < winThreshold)
-        {
-            Win();
-        }
-        else if (distance < alignThreshold)
+
+        if(angle < alignThreshold)
         {
             isAligning = true;
 
@@ -122,6 +119,31 @@ public class ColumnInteractManager : MonoBehaviour
             Quaternion deltaRotation = Quaternion.FromToRotation(currentDir, targetDir);
             targetRotation = deltaRotation * columnTransform.rotation;
         }
+
+        //Vector3 diff = lookAtTarget.position - forward.position;
+        //diff.y = 0;
+        //float distance = diff.magnitude;
+
+        if (angle < winThreshold)
+        {
+            Win();
+        }
+        //else if (distance < alignThreshold)
+        //{
+        //    isAligning = true;
+
+        //    Transform columnTransform = currentlySelected.columnToRotate.transform;
+        //    Vector3 columnPos = columnTransform.position;
+
+        //    Vector3 currentDir = (forward.position - columnPos).normalized;
+        //    Vector3 targetDir = (lookAtTarget.position - columnPos).normalized;
+
+        //    currentDir.y = 0;
+        //    targetDir.y = 0;
+
+        //    Quaternion deltaRotation = Quaternion.FromToRotation(currentDir, targetDir);
+        //    targetRotation = deltaRotation * columnTransform.rotation;
+        //}
     }
 
     private void Win()
