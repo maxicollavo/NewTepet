@@ -17,7 +17,6 @@ public class Torch : MonoBehaviour, Interactor
     BoxCollider coll;
     private bool CanInteract = true;
     public ParticleSystem ParticleSystem;
-    public GameObject heatShader;
     public GameObject torchLight;
     private Light torchLightSource;
     private float originalLightIntensity;
@@ -123,7 +122,6 @@ public class Torch : MonoBehaviour, Interactor
         if (!ParticleSystem.isPlaying)
         {
             ParticleSystem.Play();
-            heatShader.SetActive(true);
         }
 
         torchLight.SetActive(true);
@@ -158,7 +156,6 @@ public class Torch : MonoBehaviour, Interactor
         if (Mathf.Approximately(toAlpha, 0f))
         {
             ParticleSystem.Stop();
-            heatShader.SetActive(false);
             torchLight.SetActive(false);
         }
     }

@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class BoardOnWin : MonoBehaviour
 {
-    [SerializeField] List<GameObject> torchParticles;
+    [SerializeField] GameObject torchParticles;
     [SerializeField] List<BoxCollider> colliders;
     [SerializeField] List<BoxCollider> boardColliders;
     [SerializeField] List<GameObject> lights;
-    [SerializeField] List<GameObject> heatShaders;
 
     [SerializeField] BoardPuzzleManager manager;
 
@@ -20,17 +19,14 @@ public class BoardOnWin : MonoBehaviour
 
     private void OnWinMethod(BoardPuzzleManager manager)
     {
-        foreach (var particle in torchParticles)
-        {
-            particle.SetActive(true);
-        }
+        torchParticles.SetActive(true);
 
         foreach (var coll in colliders)
         {
             coll.enabled = true;
         }
 
-        foreach(var light in lights)
+        foreach (var light in lights)
         {
             light.SetActive(true);
         }
@@ -38,11 +34,6 @@ public class BoardOnWin : MonoBehaviour
         foreach (var colls in boardColliders)
         {
             colls.enabled = false;
-        }
-
-        foreach (var heat in heatShaders)
-        {
-            heat.SetActive(true);
         }
     }
 }
