@@ -56,9 +56,11 @@ public class ColumnInteractManager : MonoBehaviour
 
             if (Input.GetKey(KeyCode.D))
                 columnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+        }
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                CheckAlignment();
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            CheckAllAlignments();
         }
 
         if (Input.GetMouseButtonDown(1))
@@ -69,28 +71,26 @@ public class ColumnInteractManager : MonoBehaviour
         }
     }
 
-    private void CheckAlignment()
+    private void CheckAllAlignments()
     {
-        if (forward == null || lookAtTarget == null || currentlySelected == null || columnTransform == null) return;
-
-        Vector3 pos = columnTransform.position;
-
-        var desiredForward = lookAtTarget.position - pos;
-        var actualForward = forward.position - pos;
-
-        desiredForward.y = 0;
-        actualForward.y = 0;
-
-        var angle = Vector3.Angle(desiredForward, actualForward);
-        Debug.Log($"El angulo de la columna {columnTransform.gameObject} es {angle}");
-
-        if (angle < alignThreshold)
+        foreach (var pair in columnSelecteds)
         {
-            currentlySelected.isAligned = true;
-        }
-        else
-        {
-            currentlySelected.isAligned = false;
+            ColumnSelected column = pair.Key;
+
+            if (column.forward == null || column.lookAtTarget == null || column.columnToRotate == null) continue;
+
+            Transform columnTransform = column.columnToRotate.transform;
+            Vector3 pos = columnTransform.position;
+
+            var desiredForward = column.lookAtTarget.position - pos;
+            var actualForward = column.forward.position - pos;
+
+            desiredForward.y = 0;
+            actualForward.y = 0;
+
+            var angle = Vector3.Angle(desiredForward, actualForward);
+
+            column.isAligned = angle < alignThreshold;
         }
 
         CheckIfPuzzleCompleted();
