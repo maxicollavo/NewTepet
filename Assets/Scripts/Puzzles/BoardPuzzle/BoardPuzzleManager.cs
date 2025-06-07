@@ -47,7 +47,7 @@ public class BoardPuzzleManager : MonoBehaviour
     [SerializeField] bool pieceIsRequired;
 
     [SerializeField] ObjectsToPick requiredObj;
-
+    public GameObject uiBoardPuzzle;
     private Dictionary<BoardPiece, BoardWaypoint> pieceTargetMap = new Dictionary<BoardPiece, BoardWaypoint>();
 
     [SerializeField] PuzzleInteractor interactor;
@@ -131,7 +131,9 @@ public class BoardPuzzleManager : MonoBehaviour
 
     public IEnumerator EnterPuzzleCoroutine()
     {
+
         TurnPuzzleCamera(true);
+        uiBoardPuzzle.SetActive(true);
         interactor.DisableOutline();
         interactorCollider.enabled = false;
         canGoBack = false;
@@ -174,6 +176,7 @@ public class BoardPuzzleManager : MonoBehaviour
         }
         movePiece.enabled = false;
         OnPuzzle = false;
+        uiBoardPuzzle.SetActive(false);
         TurnPuzzleCamera(OnPuzzle);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
         StartCoroutine(ExitPuzzleCoroutine());

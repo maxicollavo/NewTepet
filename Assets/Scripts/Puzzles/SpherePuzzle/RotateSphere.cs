@@ -17,6 +17,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     Material fillMat;
     private float fillAmount;
     private int fillCounter;
+    public GameObject uiPuzzle;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -102,6 +103,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
         DisableOutline();
         puzzleCamera.SetActive(true);
+        uiPuzzle.SetActive(true);
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
 
         isBeingHeld = true;
@@ -111,6 +113,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         isBeingHeld = false;
         puzzleCamera.SetActive(false);
+        uiPuzzle.SetActive(false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 

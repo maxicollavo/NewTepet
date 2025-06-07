@@ -19,7 +19,7 @@ public class HieroglyficManager : MonoBehaviour
     Transform originalLookAt;
 
     private bool hasEndedCinematic;
-
+    public ParticleSystem rocksParticle;
     public static HieroglyficManager Instance;
 
     private void Awake()
@@ -67,6 +67,7 @@ public class HieroglyficManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
         cinematic.Play();
         AudioManager.Instance.PlaySound("OpenTramp");
+        rocksParticle.Play();
         yield return new WaitForSeconds(0.5f);
         
         AudioManager.Instance.PlaySound("StoneParticleSound");
