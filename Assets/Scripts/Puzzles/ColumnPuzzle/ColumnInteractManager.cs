@@ -17,7 +17,6 @@ public class ColumnInteractManager : MonoBehaviour
     private Transform forward;
     private Transform lookAtTarget;
 
-    private bool isAligning = false;
     private Quaternion targetRotation;
 
     public bool canRotate;
@@ -114,7 +113,6 @@ public class ColumnInteractManager : MonoBehaviour
         canRotate = false;
     }
 
-
     private void AlignColumn(ColumnSelected column)
     {
         Transform columnTransform = column.columnToRotate.transform;
@@ -138,9 +136,8 @@ public class ColumnInteractManager : MonoBehaviour
 
         columnTransform.rotation = targetRotation;
 
-        //Sonido de alineamiento (puede ser tipo bloqueo)
+        //Sonido de alineamiento con algún tipo de eco (puede ser tipo bloqueo)
     }
-
 
     public void ClearSelection()
     {

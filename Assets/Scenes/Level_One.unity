@@ -18678,7 +18678,6 @@ MonoBehaviour:
   - {fileID: 1851686646}
   - {fileID: 679047069}
   - {fileID: 1118649836}
-  pieceGo: {fileID: 1851686644}
   handPiece: {fileID: 1365967026}
   pieceTravelToBoard: {fileID: 0}
   targets:
@@ -18703,6 +18702,8 @@ MonoBehaviour:
   - {fileID: 1118649838}
   interactorCollider: {fileID: 36285920}
   CM_PuzzleCamera: {fileID: 990229982}
+  isFirstTime: 0
+  pieceIsRequired: 0
   requiredObj: 0
   interactor: {fileID: 36285916}
 --- !u!23 &169354102
@@ -26879,7 +26880,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 155.58559, y: 3.342, z: 96.0694}
+  m_LocalPosition: {x: 206.79858, y: 3.342, z: 124.934395}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -98001,7 +98002,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 155.587, y: 1.922, z: 96.035}
+  m_LocalPosition: {x: 206.8, y: 1.922, z: 124.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -221666,30 +221667,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1230678811}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6cdb1c896bc8ac468cb370803c01e11, type: 3}
+  m_Script: {fileID: 11500000, guid: c245600a5befa214bb54903c8cb3b20b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  torchParticles: {fileID: 0}
-  colliders:
-  - {fileID: 453112641}
-  - {fileID: 1785625448}
-  - {fileID: 1162177488}
-  - {fileID: 1544785954}
-  boardColliders:
-  - {fileID: 36285920}
-  - {fileID: 1748859195}
-  - {fileID: 1203488292}
-  - {fileID: 512627664}
-  - {fileID: 146013261}
-  - {fileID: 388781758}
-  - {fileID: 1851686647}
-  - {fileID: 679047071}
-  - {fileID: 1118649838}
-  lights:
-  - {fileID: 939031555}
-  - {fileID: 699584606}
-  - {fileID: 361839268}
-  - {fileID: 1634348318}
   manager: {fileID: 169354101}
 --- !u!1001 &1230969881
 PrefabInstance:
@@ -302182,7 +302162,6 @@ MonoBehaviour:
   - {fileID: 895491781}
   - {fileID: 2079486378}
   - {fileID: 814340396}
-  pieceGo: {fileID: 895491774}
   handPiece: {fileID: 1365967026}
   pieceTravelToBoard: {fileID: 1502238430}
   targets:
@@ -302207,6 +302186,8 @@ MonoBehaviour:
   - {fileID: 814340391}
   interactorCollider: {fileID: 1077213603}
   CM_PuzzleCamera: {fileID: 601596046}
+  isFirstTime: 1
+  pieceIsRequired: 1
   requiredObj: 0
   interactor: {fileID: 1077213605}
 --- !u!114 &1719674622
@@ -320419,8 +320400,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 395.4968, y: 938.53955, z: 1307.3676}
-  m_Center: {x: -5.973808, y: 0.0010271578, z: 0.001980918}
+  m_Size: {x: 313.10394, y: 938.53955, z: 1307.3673}
+  m_Center: {x: 35.22265, y: 0.0010270339, z: 0.0019810726}
 --- !u!4 &1801182971 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cf6bec8a31bca5c4bb3ccc4217f446ad, type: 3}

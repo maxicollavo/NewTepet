@@ -17,7 +17,6 @@ public class BoardPuzzleManager : MonoBehaviour
     [Header("Pieces")]
     public BoardPiece[] pieces;
     private BoardPiece selectedPiece;
-    public GameObject pieceGo;
     public GameObject handPiece;
     [SerializeField] PlayableDirector pieceTravelToBoard;
 
@@ -40,12 +39,12 @@ public class BoardPuzzleManager : MonoBehaviour
     [SerializeField] BoxCollider interactorCollider;
     [SerializeField] GameObject CM_PuzzleCamera;
     public bool OnPuzzle { get; private set; }
-    private bool HasPiece;
     private bool HasWon;
     private bool canInteract = false;
     private bool canGoBack;
     private bool pieceOnBoard;
-    private bool isFirstTime = true;
+    [SerializeField] bool isFirstTime = true;
+    [SerializeField] bool pieceIsRequired;
 
     [SerializeField] ObjectsToPick requiredObj;
 
@@ -115,6 +114,12 @@ public class BoardPuzzleManager : MonoBehaviour
     {
         if (HasWon) return;
 
+        if (!pieceIsRequired)
+        {
+            StartCoroutine(EnterPuzzleCoroutine());
+            return;
+        }
+
         if (PickedObjData.Instance.WasPicked(requiredObj) || pieceOnBoard)
         {
             StartCoroutine(EnterPuzzleCoroutine());
@@ -139,7 +144,6 @@ public class BoardPuzzleManager : MonoBehaviour
         if (isFirstTime)
         {
             pieceTravelToBoard.Play();
-            HasPiece = true;
             pieceOnBoard = true;
             PickedObjData.Instance.MarkAsThrowed(requiredObj);
             isFirstTime = false;
