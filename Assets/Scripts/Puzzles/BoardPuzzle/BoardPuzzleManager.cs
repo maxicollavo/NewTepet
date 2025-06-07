@@ -131,9 +131,10 @@ public class BoardPuzzleManager : MonoBehaviour
 
     public IEnumerator EnterPuzzleCoroutine()
     {
+        if (uiBoardPuzzle != null)
+            uiBoardPuzzle.SetActive(true);
 
         TurnPuzzleCamera(true);
-        uiBoardPuzzle.SetActive(true);
         interactor.DisableOutline();
         interactorCollider.enabled = false;
         canGoBack = false;
@@ -174,9 +175,12 @@ public class BoardPuzzleManager : MonoBehaviour
             selectedPiece.DeselectPiece();
             selectedPiece = null;
         }
+
+        if (uiBoardPuzzle != null)
+            uiBoardPuzzle.SetActive(false);
+
         movePiece.enabled = false;
         OnPuzzle = false;
-        uiBoardPuzzle.SetActive(false);
         TurnPuzzleCamera(OnPuzzle);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
         StartCoroutine(ExitPuzzleCoroutine());
