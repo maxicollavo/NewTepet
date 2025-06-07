@@ -7,7 +7,8 @@ public class ScaleManager : MonoBehaviour
     [HideInInspector]
     public List<OnScaleActions> onScaleActions;
 
-    public Transform[] spawnPos;
+    public Transform[] leftSpawnPos;
+    public Transform[] rightSpawnPos;
 
     void Start()
     {
@@ -32,11 +33,11 @@ public class ScaleManager : MonoBehaviour
 
         if (plate == Plate.Left)
         {
-            ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, spawnPos[0].position, plate);
+            ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, leftSpawnPos[UnityEngine.Random.Range(0, leftSpawnPos.Length)].position, plate);
         }
         else
         {
-            ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, spawnPos[1].position, plate);
+            ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, rightSpawnPos[UnityEngine.Random.Range(1, rightSpawnPos.Length)].position, plate);
         }
 
         PickedObjData.Instance.MarkAsThrowed(PickedObjData.Instance.CurrentPickedObj);
