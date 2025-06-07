@@ -4,7 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class ColumnSelected : MonoBehaviour
 {
-    public Action<bool, ColumnSelected, Transform, Transform> OnSelectedAction;
+    public Action<bool, ColumnSelected, Transform, Transform, Transform> OnSelectedAction;
 
     private bool isSelected;
     [HideInInspector] public bool hasWon;
@@ -14,6 +14,7 @@ public class ColumnSelected : MonoBehaviour
     Outline outline;
     [HideInInspector] public BoxCollider coll;
     [SerializeField] ColumnInteractManager interactManager;
+    [SerializeField] Transform columnTransform;
 
     public Transform forward;
     public Transform lookAtTarget;
@@ -67,7 +68,7 @@ public class ColumnSelected : MonoBehaviour
     {
         isSelected = true;
         EnableOutline();
-        OnSelectedAction?.Invoke(isSelected, this, forward, lookAtTarget);
+        OnSelectedAction?.Invoke(isSelected, this, columnTransform, forward, lookAtTarget);
     }
 
     public void DeselectPiece()
@@ -76,7 +77,7 @@ public class ColumnSelected : MonoBehaviour
 
         isSelected = false;
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this, forward, lookAtTarget);
+        OnSelectedAction?.Invoke(isSelected, this, columnTransform, forward, lookAtTarget);
     }
 
     public void OnWin()

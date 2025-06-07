@@ -8,11 +8,12 @@ public class ColumnInteractManager : MonoBehaviour
     public Action<ColumnInteractManager> OnWinAction;
 
     [SerializeField] float rotationSpeed = 50f;
-    [SerializeField] float alignThreshold = 10f;
-    [SerializeField] float winThreshold = 0.1f;
+    [SerializeField] float alignThreshold;
+    [SerializeField] float winThreshold;
     [SerializeField] EnterColumnPuzzle enterPuzzle;
 
     private ColumnSelected currentlySelected;
+    private Transform columnTransform;
     private Transform forward;
     private Transform lookAtTarget;
 
@@ -21,10 +22,13 @@ public class ColumnInteractManager : MonoBehaviour
 
     public bool canRotate;
 
-    public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform greenPoint, Transform bluePoint)
+    public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform column, Transform greenPoint, Transform bluePoint)
     {
         if (currentlySelected != null && currentlySelected != selected)
             currentlySelected.DeselectPiece();
+
+        if (column != null)
+            columnTransform = column;
 
         if (isSelected)
         {
@@ -58,34 +62,6 @@ public class ColumnInteractManager : MonoBehaviour
                 CheckAlignment();
         }
 
-        if (isAligning && currentlySelected != null)
-        {
-            Transform columnTransform = currentlySelected.columnToRotate.transform;
-
-            columnTransform.rotation = Quaternion.RotateTowards(
-                columnTransform.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime
-            );
-
-            float angle = Quaternion.Angle(columnTransform.rotation, targetRotation);
-
-            if (angle < 0.1f)
-            {
-                isAligning = false;
-
-                Vector3 diff = lookAtTarget.position - forward.position;
-                diff.y = 0;
-
-                if (diff.magnitude < winThreshold)
-                {
-                    Debug.Log("¡Ganó!");
-                    columnTransform.rotation = targetRotation;
-                    Win();
-                }
-            }
-        }
-
         if (Input.GetMouseButtonDown(1))
         {
             enterPuzzle.EnterPuzzle(false);
@@ -96,17 +72,27 @@ public class ColumnInteractManager : MonoBehaviour
 
     private void CheckAlignment()
     {
-        if (forward == null || lookAtTarget == null || currentlySelected == null) return;
+        if (forward == null || lookAtTarget == null || currentlySelected == null || columnTransform == null) return;
 
-        var desiredForward = lookAtTarget.position - currentlySelected.transform.position;
-        var actualForward = forward.position - currentlySelected.transform.position;
+        Vector3 pos = columnTransform.position;
+
+        var desiredForward = lookAtTarget.position - pos;
+        var actualForward = forward.position - pos;
+
+        desiredForward.y = 0;
+        actualForward.y = 0;
+
         var angle = Vector3.Angle(desiredForward, actualForward);
+        Debug.Log("Ángulo actual: " + angle);
 
+        Debug.DrawLine(pos, pos + desiredForward.normalized * 2, Color.green, 2f);
 
-        if(angle < alignThreshold)
+        Debug.DrawLine(pos, pos + actualForward.normalized * 2, Color.red, 2f);
+
+        Debug.DrawLine(pos, lookAtTarget.position, Color.blue, 2f);
+
+        if (angle < alignThreshold)
         {
-            isAligning = true;
-
             Transform columnTransform = currentlySelected.columnToRotate.transform;
             Vector3 columnPos = columnTransform.position;
 
@@ -118,32 +104,16 @@ public class ColumnInteractManager : MonoBehaviour
 
             Quaternion deltaRotation = Quaternion.FromToRotation(currentDir, targetDir);
             targetRotation = deltaRotation * columnTransform.rotation;
+
+            columnTransform.rotation = targetRotation;
+
+            Win();
         }
-
-        //Vector3 diff = lookAtTarget.position - forward.position;
-        //diff.y = 0;
-        //float distance = diff.magnitude;
-
-        if (angle < winThreshold)
+        else if (angle < winThreshold)
         {
             Win();
         }
-        //else if (distance < alignThreshold)
-        //{
-        //    isAligning = true;
 
-        //    Transform columnTransform = currentlySelected.columnToRotate.transform;
-        //    Vector3 columnPos = columnTransform.position;
-
-        //    Vector3 currentDir = (forward.position - columnPos).normalized;
-        //    Vector3 targetDir = (lookAtTarget.position - columnPos).normalized;
-
-        //    currentDir.y = 0;
-        //    targetDir.y = 0;
-
-        //    Quaternion deltaRotation = Quaternion.FromToRotation(currentDir, targetDir);
-        //    targetRotation = deltaRotation * columnTransform.rotation;
-        //}
     }
 
     private void Win()
