@@ -83,42 +83,17 @@ public class ColumnInteractManager : MonoBehaviour
         actualForward.y = 0;
 
         var angle = Vector3.Angle(desiredForward, actualForward);
-        Debug.Log("Ángulo actual: " + angle);
-
-        Debug.DrawLine(pos, pos + desiredForward.normalized * 2, Color.green, 2f);
-
-        Debug.DrawLine(pos, pos + actualForward.normalized * 2, Color.red, 2f);
-
-        Debug.DrawLine(pos, lookAtTarget.position, Color.blue, 2f);
+        Debug.Log($"El angulo de la columna {columnTransform.gameObject} es {angle}");
 
         if (angle < alignThreshold)
         {
-            Transform columnTransform = currentlySelected.columnToRotate.transform;
-            Vector3 columnPos = columnTransform.position;
-
-            Vector3 currentDir = (forward.position - columnPos).normalized;
-            Vector3 targetDir = (lookAtTarget.position - columnPos).normalized;
-
-            currentDir.y = 0;
-            targetDir.y = 0;
-
-            Quaternion deltaRotation = Quaternion.FromToRotation(currentDir, targetDir);
-            targetRotation = deltaRotation * columnTransform.rotation;
-
-            columnTransform.rotation = targetRotation;
-
-            Win();
+            currentlySelected.isAligned = true;
         }
-        else if (angle < winThreshold)
+        else
         {
-            Win();
+            currentlySelected.isAligned = false;
         }
 
-    }
-
-    private void Win()
-    {
-        currentlySelected.OnWin();
         CheckIfPuzzleCompleted();
     }
 
@@ -126,12 +101,46 @@ public class ColumnInteractManager : MonoBehaviour
     {
         foreach (var pair in columnSelecteds)
         {
-            if (!pair.Key.hasWon) return;
+            if (!pair.Key.isAligned) return;
+        }
+
+        foreach (var pair in columnSelecteds)
+        {
+            AlignColumn(pair.Key);
+            pair.Key.OnWin();
         }
 
         OnWinAction?.Invoke(this);
         canRotate = false;
     }
+
+
+    private void AlignColumn(ColumnSelected column)
+    {
+        Transform columnTransform = column.columnToRotate.transform;
+        Vector3 pos = columnTransform.position;
+        Transform forwardPoint = column.forward;
+        Transform lookAtPoint = column.lookAtTarget;
+
+        if (forwardPoint == null || lookAtPoint == null)
+        {
+            return;
+        }
+
+        Vector3 currentDir = (forwardPoint.position - pos).normalized;
+        Vector3 targetDir = (lookAtPoint.position - pos).normalized;
+
+        currentDir.y = 0;
+        targetDir.y = 0;
+
+        Quaternion deltaRotation = Quaternion.FromToRotation(currentDir, targetDir);
+        Quaternion targetRotation = deltaRotation * columnTransform.rotation;
+
+        columnTransform.rotation = targetRotation;
+
+        //Sonido de alineamiento (puede ser tipo bloqueo)
+    }
+
 
     public void ClearSelection()
     {

@@ -18,6 +18,7 @@ public class ColumnSelected : MonoBehaviour
 
     public Transform forward;
     public Transform lookAtTarget;
+    public bool isAligned;
 
     private void Awake()
     {
@@ -67,6 +68,7 @@ public class ColumnSelected : MonoBehaviour
     public void SelectedPiece()
     {
         isSelected = true;
+        //Sonido de selección de columna (como el de las piezas del tablero)
         EnableOutline();
         OnSelectedAction?.Invoke(isSelected, this, columnTransform, forward, lookAtTarget);
     }

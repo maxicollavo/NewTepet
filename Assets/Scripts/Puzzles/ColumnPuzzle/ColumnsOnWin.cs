@@ -21,6 +21,7 @@ public class ColumnsOnWin : MonoBehaviour
     private IEnumerator OnWinCoroutine()
     {
         boxAnim.SetTrigger("Open");
+        //Sonido de apertura de caja
         yield return new WaitForSeconds(1f);
         enterPuzzle.EnterPuzzle(false);
         yield return new WaitForSeconds(0.1f);

@@ -56,6 +56,8 @@ public class PickToInventory : MonoBehaviour, Interactor
         HandInventory.Instance.ShowObjectInHand(obj);
         //Deshabilitamos el objeto pickeado
         gameObject.SetActive(false);
+        //Sonido de pickeo
+        AudioManager.Instance.PlaySound("Grab");
 
         if (isOnScale)
         {
