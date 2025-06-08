@@ -27050,7 +27050,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 152.86858, y: 3.342, z: 255.0004}
+  m_LocalPosition: {x: 208.61359, y: 3.342, z: 127.60739}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -98723,7 +98723,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 152.87, y: 1.922, z: 254.966}
+  m_LocalPosition: {x: 208.615, y: 1.922, z: 127.573}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -221493,7 +221493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manager: {fileID: 211521730}
   enterPuzzle: {fileID: 962070027}
-  boxAnim: {fileID: 0}
+  boxAnim: {fileID: 7781235646760197996}
 --- !u!1 &1214994915
 GameObject:
   m_ObjectHideFlags: 0
@@ -227417,6 +227417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 169354101}
+  anim: {fileID: 1265248748}
 --- !u!1001 &1230969881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -428137,7 +428138,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.009735676
   m_Center: {x: 0, y: 0, z: 0}
