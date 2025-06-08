@@ -24,15 +24,9 @@ public class HandInventory : MonoBehaviour
 
     public void DisableObjectInHand(ObjectsToPick obj)
     {
-        if (handObj.TryGetValue(obj, out GameObject go))
-        {
-            hasObjInHand = false;
-        }
-        else
-        {
-            Debug.LogWarning($"No se encontró el objeto en mano para: {obj}");
-        }
+        hasObjInHand = false;
     }
+
 
     public void ShowObjectInHand(ObjectsToPick obj)
     {
