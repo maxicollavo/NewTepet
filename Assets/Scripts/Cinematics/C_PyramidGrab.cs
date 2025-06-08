@@ -38,4 +38,9 @@ public class C_PyramidGrab : MonoBehaviour
     {
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
+
+    public void PlayDoorSound()
+    {
+        AudioManager.Instance.PlaySound("rocaMoviendose");
+    }
 }
