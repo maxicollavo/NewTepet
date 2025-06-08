@@ -17,6 +17,7 @@ public class HieroglyficManager : MonoBehaviour
     private CinemachineBrain brain;
     [SerializeField] Transform lookAtTarget;
     Transform originalLookAt;
+    [SerializeField] Light[] owlLights;
 
     private bool hasEndedCinematic;
     public ParticleSystem rocksParticle;
@@ -60,6 +61,12 @@ public class HieroglyficManager : MonoBehaviour
 
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
 
+        foreach (var light in owlLights)
+        {
+            //Guardas el estado original de todo lo que vayas a cambiar por ejemplo var originalIntensity = light.intensity;
+            //Cambias lo que tengas que cambiar
+        }
+
         originalLookAt = cam.LookAt;
         cam.LookAt = lookAtTarget;
         cam.gameObject.SetActive(true);
@@ -81,6 +88,10 @@ public class HieroglyficManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
+        foreach (var light in owlLights)
+        {
+            //Acá las devolves a su estado original con lo que guardaste antes
+        }
 
         hasEndedCinematic = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
