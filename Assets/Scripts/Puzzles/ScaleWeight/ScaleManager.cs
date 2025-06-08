@@ -39,7 +39,6 @@ public class ScaleManager : MonoBehaviour
         {
             ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, rightSpawnPos[UnityEngine.Random.Range(1, rightSpawnPos.Length)].position, plate);
         }
-
         PickedObjData.Instance.MarkAsThrowed(PickedObjData.Instance.CurrentPickedObj, true);
     }
 }

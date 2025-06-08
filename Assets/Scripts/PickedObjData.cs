@@ -47,15 +47,19 @@ public class PickedObjData : MonoBehaviour
         {
             pickedObjects[obj] = false;
 
+            ObjectsToPick oldPickedObj = currentPickedObj;
+
             if (currentPickedObj == obj)
             {
                 currentPickedObj = ObjectsToPick.None;
             }
 
-            HandInventory.Instance.DisableObjectInHand(currentPickedObj);
+            HandInventory.Instance.DisableObjectInHand(oldPickedObj);
 
             if (state)
-                HandInventory.Instance.DisableGameObjectInHand(currentPickedObj);
+            {
+                HandInventory.Instance.DisableGameObjectInHand(oldPickedObj);
+            }
         }
     }
 
