@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -87,6 +87,16 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseTrigger();
+        }
+
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            SceneManager.LoadScene("Level_One");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            SceneManager.LoadScene("Level_Two");
         }
     }
 
