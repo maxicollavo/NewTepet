@@ -39,7 +39,20 @@ public class RotateSphere : MonoBehaviour, Interactor
         SetSphereMaterials(SphereStates.Idle);
 
         var renderer = GetComponent<MeshRenderer>();
-        fillMat = renderer.materials[5];
+        var materials = renderer.materials;
+
+        fillMat = materials[5];
+
+        if (materials.Length > 5)
+        {
+            Material[] newMaterials = new Material[6];
+            for (int i = 0; i < 6; i++)
+            {
+                newMaterials[i] = materials[i];
+            }
+
+            renderer.materials = newMaterials;
+        }
     }
 
     private void Awake()
@@ -83,11 +96,13 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         if (!canUse || isBeingHeld || hasWon) return;
         EnableOutline();
+        Debug.Log("Apunta");
     }
 
     public void EnableOutline()
     {
         outline.enabled = true;
+        Debug.Log("Enciende outline");
         UIManager.Instance.ChangeCursor(true);
     }
 
@@ -154,7 +169,6 @@ public class RotateSphere : MonoBehaviour, Interactor
                 glassColor = Color.red * emissionIntensity;
                 break;
             case SphereStates.Idle:
-                // Desactivar emission
                 materials[3].DisableKeyword("_EMISSION");
                 glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f);
                 break;
