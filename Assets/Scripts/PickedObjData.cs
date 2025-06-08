@@ -41,17 +41,21 @@ public class PickedObjData : MonoBehaviour
     }
 
     //Llamar a este metodo cuando se suelte un objeto
-    public void MarkAsThrowed(ObjectsToPick obj)
+    public void MarkAsThrowed(ObjectsToPick obj, bool state)
     {
         if (pickedObjects.ContainsKey(obj))
         {
             pickedObjects[obj] = false;
-            HandInventory.Instance.DisableObjectInHand(currentPickedObj);
 
             if (currentPickedObj == obj)
             {
                 currentPickedObj = ObjectsToPick.None;
             }
+
+            HandInventory.Instance.DisableObjectInHand(currentPickedObj);
+
+            if (state)
+                HandInventory.Instance.DisableGameObjectInHand(currentPickedObj);
         }
     }
 

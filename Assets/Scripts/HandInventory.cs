@@ -26,7 +26,6 @@ public class HandInventory : MonoBehaviour
     {
         if (handObj.TryGetValue(obj, out GameObject go))
         {
-            go.SetActive(false);
             hasObjInHand = false;
         }
         else
@@ -45,6 +44,14 @@ public class HandInventory : MonoBehaviour
         else
         {
             Debug.LogWarning($"No se encontró el objeto en mano para: {obj}");
+        }
+    }
+
+    public void DisableGameObjectInHand(ObjectsToPick obj)
+    {
+        if (handObj.TryGetValue(obj, out GameObject go))
+        {
+            go.SetActive(false);
         }
     }
 

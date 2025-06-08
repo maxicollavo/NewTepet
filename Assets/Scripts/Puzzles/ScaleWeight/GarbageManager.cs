@@ -29,6 +29,6 @@ public class GarbageManager : MonoBehaviour
         }
 
         ObjectCreator.Instance.InstantiateObject(PickedObjData.Instance.CurrentPickedObj, spawnPoint.position, Plate.None);
-        PickedObjData.Instance.MarkAsThrowed(PickedObjData.Instance.CurrentPickedObj);
+        PickedObjData.Instance.MarkAsThrowed(PickedObjData.Instance.CurrentPickedObj, true);
     }
 }

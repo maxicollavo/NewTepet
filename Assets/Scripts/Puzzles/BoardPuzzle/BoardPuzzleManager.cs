@@ -148,7 +148,7 @@ public class BoardPuzzleManager : MonoBehaviour
         {
             pieceTravelToBoard.Play();
             pieceOnBoard = true;
-            PickedObjData.Instance.MarkAsThrowed(requiredObj);
+            PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
             isFirstTime = false;
         }
         else

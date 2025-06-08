@@ -27050,7 +27050,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 208.61359, y: 3.342, z: 127.60739}
+  m_LocalPosition: {x: 181.02959, y: 3.342, z: 134.6184}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -78809,6 +78809,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 479636137}
   m_CullTransparentMesh: 1
+--- !u!1 &480671640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 480671641}
+  - component: {fileID: 480671642}
+  m_Layer: 0
+  m_Name: SphereTimeline
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &480671641
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480671640}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.10573222, y: 0.26380202, z: 0.15604588, w: -0.94598037}
+  m_LocalPosition: {x: -196.69958, y: -3.391647, z: -154.94623}
+  m_LocalScale: {x: 15.040001, y: 15.040001, z: 15.04}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1976487090}
+  m_LocalEulerAnglesHint: {x: 359, y: 359, z: 0}
+--- !u!320 &480671642
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480671640}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: f54917fce4ab7c2438911e78da9a9f1e, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -5158912030405043008, guid: f54917fce4ab7c2438911e78da9a9f1e, type: 2}
+    value: {fileID: 7534095875338713602}
+  - key: {fileID: 1386166241992949487, guid: f54917fce4ab7c2438911e78da9a9f1e, type: 2}
+    value: {fileID: 6082805577656037150}
+  - key: {fileID: -3038581386615624377, guid: f54917fce4ab7c2438911e78da9a9f1e, type: 2}
+    value: {fileID: 75284110}
+  - key: {fileID: -7472929441708999639, guid: f54917fce4ab7c2438911e78da9a9f1e, type: 2}
+    value: {fileID: 1298149480}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &481281345
 GameObject:
   m_ObjectHideFlags: 0
@@ -98723,7 +98780,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 208.615, y: 1.922, z: 127.573}
+  m_LocalPosition: {x: 181.031, y: 1.922, z: 134.584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -124291,6 +124348,7 @@ GameObject:
   m_Component:
   - component: {fileID: 729408278}
   - component: {fileID: 729408279}
+  - component: {fileID: 729408280}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -124356,6 +124414,19 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &729408280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 729408277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d3058716ccc7f43b69c625049564fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiresHand: 1
 --- !u!1001 &729598936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -180781,7 +180852,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -201631,7 +201702,7 @@ ParticleSystem:
   emitterVelocityMode: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -217702,9 +217773,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58ccc7e7ec7ef2f40a89486cd49c997c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sphereInHand: {fileID: 6082805577656037150}
-  baseSphere: {fileID: 75284110}
   requiredObj: 1
+  sphereTravelToBase: {fileID: 480671642}
+  CM_PuzzleCamera: {fileID: 729408277}
 --- !u!114 &1171212166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260859,6 +260930,8 @@ PlayableDirector:
     value: {fileID: 1365967026}
   - key: {fileID: -8250230224469120800, guid: bfa2f788e8a53dc488baead456738724, type: 2}
     value: {fileID: 1719674622}
+  - key: {fileID: -23798890027929042, guid: bfa2f788e8a53dc488baead456738724, type: 2}
+    value: {fileID: 1298149480}
   m_ExposedReferences:
     m_References: []
 --- !u!1001 &1502697769
@@ -373202,6 +373275,7 @@ Transform:
   m_Children:
   - {fileID: 1502238429}
   - {fileID: 1730365005}
+  - {fileID: 480671641}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1977446192
@@ -426550,6 +426624,7 @@ GameObject:
   - component: {fileID: 6854944676659836324}
   - component: {fileID: 7534095875338713601}
   - component: {fileID: 5722539116887559883}
+  - component: {fileID: 7534095875338713602}
   m_Layer: 18
   m_Name: Hand_Sphere
   m_TagString: Untagged
@@ -426864,7 +426939,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1621302990}
-  m_LocalEulerAnglesHint: {x: 6.76, y: -392.4, z: -20.7}
+  m_LocalEulerAnglesHint: {x: 359, y: 359, z: 0}
 --- !u!33 &6881984998489039058
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -427331,6 +427406,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6082805577656037150}
   m_Mesh: {fileID: 4864056309639282896, guid: 2393a91941bf43b4cb40afc96617813b, type: 3}
+--- !u!95 &7534095875338713602
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6082805577656037150}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!33 &7572893855172704958
 MeshFilter:
   m_ObjectHideFlags: 0
