@@ -12,6 +12,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 
     [SerializeField] PlayableDirector sphereTravelToBase;
     [SerializeField] GameObject CM_PuzzleCamera;
+    [SerializeField] PuzzleDefiner definer;
 
     private void Awake()
     {
@@ -60,6 +61,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
         TurnPuzzleCamera(true);
         DisableOutline();
         yield return new WaitForSeconds(1.5f);
+        definer.requiresHand = false;
         sphereTravelToBase.Play();
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }

@@ -17697,7 +17697,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 35, y: -501}
+  m_AnchoredPosition: {x: 6, y: -501}
   m_SizeDelta: {x: 4355.821, y: 285}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &152230654
@@ -19042,6 +19042,7 @@ MonoBehaviour:
   requiredObj: 0
   uiBoardPuzzle: {fileID: 0}
   interactor: {fileID: 36285916}
+  definer: {fileID: 0}
 --- !u!23 &169354102
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -27050,7 +27051,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 181.02959, y: 3.342, z: 134.6184}
+  m_LocalPosition: {x: 152.73859, y: 3.342, z: 256.1044}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -78864,6 +78865,8 @@ PlayableDirector:
     value: {fileID: 75284110}
   - key: {fileID: -7472929441708999639, guid: f54917fce4ab7c2438911e78da9a9f1e, type: 2}
     value: {fileID: 1298149480}
+  - key: {fileID: 3520917394379059080, guid: f54917fce4ab7c2438911e78da9a9f1e, type: 2}
+    value: {fileID: 1843872992}
   m_ExposedReferences:
     m_References: []
 --- !u!1 &481281345
@@ -98780,7 +98783,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 181.031, y: 1.922, z: 134.584}
+  m_LocalPosition: {x: 152.74, y: 1.922, z: 256.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -99316,7 +99319,7 @@ Transform:
   m_GameObject: {fileID: 601596046}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: 0.0000018477438}
-  m_LocalPosition: {x: -43.55002, y: 3.130128, z: -5.018997}
+  m_LocalPosition: {x: -43.55002, y: 3.04, z: -5.018997}
   m_LocalScale: {x: 0.38128, y: 0.38128, z: 0.38128}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -217776,6 +217779,7 @@ MonoBehaviour:
   requiredObj: 1
   sphereTravelToBase: {fileID: 480671642}
   CM_PuzzleCamera: {fileID: 729408277}
+  definer: {fileID: 729408280}
 --- !u!114 &1171212166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249752,7 +249756,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1621302990}
-  m_LocalEulerAnglesHint: {x: -0.000001577858, y: 0.407345, z: -0.0000008666243}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1365967031
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -260922,8 +260926,6 @@ PlayableDirector:
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
   m_SceneBindings:
-  - key: {fileID: 9158338709376015205, guid: bfa2f788e8a53dc488baead456738724, type: 2}
-    value: {fileID: 1365967033}
   - key: {fileID: -8153743745798977949, guid: bfa2f788e8a53dc488baead456738724, type: 2}
     value: {fileID: 895491774}
   - key: {fileID: 5286002765272587745, guid: bfa2f788e8a53dc488baead456738724, type: 2}
@@ -260932,6 +260934,8 @@ PlayableDirector:
     value: {fileID: 1719674622}
   - key: {fileID: -23798890027929042, guid: bfa2f788e8a53dc488baead456738724, type: 2}
     value: {fileID: 1298149480}
+  - key: {fileID: -784783042459020393, guid: bfa2f788e8a53dc488baead456738724, type: 2}
+    value: {fileID: 1365967033}
   m_ExposedReferences:
     m_References: []
 --- !u!1001 &1502697769
@@ -313424,6 +313428,7 @@ MonoBehaviour:
   requiredObj: 0
   uiBoardPuzzle: {fileID: 1843872992}
   interactor: {fileID: 1077213605}
+  definer: {fileID: 601596049}
 --- !u!114 &1719674622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331018,7 +331023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 08b80f9dfdbdc9144b2978d771b01477, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.45298767
+      value: 0.45298514
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 08b80f9dfdbdc9144b2978d771b01477, type: 3}
       propertyPath: m_LocalPosition.y
@@ -331026,7 +331031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 08b80f9dfdbdc9144b2978d771b01477, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.68299866
+      value: 0.6830003
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 08b80f9dfdbdc9144b2978d771b01477, type: 3}
       propertyPath: m_LocalRotation.w

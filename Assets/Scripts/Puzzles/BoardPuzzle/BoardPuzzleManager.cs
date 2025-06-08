@@ -51,6 +51,7 @@ public class BoardPuzzleManager : MonoBehaviour
     private Dictionary<BoardPiece, BoardWaypoint> pieceTargetMap = new Dictionary<BoardPiece, BoardWaypoint>();
 
     [SerializeField] PuzzleInteractor interactor;
+    [SerializeField] PuzzleDefiner definer;
 
     private void Start()
     {
@@ -131,9 +132,6 @@ public class BoardPuzzleManager : MonoBehaviour
 
     public IEnumerator EnterPuzzleCoroutine()
     {
-        if (uiBoardPuzzle != null)
-            uiBoardPuzzle.SetActive(true);
-
         TurnPuzzleCamera(true);
         interactor.DisableOutline();
         interactorCollider.enabled = false;
@@ -147,6 +145,7 @@ public class BoardPuzzleManager : MonoBehaviour
         if (isFirstTime)
         {
             pieceTravelToBoard.Play();
+            definer.requiresHand = false;
             pieceOnBoard = true;
             PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
             isFirstTime = false;
@@ -161,6 +160,8 @@ public class BoardPuzzleManager : MonoBehaviour
     {
         movePiece.enabled = true;
         OnPuzzle = true;
+        if (uiBoardPuzzle != null)
+            uiBoardPuzzle.SetActive(true);
     }
 
     public void BackToGameplay()
