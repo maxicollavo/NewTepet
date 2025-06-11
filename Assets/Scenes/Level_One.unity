@@ -31986,7 +31986,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 153.39958, y: 3.342, z: 255.0174}
+  m_LocalPosition: {x: 179.56859, y: 3.342, z: 112.70439}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -103954,7 +103954,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 153.401, y: 1.922, z: 254.983}
+  m_LocalPosition: {x: 179.57, y: 1.922, z: 112.67}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -132594,12 +132594,12 @@ GameObject:
   - component: {fileID: 764641017}
   - component: {fileID: 764641016}
   m_Layer: 2
-  m_Name: RB
+  m_Name: RB (Interfiere con la balanza)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &764641015
 Transform:
   m_ObjectHideFlags: 0
@@ -246918,7 +246918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1311707104}
   - component: {fileID: 1311707106}
-  - component: {fileID: 1311707105}
+  - component: {fileID: 1311707107}
   m_Layer: 0
   m_Name: Cuenco Izquierda
   m_TagString: Untagged
@@ -246946,22 +246946,6 @@ Transform:
   - {fileID: 101339124}
   m_Father: {fileID: 1274149099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!138 &1311707105
-FixedJoint:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1311707103}
-  serializedVersion: 1
-  m_ConnectedBody: {fileID: 523794208}
-  m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: 75000
-  m_BreakTorque: 75000
-  m_EnableCollision: 1
-  m_EnablePreprocessing: 1
-  m_MassScale: 1
-  m_ConnectedMassScale: 1
 --- !u!54 &1311707106
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -246989,6 +246973,45 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 1
+--- !u!59 &1311707107
+HingeJoint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1311707103}
+  serializedVersion: 3
+  m_ConnectedBody: {fileID: 523794208}
+  m_ConnectedArticulationBody: {fileID: 0}
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 0
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  m_UseSpring: 1
+  m_Spring:
+    spring: 20000
+    damper: 10
+    targetPosition: 0
+  m_UseMotor: 0
+  m_Motor:
+    targetVelocity: 0
+    force: 0
+    freeSpin: 0
+  m_UseLimits: 0
+  m_ExtendedLimits: 0
+  m_UseAcceleration: 0
+  m_Limits:
+    min: 0
+    max: 0
+    bounciness: 0
+    bounceMinVelocity: 0.2
+    contactDistance: 0
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
+  m_EnablePreprocessing: 1
+  m_MassScale: 1
+  m_ConnectedMassScale: 1
 --- !u!1 &1312686531
 GameObject:
   m_ObjectHideFlags: 0
@@ -271208,7 +271231,7 @@ Transform:
   m_GameObject: {fileID: 1505213996}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -923, z: 15}
+  m_LocalPosition: {x: -0, y: -957, z: 15}
   m_LocalScale: {x: 255.94424, y: 39.874268, z: 604.8943}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -431471,7 +431494,7 @@ GameObject:
   m_Component:
   - component: {fileID: 432553319155016967}
   - component: {fileID: 5414696958232867035}
-  - component: {fileID: 5414696958232867037}
+  - component: {fileID: 5414696958232867036}
   m_Layer: 0
   m_Name: Cuenco Derecha
   m_TagString: Untagged
@@ -431506,19 +431529,42 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 122
   m_CollisionDetection: 1
---- !u!138 &5414696958232867037
-FixedJoint:
+--- !u!59 &5414696958232867036
+HingeJoint:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5414696958232867033}
-  serializedVersion: 1
+  serializedVersion: 3
   m_ConnectedBody: {fileID: 1395069783}
   m_ConnectedArticulationBody: {fileID: 0}
-  m_BreakForce: 75000
-  m_BreakTorque: 75000
-  m_EnableCollision: 1
+  m_Anchor: {x: 0, y: 0, z: 0}
+  m_Axis: {x: 1, y: 0, z: 0}
+  m_AutoConfigureConnectedAnchor: 0
+  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  m_UseSpring: 1
+  m_Spring:
+    spring: 20000
+    damper: 10
+    targetPosition: 0
+  m_UseMotor: 0
+  m_Motor:
+    targetVelocity: 0
+    force: 0
+    freeSpin: 0
+  m_UseLimits: 0
+  m_ExtendedLimits: 0
+  m_UseAcceleration: 0
+  m_Limits:
+    min: 0
+    max: 0
+    bounciness: 0
+    bounceMinVelocity: 0.2
+    contactDistance: 0
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_EnableCollision: 0
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
