@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             audioSource = gameObject.AddComponent<AudioSource>();
             LoadAllAudio();
         }

@@ -8,14 +8,13 @@ public class MousePainter : MonoBehaviour
     [SerializeField] private Texture2D brushTex;
     private Renderer rend;
     public MaterialPropertyBlock propBlock;
-    [SerializeField] private int textureSize = 1024;
+    //[SerializeField] private int textureSize = 1024;
     private RenderTexture paintMask;
     void Start()
     {
         rend = GetComponent<Renderer>();
         propBlock = new MaterialPropertyBlock();
 
-        paintMask = new RenderTexture(textureSize, textureSize, 0, RenderTextureFormat.R8);
         paintMask.wrapMode = TextureWrapMode.Clamp;
         paintMask.filterMode = FilterMode.Bilinear;
         paintMask.name = "PaintMask";
