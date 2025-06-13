@@ -1,9 +1,14 @@
 fileFormatVersion: 2
-guid: 4b9d55e45f306864eb0715d518f2c7e2
+guid: 5dda5fe7d89b19e49abebc4d8b697972
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: high
+    second: {fileID: 2100000, guid: 879a9947d87d6a64cb736d571372b0a4, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -55,7 +60,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    optimizeBones: 1
+    optimizeBones: 0
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -76,7 +81,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []
