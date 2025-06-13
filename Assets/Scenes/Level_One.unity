@@ -37067,7 +37067,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 180.59859, y: 2.53, z: 145.1344}
+  m_LocalPosition: {x: 155.22858, y: 2.53, z: 254.37439}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -114900,7 +114900,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 180.6, y: 1.11, z: 145.1}
+  m_LocalPosition: {x: 155.23, y: 1.11, z: 254.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -122375,7 +122375,7 @@ Transform:
   m_GameObject: {fileID: 632736876}
   serializedVersion: 2
   m_LocalRotation: {x: 0.9689269, y: 0.04774715, z: 0.17679867, w: -0.16626202}
-  m_LocalPosition: {x: 184.771, y: 0.04, z: 134.291}
+  m_LocalPosition: {x: 184.684, y: -0.051, z: 134.527}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -162536,6 +162536,10 @@ PrefabInstance:
     - target: {fileID: 5314876740779372669, guid: fbb7c0617ab33fa408afdc449a2c4e89, type: 3}
       propertyPath: m_Name
       value: plano de benda
+      objectReference: {fileID: 0}
+    - target: {fileID: 5314876740779372669, guid: fbb7c0617ab33fa408afdc449a2c4e89, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -384533,7 +384537,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1877144429
 Transform:
   m_ObjectHideFlags: 0
@@ -466952,7 +466956,7 @@ MeshRenderer:
   - {fileID: 2100000, guid: 1673bfd12509dd9469118dc9b6f7210a, type: 2}
   - {fileID: 2100000, guid: 94716a817782b864088178963ebf1c01, type: 2}
   - {fileID: 2100000, guid: 4981e19061c0cea4e8c7dbb632403ace, type: 2}
-  - {fileID: 2100000, guid: fc7af60ca5dde0d4a85d2108d7c55882, type: 2}
+  - {fileID: 2100000, guid: 6c091f2667dcc9a4faf6e897ac77e263, type: 2}
   - {fileID: 2100000, guid: 88d901dd2ebff8b4385f0d9316e42a9b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
