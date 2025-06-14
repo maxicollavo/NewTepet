@@ -58,11 +58,6 @@ public class OwlInteraction : MonoBehaviour, Interactor
 
         onRight = !onRight;
         anim.SetBool("Rotate", onRight);
-            }
-        }
-        else
-        {
-            foreach (var decal in rightDecals)
     }
 
     public void OwlOnRight()
