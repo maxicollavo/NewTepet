@@ -12,7 +12,6 @@ public class RotateSphere : MonoBehaviour, Interactor
     public bool hasWon;
     private bool isBeingHeld = true;
     [SerializeField] ParticleSystem particle;
-    [SerializeField] SphereCollider mimicSphereColl;
     [SerializeField] private float emissionIntensity;
     Material fillMat;
     private float fillAmount;
@@ -21,7 +20,6 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     [Header("Rotación")]
     private Transform pivot;
-    [SerializeField] private float rotationSensitivity = 3f;
 
     [Header("Cinemachine")]
     [SerializeField] private GameObject puzzleCamera;
@@ -34,25 +32,26 @@ public class RotateSphere : MonoBehaviour, Interactor
     private int currentImageIndex = 0;
     private bool canScore = true;
 
+    Transform child;
+
     private void OnEnable()
     {
-        SetSphereMaterials(SphereStates.Idle);
+        child = transform.GetChild(0);
 
-        var renderer = GetComponent<MeshRenderer>();
+        var renderer = child.GetComponent<MeshRenderer>();
         var materials = renderer.materials;
 
-        fillMat = materials[5];
-
-        if (materials.Length > 5)
+        if (materials.Length > 2)
         {
-            Material[] newMaterials = new Material[6];
-            for (int i = 0; i < 6; i++)
-            {
-                newMaterials[i] = materials[i];
-            }
-
-            renderer.materials = newMaterials;
+            Material[] trimmedMaterials = new Material[2];
+            trimmedMaterials[0] = materials[0];
+            trimmedMaterials[1] = materials[1];
+            renderer.materials = trimmedMaterials;
         }
+
+        fillMat = renderer.materials[1];
+
+        //SetSphereMaterials(SphereStates.Idle);
     }
 
     private void Awake()
@@ -132,13 +131,15 @@ public class RotateSphere : MonoBehaviour, Interactor
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 
+    [SerializeField] Animator mimicSphere;
+
     private void OnWinMethod()
     {
         Release();
-        mimicSphereColl.enabled = false;
         canUse = false;
         hasWon = true;
-        SetSphereMaterials(SphereStates.Win);
+        mimicSphere.SetBool("CanStart", false);
+        //SetSphereMaterials(SphereStates.Win);
     }
 
     public enum SphereStates
@@ -150,7 +151,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     public void SetSphereMaterials(SphereStates state)
     {
-        var renderer = GetComponent<MeshRenderer>();
+        var renderer = child.GetComponent<MeshRenderer>();
         var materials = renderer.materials;
 
         Color emissionColor = Color.black;
@@ -159,22 +160,21 @@ public class RotateSphere : MonoBehaviour, Interactor
         switch (state)
         {
             case SphereStates.Win:
-                materials[3].EnableKeyword("_EMISSION");
+                materials[1].EnableKeyword("_EMISSION");
                 emissionColor = new Color(1f, 235f / 255f, 0f) * emissionIntensity;
                 glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * emissionIntensity;
                 break;
             case SphereStates.Loose:
-                materials[3].EnableKeyword("_EMISSION");
+                materials[1].EnableKeyword("_EMISSION");
                 emissionColor = Color.red * emissionIntensity;
                 glassColor = Color.red * emissionIntensity;
                 break;
             case SphereStates.Idle:
-                materials[3].DisableKeyword("_EMISSION");
+                materials[1].DisableKeyword("_EMISSION");
                 glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f);
                 break;
             default:
-                Debug.LogWarning("Modo no reconocido. Usando el color azul por defecto.");
-                materials[3].EnableKeyword("_EMISSION");
+                materials[1].EnableKeyword("_EMISSION");
                 emissionColor = materials[3].GetColor("_EmissionColor");
                 glassColor = new Color(0f / 255f, 46f / 255f, 191f / 255f, 1f) * emissionIntensity;
                 break;
@@ -182,7 +182,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
         if (state != SphereStates.Idle)
         {
-            materials[3].SetColor("_EmissionColor", emissionColor);
+            materials[1].SetColor("_EmissionColor", emissionColor);
         }
 
         materials[4].SetColor("_Color", glassColor);
@@ -227,27 +227,55 @@ public class RotateSphere : MonoBehaviour, Interactor
         this.transform.rotation = rotacionNecesaria * this.transform.rotation;
     }
 
+    private Coroutine fillRoutine;
+    [Header("Sphere Settings")]
+    [SerializeField] private float rotationSensitivity = 3f;
+    [SerializeField] float shaderLerpDuration;
+
     private void CheckFillAmount()
     {
+        float targetFill = 0f;
+
         switch (fillCounter)
         {
             case 0:
-                fillMat.SetFloat("_FillAmount", 0f);
+                targetFill = 0f;
                 break;
             case 1:
-                fillMat.SetFloat("_FillAmount", 0.28f);
+                targetFill = 0.7f;
                 break;
             case 2:
-                fillMat.SetFloat("_FillAmount", 0.35f);
+                targetFill = 0.9f;
                 break;
             case 3:
-                fillMat.SetFloat("_FillAmount", 1f);
+                targetFill = 2f;
                 break;
             default:
-                break;
+                return;
         }
+
+        if (fillRoutine != null)
+            StopCoroutine(fillRoutine);
+
+        fillRoutine = StartCoroutine(LerpFillAmount(targetFill));
     }
 
+    private IEnumerator LerpFillAmount(float target)
+    {
+        float elapsed = 0f;
+        float start = fillMat.GetFloat("_FillAmount");
+
+        while (elapsed < shaderLerpDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / shaderLerpDuration;
+            float value = Mathf.Lerp(start, target, t);
+            fillMat.SetFloat("_FillAmount", value);
+            yield return null;
+        }
+
+        fillMat.SetFloat("_FillAmount", target);
+    }
 
     private void CheckFrontImage()
     {
@@ -264,7 +292,7 @@ public class RotateSphere : MonoBehaviour, Interactor
             currentImageIndex++;
             fillCounter++;
             particle.Play();
-            StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
+            //StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
 
             if (currentImageIndex >= winImagePoints.Length)
             {
@@ -278,7 +306,7 @@ public class RotateSphere : MonoBehaviour, Interactor
             currentImageIndex = 0;
             fillCounter = 0;
             //Cuando hacemos mal el movimiento
-            StartCoroutine(ConfirmMovement(SphereStates.Loose, SphereStates.Idle));
+            //StartCoroutine(ConfirmMovement(SphereStates.Loose, SphereStates.Idle));
         }
 
         CheckFillAmount();
@@ -287,12 +315,12 @@ public class RotateSphere : MonoBehaviour, Interactor
     private IEnumerator ConfirmMovement(SphereStates first, SphereStates second)
     {
         canUse = false;
-        SetSphereMaterials(first);
+        //SetSphereMaterials(first);
         yield return new WaitForSeconds(0.5f);
 
         if (!hasWon)
         {
-            SetSphereMaterials(second);
+            //SetSphereMaterials(second);
         }
 
         canUse = true;

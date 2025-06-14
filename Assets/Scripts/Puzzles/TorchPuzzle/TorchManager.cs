@@ -10,7 +10,17 @@ public class TorchManager : MonoBehaviour
     bool HasWon;
     bool canEnter = true;
 
-    [SerializeField] MimicInteraction mimic;
+    [SerializeField] GameObject mimicSphere;
+    Animator mimicSphereAnim;
+    MeshRenderer mimicSphereRend;
+    Material mimicSphereFillMat;
+
+    private void OnEnable()
+    {
+        mimicSphereAnim = mimicSphere.transform.parent.GetComponent<Animator>();
+        mimicSphereRend = mimicSphere.GetComponent<MeshRenderer>();
+        mimicSphereFillMat = mimicSphereRend.materials[1];
+    }
 
     private void Start()
     {
@@ -45,8 +55,8 @@ public class TorchManager : MonoBehaviour
         if (canEnter)
         {
             shake.TriggerShake();
-            mimic.canInteract = true;
-            mimic.SetSphereMaterials();
+            mimicSphereAnim.SetBool("CanStart", true);
+            mimicSphereFillMat.SetFloat("_FillAmount", 2f);
             canEnter = false;
         }
     }
