@@ -7,8 +7,8 @@ public class OwlInteraction : MonoBehaviour, Interactor
     Outline outline;
     [SerializeField] Animator anim;
     [SerializeField] GameObject lights;
-    [SerializeField] GameObject[] rightDecals;
-    [SerializeField] GameObject[] leftDecals;
+    [SerializeField] GameObject[] rightFigures;
+    [SerializeField] GameObject[] leftFigures;
 
     bool onRight;
     bool isFirstInteraction = true;
@@ -58,48 +58,34 @@ public class OwlInteraction : MonoBehaviour, Interactor
 
         onRight = !onRight;
         anim.SetBool("Rotate", onRight);
-
-        if (onRight)
-        {
-            foreach (var decal in leftDecals)
-            {
-                if (decal.activeInHierarchy)
-                    decal.SetActive(false);
-                else
-                    decal.SetActive(true);
             }
         }
         else
         {
             foreach (var decal in rightDecals)
-            {
-                if (decal.activeInHierarchy)
-                    decal.SetActive(false);
-                else
-                    decal.SetActive(true);
-            }
-        }
     }
 
     public void OwlOnRight()
     {
-        foreach (var decal in rightDecals)
+        foreach (var figure in rightFigures)
         {
-            if (decal.activeInHierarchy)
-                decal.SetActive(false);
-            else
-                decal.SetActive(true);
+            figure.SetActive(true);
+        }
+        foreach (var figure in leftFigures)
+        {
+            figure.SetActive(false);
         }
     }
 
     public void OwlOnLeft()
     {
-        foreach (var decal in leftDecals)
+        foreach (var figure in rightFigures)
         {
-            if (decal.activeInHierarchy)
-                decal.SetActive(false);
-            else
-                decal.SetActive(true);
+            figure.SetActive(false);
+        }
+        foreach (var figure in leftFigures)
+        {
+            figure.SetActive(true);
         }
     }
 }
