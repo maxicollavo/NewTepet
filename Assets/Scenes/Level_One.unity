@@ -37273,7 +37273,7 @@ Transform:
   m_GameObject: {fileID: 202247501}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 183.15758, y: 2.53, z: 113.6674}
+  m_LocalPosition: {x: 179.89857, y: 2.53, z: 178.73439}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -68945,11 +68945,11 @@ Transform:
   m_GameObject: {fileID: 358624352}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000029802326, y: -0.0000025928023, z: -0.000000029802326, w: 1}
-  m_LocalPosition: {x: 77.7, y: -88.7, z: -32.4}
-  m_LocalScale: {x: 187.72157, y: 271.90625, z: 148.65276}
+  m_LocalPosition: {x: 77.70059, y: -88.69999, z: -32.39982}
+  m_LocalScale: {x: 187.72156, y: 271.90625, z: 148.65276}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1867192030}
+  m_Father: {fileID: 1789908346}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &358624354
 MonoBehaviour:
@@ -115576,7 +115576,7 @@ Transform:
   m_GameObject: {fileID: 596941259}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 183.159, y: 1.11, z: 113.633}
+  m_LocalPosition: {x: 179.9, y: 1.11, z: 178.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -170023,8 +170023,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   trail: {fileID: 1945799478}
-  interactor: {fileID: 8879367954989411788}
-  interactorCollider: {fileID: 8879367954989411787}
+  interactor: {fileID: 8879367954989411786}
   canInteract: 0
   subFloor: 0
   isTarget: 0
@@ -269327,8 +269326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   trail: {fileID: 607195575}
-  interactor: {fileID: 9043264696976161103}
-  interactorCollider: {fileID: 9043264696976161105}
+  interactor: {fileID: 1988356934740101199}
   canInteract: 0
   subFloor: 0
   isTarget: 0
@@ -303232,8 +303230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   trail: {fileID: 1541395869}
-  interactor: {fileID: 9052607201489707363}
-  interactorCollider: {fileID: 9052607201489707362}
+  interactor: {fileID: 7170005331816191408}
   canInteract: 0
   subFloor: 1
   isTarget: 1
@@ -322936,8 +322933,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   trail: {fileID: 1734029209}
-  interactor: {fileID: 8281560202596883433}
-  interactorCollider: {fileID: 8281560202596883432}
+  interactor: {fileID: 8281560202596883430}
   canInteract: 0
   subFloor: 1
   isTarget: 0
@@ -348603,8 +348599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   trail: {fileID: 1133599077}
-  interactor: {fileID: 7218595214893031826}
-  interactorCollider: {fileID: 7218595214893031825}
+  interactor: {fileID: 530615173160620503}
   canInteract: 0
   subFloor: 1
   isTarget: 0
@@ -349601,7 +349596,7 @@ GameObject:
   - component: {fileID: 1720334939}
   - component: {fileID: 1720334940}
   m_Layer: 0
-  m_Name: CinemachineCamera
+  m_Name: HieroDoorPuzzleCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349616,8 +349611,8 @@ Transform:
   m_GameObject: {fileID: 1720334937}
   serializedVersion: 2
   m_LocalRotation: {x: 7.023411e-19, y: -1, z: -0, w: 0.000001847744}
-  m_LocalPosition: {x: 0.45, y: 0.28, z: 2.18}
-  m_LocalScale: {x: 0.38128003, y: 0.38128, z: 0.38128}
+  m_LocalPosition: {x: 0.45000762, y: 0.2800001, z: 2.1800082}
+  m_LocalScale: {x: 0.38128006, y: 0.38128, z: 0.38128003}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1748532665}
@@ -357068,7 +357063,6 @@ Transform:
   m_LocalScale: {x: 44.496735, y: 61.28331, z: 34.028214}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1720334938}
   - {fileID: 543450652059409870}
   - {fileID: 577964556}
   - {fileID: 392749381}
@@ -357076,6 +357070,7 @@ Transform:
   - {fileID: 153526622}
   - {fileID: 911638229}
   - {fileID: 1467815491}
+  - {fileID: 1720334938}
   m_Father: {fileID: 1867192030}
   m_LocalEulerAnglesHint: {x: 0, y: -0.007, z: 0}
 --- !u!1 &1748859189
@@ -371562,6 +371557,39 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 395.4968, y: 938.53955, z: 1307.3676}
   m_Center: {x: -5.973808, y: 0.0010271578, z: 0.001980918}
+--- !u!1 &1789908345
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1789908346}
+  m_Layer: 2
+  m_Name: Decals
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1789908346
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789908345}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1850259206}
+  - {fileID: 358624353}
+  m_Father: {fileID: 1867192030}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1794409777
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -372968,8 +372996,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trackerList: []
   trail: {fileID: 223863089}
-  interactor: {fileID: 9009476212814982774}
-  interactorCollider: {fileID: 9009476212814982773}
+  interactor: {fileID: 9009476212814982771}
   canInteract: 0
   subFloor: 1
   isTarget: 1
@@ -382383,11 +382410,11 @@ Transform:
   m_GameObject: {fileID: 1850259204}
   serializedVersion: 2
   m_LocalRotation: {x: -0.000000029802326, y: -0.0000025928023, z: -0.000000029802326, w: 1}
-  m_LocalPosition: {x: -76.11664, y: -88.66144, z: -32.384953}
-  m_LocalScale: {x: 187.72157, y: 271.90625, z: 148.65276}
+  m_LocalPosition: {x: -76.11653, y: -88.66144, z: -32.38496}
+  m_LocalScale: {x: 187.72156, y: 271.90625, z: 148.65276}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1867192030}
+  m_Father: {fileID: 1789908346}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1851686644
 GameObject:
@@ -384078,8 +384105,7 @@ Transform:
   m_LocalScale: {x: 0.012427089, y: 0.009023091, z: 0.01625019}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1850259206}
-  - {fileID: 358624353}
+  - {fileID: 1789908346}
   - {fileID: 1748532665}
   m_Father: {fileID: 1264922020}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

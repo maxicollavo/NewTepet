@@ -10,8 +10,9 @@ public class TrackerManager : MonoBehaviour
     public Action<TrackerManager> JeroglificAction;
     public FollowMouseClick trail;
 
-    [SerializeField] PuzzleInteractor interactor;
-    [SerializeField] BoxCollider interactorCollider;
+    [SerializeField] GameObject interactor;
+    BoxCollider interactorCollider;
+    PuzzleInteractor puzzleInteractor;
     public bool OnPuzzle { get; private set; }
     bool HasWon;
     bool canGoBack;
@@ -22,9 +23,15 @@ public class TrackerManager : MonoBehaviour
 
     [SerializeField] HieroglyficManager hieroglyficManager;
 
+    private void Awake()
+    {
+        puzzleInteractor = interactor.GetComponent<PuzzleInteractor>();
+        interactorCollider = interactor.GetComponent<BoxCollider>();
+    }
+
     private void Start()
     {
-        interactor.PuzzleAction += OnPuzzleMethod;
+        puzzleInteractor.PuzzleAction += OnPuzzleMethod;
 
         if (hieroglyficManager == null) return;
         hieroglyficManager.OnWinAction += OnWinMethod;
@@ -43,7 +50,7 @@ public class TrackerManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse1) && OnPuzzle)
         {
-            BackToGameplay();
+            BackToGameplay(false);
         }
     }
 
@@ -79,23 +86,24 @@ public class TrackerManager : MonoBehaviour
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
-    private void BackToGameplay()
+    private void BackToGameplay(bool onWin)
     {
         if (HasWon) return;
-        Debug.Log("Vuelve a gameplay");
         OnPuzzle = false;
         TurnPuzzleCamera(OnPuzzle);
-        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
         trail.gameObject.SetActive(false);
-        StartCoroutine(ExitPuzzleCoroutine());
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+        StartCoroutine(ExitPuzzleCoroutine(onWin));
     }
 
-    public IEnumerator ExitPuzzleCoroutine()
+    public IEnumerator ExitPuzzleCoroutine(bool hasWon)
     {
         canGoBack = false;
         yield return new WaitForSeconds(1.5f);
-        interactorCollider.enabled = true;
         canGoBack = true;
+
+        if (!hasWon)
+            interactorCollider.enabled = true;
     }
 
     //Chequea si se ganó el jeroglifico
@@ -103,9 +111,9 @@ public class TrackerManager : MonoBehaviour
     {
         if (trackerList.All(t => t.HasWon))
         {
-            JeroglificAction?.Invoke(this);
-            BackToGameplay();
+            JeroglificAction?.Invoke(this); //Solo abre la puerta
             interactorCollider.enabled = false; //Desactivamos el collider de ese jeroglifico
+            BackToGameplay(true);
             HasWon = true; //Ponemos ese jeroglifico en GANADO
 
             //Preguntamos si el jeroglifico se encuentra en la parte de abajo y si además es un target

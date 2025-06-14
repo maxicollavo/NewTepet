@@ -10,7 +10,6 @@ public class PatternTracker : MonoBehaviour
     private List<GameObject> currentPath = new List<GameObject>();
     public bool isTracking { get; private set; }
     public Camera trackCamera;
-    [SerializeField] TrailManager manager;
 
     void Update()
     {

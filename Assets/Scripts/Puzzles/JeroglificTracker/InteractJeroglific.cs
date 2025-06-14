@@ -5,8 +5,6 @@ public class InteractJeroglific : MonoBehaviour, Interactor
 {
     [SerializeField] Outline outline;
 
-    [SerializeField] TrailManager manager;
-
     private void Start()
     {
         outline.enabled = false;
