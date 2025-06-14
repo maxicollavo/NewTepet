@@ -7,7 +7,7 @@ public class ResultManager : MonoBehaviour
 {
     [SerializeField] WeightManager weightManager;
     [SerializeField] Animator[] doorAnims;
-
+    public AudioSource SonidoPuerta;
     bool[] doorsDone;
     int counter;
 
@@ -58,7 +58,9 @@ public class ResultManager : MonoBehaviour
 
         if (doorsDone[counter]) return;
         doorAnims[counter].SetTrigger("Open");
-        AudioManager.Instance.PlaySound("rocaMoviendose");
+        //AudioManager.Instance.PlaySound("rocaMoviendose");
+        SonidoPuerta.Play();
+        return;
         doorsDone[counter] = true;
         counter++;
     }
