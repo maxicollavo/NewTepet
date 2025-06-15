@@ -21,10 +21,39 @@ public class ColumnInteractManager : MonoBehaviour
 
     public bool canRotate;
 
-    public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform column, Transform greenPoint, Transform bluePoint)
+    [Header("Interior Pieces Settings")]
+    private int piecesCounter;
+    private int oldPieceCounter;
+
+    public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform column, Transform columnForward, Transform target)
     {
         if (currentlySelected != null && currentlySelected != selected)
+        {
+            oldPieceCounter = piecesCounter;
+
+            if (currentlySelected.interiorPieces.Length > piecesCounter)
+            {
+                currentlySelected.interiorPieces[piecesCounter].DisableOutline();
+            }
+
             currentlySelected.DeselectPiece();
+        }
+
+
+        if (isSelected)
+        {
+            currentlySelected = selected;
+            forward = columnForward;
+            lookAtTarget = target;
+
+            oldPieceCounter = piecesCounter;
+            piecesCounter = oldPieceCounter;
+
+            if (currentlySelected.interiorPieces.Length > 0)
+            {
+                currentlySelected.interiorPieces[piecesCounter].EnableOutline();
+            }
+        }
 
         if (column != null)
             columnTransform = column;
@@ -32,8 +61,8 @@ public class ColumnInteractManager : MonoBehaviour
         if (isSelected)
         {
             currentlySelected = selected;
-            forward = greenPoint;
-            lookAtTarget = bluePoint;
+            forward = columnForward;
+            lookAtTarget = target;
         }
         else
         {
@@ -49,13 +78,40 @@ public class ColumnInteractManager : MonoBehaviour
 
         if (currentlySelected != null && !currentlySelected.hasWon)
         {
-            Transform columnTransform = currentlySelected.columnToRotate.transform;
+            Transform columnTransform = currentlySelected.interiorPieces[piecesCounter].columnTransform;
 
             if (Input.GetKey(KeyCode.A))
                 columnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
 
             if (Input.GetKey(KeyCode.D))
                 columnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                var currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
+                currentlyPieceSelected.DisableOutline();
+
+                piecesCounter++;
+                if (piecesCounter > currentlySelected.interiorPieces.Length - 1)
+                    piecesCounter = 0;
+
+                currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
+                currentlyPieceSelected.EnableOutline();
+            }
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                var currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
+                currentlyPieceSelected.DisableOutline();
+
+                piecesCounter--;
+                if (piecesCounter < 0)
+                    piecesCounter = currentlySelected.interiorPieces.Length - 1;
+
+                currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
+                currentlyPieceSelected.EnableOutline();
+            }
+
         }
 
         if (Input.GetKeyDown(KeyCode.Space))

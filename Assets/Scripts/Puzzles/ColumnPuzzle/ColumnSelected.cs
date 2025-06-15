@@ -20,6 +20,9 @@ public class ColumnSelected : MonoBehaviour
     public Transform lookAtTarget;
     public bool isAligned;
 
+    [Header("Interior Pieces")]
+    public InteriorPieceSelector[] interiorPieces;
+
     private void Awake()
     {
         outline = GetComponent<Outline>();
@@ -45,14 +48,14 @@ public class ColumnSelected : MonoBehaviour
     {
         if (isSelected) return;
 
-        outline.enabled = true;
+        EnableOutline();
     }
 
     private void OnMouseExit()
     {
         if (isSelected) return;
 
-        outline.enabled = false;
+        DisableOutline();
     }
 
     public void EnableOutline()
@@ -69,7 +72,7 @@ public class ColumnSelected : MonoBehaviour
     {
         isSelected = true;
         //Sonido de selección de columna (como el de las piezas del tablero)
-        EnableOutline();
+        DisableOutline();
         OnSelectedAction?.Invoke(isSelected, this, columnTransform, forward, lookAtTarget);
     }
 
