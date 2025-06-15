@@ -71,7 +71,7 @@ public class ColumnSelected : MonoBehaviour
     public void SelectedPiece()
     {
         isSelected = true;
-        //Sonido de selección de columna (como el de las piezas del tablero)
+        AudioManager.Instance.PlaySound("SelectPiece");
         DisableOutline();
         OnSelectedAction?.Invoke(isSelected, this, columnTransform, forward, lookAtTarget);
     }

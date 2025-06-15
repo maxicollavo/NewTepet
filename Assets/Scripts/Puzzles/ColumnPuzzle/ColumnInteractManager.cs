@@ -39,7 +39,6 @@ public class ColumnInteractManager : MonoBehaviour
             currentlySelected.DeselectPiece();
         }
 
-
         if (isSelected)
         {
             currentlySelected = selected;
@@ -88,6 +87,8 @@ public class ColumnInteractManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.W))
             {
+                AudioManager.Instance.PlaySound("SelectPiece");
+
                 var currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
                 currentlyPieceSelected.DisableOutline();
 
@@ -101,6 +102,8 @@ public class ColumnInteractManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.S))
             {
+                AudioManager.Instance.PlaySound("SelectPiece");
+
                 var currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
                 currentlyPieceSelected.DisableOutline();
 
