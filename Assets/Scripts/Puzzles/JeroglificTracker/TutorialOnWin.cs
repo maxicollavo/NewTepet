@@ -21,5 +21,6 @@ public class TutorialOnWin : MonoBehaviour
     {
         yield return new WaitForSeconds(1.2f);
         doorAnim.SetTrigger("Open");
+        AudioManager.Instance.PlaySound("rocaMoviendose");
     }
 }
