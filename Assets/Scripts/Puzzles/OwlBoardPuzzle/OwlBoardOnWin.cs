@@ -6,6 +6,7 @@ public class OwlBoardOnWin : MonoBehaviour
 {
     [SerializeField] BoardPuzzleManager manager;
     [SerializeField] Animator anim;
+    [SerializeField] ParticleSystem OnBoardWin;
 
     private void Awake()
     {
@@ -15,5 +16,6 @@ public class OwlBoardOnWin : MonoBehaviour
     private void OnWinMethod(BoardPuzzleManager manager)
     {
         anim.SetTrigger("Open");
+        OnBoardWin.Play();
     }
 }
