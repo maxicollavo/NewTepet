@@ -80,10 +80,10 @@ public class ColumnInteractManager : MonoBehaviour
             Transform columnTransform = currentlySelected.interiorPieces[piecesCounter].columnTransform;
 
             if (Input.GetKey(KeyCode.A))
-                columnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
+                columnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
 
             if (Input.GetKey(KeyCode.D))
-                columnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+                columnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
 
             if (Input.GetKeyDown(KeyCode.W))
             {
