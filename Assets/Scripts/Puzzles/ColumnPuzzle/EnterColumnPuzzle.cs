@@ -76,7 +76,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
     {
         foreach (var column in columns)
         {
-            if (column.hasWon) return;
+            if (columnInteractManager.hasWon) return;
 
             column.coll.enabled = state;
         }

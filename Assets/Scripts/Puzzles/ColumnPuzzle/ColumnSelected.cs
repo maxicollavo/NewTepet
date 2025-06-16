@@ -4,21 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class ColumnSelected : MonoBehaviour
 {
-    public Action<bool, ColumnSelected, Transform, Transform, Transform> OnSelectedAction;
+    public Action<bool, ColumnSelected, Transform> OnSelectedAction;
 
     private bool isSelected;
-    [HideInInspector] public bool hasWon;
-
-    public GameObject columnToRotate;
 
     Outline outline;
     [HideInInspector] public BoxCollider coll;
     [SerializeField] ColumnInteractManager interactManager;
     [SerializeField] Transform columnTransform;
-
-    public Transform forward;
-    public Transform lookAtTarget;
-    public bool isAligned;
 
     [Header("Interior Pieces")]
     public InteriorPieceSelector[] interiorPieces;
@@ -28,11 +21,6 @@ public class ColumnSelected : MonoBehaviour
         outline = GetComponent<Outline>();
         coll = GetComponent<BoxCollider>();
         outline.enabled = false;
-
-        if (!interactManager.columnSelecteds.ContainsKey(this))
-        {
-            interactManager.columnSelecteds.Add(this, false);
-        }
 
         OnSelectedAction += interactManager.OnSelectedMethod;
     }
@@ -73,7 +61,7 @@ public class ColumnSelected : MonoBehaviour
         isSelected = true;
         AudioManager.Instance.PlaySound("SelectPiece");
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this, columnTransform, forward, lookAtTarget);
+        OnSelectedAction?.Invoke(isSelected, this, columnTransform);
     }
 
     public void DeselectPiece()
@@ -82,13 +70,6 @@ public class ColumnSelected : MonoBehaviour
 
         isSelected = false;
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this, columnTransform, forward, lookAtTarget);
-    }
-
-    public void OnWin()
-    {
-        hasWon = true;
-        DeselectPiece();
-        coll.enabled = false;
+        OnSelectedAction?.Invoke(isSelected, this, columnTransform);
     }
 }

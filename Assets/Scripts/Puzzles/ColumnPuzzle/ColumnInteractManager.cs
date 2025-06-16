@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ColumnInteractManager : MonoBehaviour
 {
-    [HideInInspector] public Dictionary<ColumnSelected, bool> columnSelecteds = new Dictionary<ColumnSelected, bool>();
+    [HideInInspector] public Dictionary<InteriorPieceSelector, bool> interiorPieceSelected = new Dictionary<InteriorPieceSelector, bool>();
     public Action<ColumnInteractManager> OnWinAction;
 
     [SerializeField] float rotationSpeed = 50f;
@@ -20,12 +20,13 @@ public class ColumnInteractManager : MonoBehaviour
     private Quaternion targetRotation;
 
     public bool canRotate;
+    [HideInInspector] public bool hasWon;
 
     [Header("Interior Pieces Settings")]
     private int piecesCounter;
     private int oldPieceCounter;
 
-    public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform column, Transform columnForward, Transform target)
+    public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform column)
     {
         if (currentlySelected != null && currentlySelected != selected)
         {
@@ -42,26 +43,16 @@ public class ColumnInteractManager : MonoBehaviour
         if (isSelected)
         {
             currentlySelected = selected;
-            forward = columnForward;
-            lookAtTarget = target;
 
             oldPieceCounter = piecesCounter;
             piecesCounter = oldPieceCounter;
+            forward = currentlySelected.interiorPieces[piecesCounter].forward;
+            lookAtTarget = currentlySelected.interiorPieces[piecesCounter].lookAtTarget;
 
             if (currentlySelected.interiorPieces.Length > 0)
             {
                 currentlySelected.interiorPieces[piecesCounter].EnableOutline();
             }
-        }
-
-        if (column != null)
-            columnTransform = column;
-
-        if (isSelected)
-        {
-            currentlySelected = selected;
-            forward = columnForward;
-            lookAtTarget = target;
         }
         else
         {
@@ -69,13 +60,16 @@ public class ColumnInteractManager : MonoBehaviour
             forward = null;
             lookAtTarget = null;
         }
+
+        if (column != null)
+            columnTransform = column;
     }
 
     private void Update()
     {
         if (!canRotate) return;
 
-        if (currentlySelected != null && !currentlySelected.hasWon)
+        if (currentlySelected != null && !currentlySelected.interiorPieces[piecesCounter].hasWon)
         {
             Transform columnTransform = currentlySelected.interiorPieces[piecesCounter].columnTransform;
 
@@ -132,13 +126,16 @@ public class ColumnInteractManager : MonoBehaviour
 
     private void CheckAllAlignments()
     {
-        foreach (var pair in columnSelecteds)
+        foreach (var pair in interiorPieceSelected)
         {
-            ColumnSelected column = pair.Key;
+            InteriorPieceSelector column = pair.Key;
 
-            if (column.forward == null || column.lookAtTarget == null || column.columnToRotate == null) continue;
+            if (column.forward == null || column.lookAtTarget == null || column.columnTransform == null)
+            {
+                continue;
+            }
 
-            Transform columnTransform = column.columnToRotate.transform;
+            Transform columnTransform = column.columnTransform;
             Vector3 pos = columnTransform.position;
 
             var desiredForward = column.lookAtTarget.position - pos;
@@ -152,17 +149,21 @@ public class ColumnInteractManager : MonoBehaviour
             column.isAligned = angle < alignThreshold;
         }
 
+
         CheckIfPuzzleCompleted();
     }
 
     private void CheckIfPuzzleCompleted()
     {
-        foreach (var pair in columnSelecteds)
+        foreach (var pair in interiorPieceSelected)
         {
-            if (!pair.Key.isAligned) return;
+            if (!pair.Key.isAligned)
+            {
+                return;
+            }
         }
 
-        foreach (var pair in columnSelecteds)
+        foreach (var pair in interiorPieceSelected)
         {
             AlignColumn(pair.Key);
             pair.Key.OnWin();
@@ -170,11 +171,12 @@ public class ColumnInteractManager : MonoBehaviour
 
         OnWinAction?.Invoke(this);
         canRotate = false;
+        hasWon = true;
     }
 
-    private void AlignColumn(ColumnSelected column)
+    private void AlignColumn(InteriorPieceSelector column)
     {
-        Transform columnTransform = column.columnToRotate.transform;
+        Transform columnTransform = column.columnTransform;
         Vector3 pos = columnTransform.position;
         Transform forwardPoint = column.forward;
         Transform lookAtPoint = column.lookAtTarget;
@@ -196,6 +198,22 @@ public class ColumnInteractManager : MonoBehaviour
         columnTransform.rotation = targetRotation;
 
         //Sonido de alineamiento con algún tipo de eco (puede ser tipo bloqueo)
+    }
+
+    private void OnDrawGizmos()
+    {
+        foreach (var pair in interiorPieceSelected)
+        {
+            var piece = pair.Key;
+            if (piece.forward != null && piece.lookAtTarget != null && piece.columnTransform != null)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawLine(piece.columnTransform.position, piece.forward.position);
+
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(piece.columnTransform.position, piece.lookAtTarget.position);
+            }
+        }
     }
 
     public void ClearSelection()
