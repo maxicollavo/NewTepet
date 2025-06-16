@@ -9,6 +9,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 {
     [SerializeField] List<ColumnSelected> columns;
     [SerializeField] GameObject CM_PuzzleCamera;
+    [SerializeField] GameObject ColumnUI;
     [SerializeField] ColumnInteractManager columnInteractManager;
     Outline outline;
 
@@ -26,6 +27,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
     {
         if (!canInteract) return;
         EnterPuzzle(true);
+
     }
 
     public void DisableOutline()
@@ -50,6 +52,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 
     public void EnterPuzzle(bool state)
     {
+        
         EnterPuzzleCamera(state);
         EnableColumnColliders(state);
 
@@ -57,6 +60,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
         {
             EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
             columnInteractManager.canRotate = true;
+            ColumnUI.SetActive(true);
         }
         else
         {
@@ -64,6 +68,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
             columnInteractManager.canRotate = false;
 
             columnInteractManager.ClearSelection();
+            ColumnUI.SetActive(false);
         }
     }
 
