@@ -20,6 +20,7 @@ public class Torch : MonoBehaviour, Interactor
     public GameObject torchLight;
     private Light torchLightSource;
     private float originalLightIntensity;
+    public AudioSource FireSound;
 
     private void Awake()
     {
@@ -44,7 +45,6 @@ public class Torch : MonoBehaviour, Interactor
     public void Aiming()
     {
         if (!CanInteract) return;
-
         EnableOutline();
 
         UIManager.Instance.ChangeCursor(true);
@@ -122,10 +122,12 @@ public class Torch : MonoBehaviour, Interactor
         if (!ParticleSystem.isPlaying)
         {
             ParticleSystem.Play();
+            FireSound.Play();
         }
 
         torchLight.SetActive(true);
         torchLightSource.enabled = true;
+     
 
         Color startColor = main.startColor.color;
         float startIntensity = torchLightSource != null ? originalLightIntensity : 0f;
@@ -157,6 +159,7 @@ public class Torch : MonoBehaviour, Interactor
         {
             ParticleSystem.Stop();
             torchLight.SetActive(false);
+            FireSound.Stop();
         }
     }
 }
