@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class TrackerManager : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class TrackerManager : MonoBehaviour
     [SerializeField] GameObject CM_PuzzleCamera;
 
     [SerializeField] HieroglyficManager hieroglyficManager;
+    [SerializeField] Transform[] armsTransforms;
+    [SerializeField] PlayableDirector enableArm;
+
+    // Diccionario para guardar las rotaciones originales
+    private Dictionary<Transform, Quaternion> originalRotations = new Dictionary<Transform, Quaternion>();
 
     private void Awake()
     {
@@ -33,6 +39,13 @@ public class TrackerManager : MonoBehaviour
     {
         puzzleInteractor.PuzzleAction += OnPuzzleMethod;
 
+        // Guardamos la rotación original de cada brazo
+        foreach (var arm in armsTransforms)
+        {
+            if (arm != null)
+                originalRotations[arm] = arm.localRotation;
+        }
+
         if (hieroglyficManager == null) return;
         hieroglyficManager.OnWinAction += OnWinMethod;
     }
@@ -40,7 +53,6 @@ public class TrackerManager : MonoBehaviour
     private void OnWinMethod(HieroglyficManager manager)
     {
         if (!interactorCollider.enabled) return;
-
         interactorCollider.enabled = false;
     }
 
@@ -56,21 +68,21 @@ public class TrackerManager : MonoBehaviour
 
     private void TurnPuzzleCamera(bool state)
     {
-        if (state)
-        {
-            CM_PuzzleCamera.SetActive(true);
-        }
-        else
-        {
-            CM_PuzzleCamera.SetActive(false);
-        }
+        CM_PuzzleCamera.SetActive(state);
     }
 
     private void OnPuzzleMethod(PuzzleInteractor interactor)
     {
         if (HasWon) return;
+
         OnPuzzle = true;
-        TurnPuzzleCamera(OnPuzzle);
+
+        foreach (var arm in armsTransforms)
+        {
+            StartCoroutine(RotateArmToX(arm, 90f, 0.5f));
+        }
+
+        TurnPuzzleCamera(true);
         interactor.DisableOutline();
         interactorCollider.enabled = false;
         StartCoroutine(EnterPuzzleCoroutine());
@@ -81,6 +93,7 @@ public class TrackerManager : MonoBehaviour
         canGoBack = false;
         canInteract = false;
         yield return new WaitForSeconds(1.5f);
+        enableArm.Play();
         canGoBack = true;
         canInteract = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
@@ -89,8 +102,9 @@ public class TrackerManager : MonoBehaviour
     private void BackToGameplay(bool onWin)
     {
         if (HasWon) return;
+
         OnPuzzle = false;
-        TurnPuzzleCamera(OnPuzzle);
+        TurnPuzzleCamera(false);
         trail.gameObject.SetActive(false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
         StartCoroutine(ExitPuzzleCoroutine(onWin));
@@ -99,27 +113,67 @@ public class TrackerManager : MonoBehaviour
     public IEnumerator ExitPuzzleCoroutine(bool hasWon)
     {
         canGoBack = false;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
+        foreach (var arm in armsTransforms)
+        {
+            if (arm == null || !originalRotations.ContainsKey(arm)) continue;
+
+            Quaternion original = originalRotations[arm];
+            StartCoroutine(RotateToRotation(arm, original, 0.5f));
+        }
+        yield return new WaitForSeconds(.5f);
         canGoBack = true;
 
         if (!hasWon)
             interactorCollider.enabled = true;
     }
 
-    //Chequea si se ganó el jeroglifico
+    private IEnumerator RotateArmToX(Transform arm, float targetX, float duration)
+    {
+        Quaternion startRotation = arm.localRotation;
+
+        Vector3 currentEuler = arm.localEulerAngles;
+        Vector3 targetEuler = new Vector3(targetX, currentEuler.y, currentEuler.z);
+        Quaternion targetRotation = Quaternion.Euler(targetEuler);
+
+        float time = 0f;
+        while (time < duration)
+        {
+            arm.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        arm.localRotation = targetRotation;
+    }
+
+    private IEnumerator RotateToRotation(Transform arm, Quaternion targetRotation, float duration)
+    {
+        Quaternion startRotation = arm.localRotation;
+        float time = 0f;
+
+        while (time < duration)
+        {
+            arm.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        arm.localRotation = targetRotation;
+    }
+
+    // Chequea si se ganó el jeroglífico
     public void OnWinMethod()
     {
         if (trackerList.All(t => t.HasWon))
         {
-            JeroglificAction?.Invoke(this); //Solo abre la puerta
-            interactorCollider.enabled = false; //Desactivamos el collider de ese jeroglifico
+            JeroglificAction?.Invoke(this); // Abre la puerta
+            interactorCollider.enabled = false; // Desactiva el collider
             BackToGameplay(true);
-            HasWon = true; //Ponemos ese jeroglifico en GANADO
+            HasWon = true;
 
-            //Preguntamos si el jeroglifico se encuentra en la parte de abajo y si además es un target
             if (subFloor && isTarget)
             {
-                //Si es así entonces chequeamos la victoria
                 hieroglyficManager.CheckToUpdateCounter();
             }
         }
