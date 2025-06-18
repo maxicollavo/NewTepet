@@ -180391,6 +180391,9 @@ VisualEffect:
       - m_Value: 1
         m_Name: Fuerza de gravedad
         m_Overridden: 1
+      - m_Value: 0.02
+        m_Name: alpha
+        m_Overridden: 1
     m_Vector2f:
       m_Array:
       - m_Value: {x: 0, y: 0}
@@ -180400,7 +180403,7 @@ VisualEffect:
       m_Array: []
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 2.9960785, y: 1.9966233, z: 0, w: 0}
+      - m_Value: {x: 2.9960785, y: 1.9966233, z: 0, w: 1}
         m_Name: Color
         m_Overridden: 1
     m_Uint:
@@ -180426,7 +180429,7 @@ Transform:
   m_GameObject: {fileID: 754600545}
   serializedVersion: 2
   m_LocalRotation: {x: 0.038142364, y: -0, z: -0, w: 0.99927235}
-  m_LocalPosition: {x: 180.8, y: -3.756, z: 94.788}
+  m_LocalPosition: {x: 180.8, y: -3.2, z: 95.55}
   m_LocalScale: {x: 1.1641102, y: 0.012845776, z: 0.71483326}
   m_ConstrainProportionsScale: 0
   m_Children: []
