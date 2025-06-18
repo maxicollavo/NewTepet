@@ -10,22 +10,20 @@ public class TrackerManager : MonoBehaviour
     [HideInInspector] public List<Tracker> trackerList = new List<Tracker>();
     public Action<TrackerManager> JeroglificAction;
     public FollowMouseClick trail;
-
+    [SerializeField] VertexSignalReceiver receiver;
     [SerializeField] GameObject interactor;
     BoxCollider interactorCollider;
     PuzzleInteractor puzzleInteractor;
     public bool OnPuzzle { get; private set; }
-    bool HasWon;
+    public bool HasWon;
     bool canGoBack;
     public bool canInteract;
     public bool subFloor;
     public bool isTarget;
     [SerializeField] GameObject CM_PuzzleCamera;
-
     [SerializeField] HieroglyficManager hieroglyficManager;
     [SerializeField] Transform[] armsTransforms;
     [SerializeField] PlayableDirector enableArm;
-
     // Diccionario para guardar las rotaciones originales
     private Dictionary<Transform, Quaternion> originalRotations = new Dictionary<Transform, Quaternion>();
 
@@ -66,7 +64,7 @@ public class TrackerManager : MonoBehaviour
         }
     }
 
-    private void TurnPuzzleCamera(bool state)
+    public void TurnPuzzleCamera(bool state)
     {
         CM_PuzzleCamera.SetActive(state);
     }
@@ -92,18 +90,20 @@ public class TrackerManager : MonoBehaviour
     {
         canGoBack = false;
         canInteract = false;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.3f);
         enableArm.Play();
+        yield return new WaitForSeconds(.5f);
         canGoBack = true;
         canInteract = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
-    private void BackToGameplay(bool onWin)
+    public void BackToGameplay(bool onWin)
     {
         if (HasWon) return;
 
         OnPuzzle = false;
+        receiver.DisableArm();
         TurnPuzzleCamera(false);
         trail.gameObject.SetActive(false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
@@ -116,8 +116,6 @@ public class TrackerManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         foreach (var arm in armsTransforms)
         {
-            if (arm == null || !originalRotations.ContainsKey(arm)) continue;
-
             Quaternion original = originalRotations[arm];
             StartCoroutine(RotateToRotation(arm, original, 0.5f));
         }
@@ -167,15 +165,24 @@ public class TrackerManager : MonoBehaviour
     {
         if (trackerList.All(t => t.HasWon))
         {
-            JeroglificAction?.Invoke(this); // Abre la puerta
+            JeroglificAction?.Invoke(this);
+            StartCoroutine(DisableArms());
             interactorCollider.enabled = false; // Desactiva el collider
-            BackToGameplay(true);
-            HasWon = true;
 
             if (subFloor && isTarget)
             {
                 hieroglyficManager.CheckToUpdateCounter();
             }
         }
+    }
+
+    private IEnumerator DisableArms()
+    {
+        trail.gameObject.SetActive(false); //Apagamos el rayo
+        receiver.DisableArm(); //Bajamos la mano y la apagamos al finalizar la corrutina
+        yield return new WaitForSeconds(0.5f);
+        TurnPuzzleCamera(false);
+        BackToGameplay(true); //Volvemos a la camara de gameplay
+        HasWon = true;
     }
 }

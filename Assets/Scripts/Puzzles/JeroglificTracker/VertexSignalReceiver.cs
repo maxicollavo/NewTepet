@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VertexSignalReceiver : MonoBehaviour
 {
-    [SerializeField] Transform rightArm;
+    public Transform rightArm;
 
     private Dictionary<Transform, Quaternion> originalRotations = new Dictionary<Transform, Quaternion>();
 
@@ -41,6 +41,7 @@ public class VertexSignalReceiver : MonoBehaviour
         }
 
         arm.localEulerAngles = targetEuler;
+        Debug.Log("Termino la corrutina");
     }
 
     private IEnumerator RotateToRotation(Transform arm, Quaternion targetRotation, float duration)
@@ -59,5 +60,6 @@ public class VertexSignalReceiver : MonoBehaviour
         }
 
         arm.localEulerAngles = targetEuler;
+        arm.gameObject.SetActive(false);
     }
 }
