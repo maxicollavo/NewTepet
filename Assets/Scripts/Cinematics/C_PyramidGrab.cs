@@ -11,10 +11,23 @@ public class C_PyramidGrab : MonoBehaviour
 
     [Header("References")]
     [SerializeField] PlayableDirector pickPyramidTimeline;
+    [SerializeField] GameObject basePyramid;
+    GameObject[] basePyramidChildrens;
 
     private void Start()
     {
         pickManager.OnPicking += OnPyramidPicking;
+
+        Transform[] children = basePyramid.GetComponentsInChildren<Transform>(true);
+        var childList = new System.Collections.Generic.List<GameObject>();
+
+        foreach (Transform t in children)
+        {
+            if (t.gameObject != basePyramid)
+                childList.Add(t.gameObject);
+        }
+
+        basePyramidChildrens = childList.ToArray();
     }
 
     private void OnDestroy()
@@ -42,5 +55,17 @@ public class C_PyramidGrab : MonoBehaviour
     public void PlayDoorSound()
     {
         AudioManager.Instance.PlaySound("rocaMoviendose");
+    }
+
+    public void ChangeBasePyramidLayer()
+    {
+        int pyramidLayer = LayerMask.NameToLayer("Pyramid");
+
+        basePyramid.layer = pyramidLayer;
+
+        foreach (GameObject child in basePyramidChildrens)
+        {
+            child.layer = pyramidLayer;
+        }
     }
 }
