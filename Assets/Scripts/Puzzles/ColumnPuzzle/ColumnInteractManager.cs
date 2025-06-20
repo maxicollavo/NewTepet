@@ -26,6 +26,10 @@ public class ColumnInteractManager : MonoBehaviour
     private int piecesCounter;
     private int oldPieceCounter;
 
+    [Header("Columnas")]
+    [SerializeField] private List<ColumnSelected> allColumns = new List<ColumnSelected>();
+    private int currentColumnIndex = 0;
+
     public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform column)
     {
         if (currentlySelected != null && currentlySelected != selected)
@@ -122,7 +126,35 @@ public class ColumnInteractManager : MonoBehaviour
             if (currentlySelected == null) return;
             currentlySelected.DeselectPiece();
         }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            SelectNextColumn(-1);
+        }
+        else if (Input.GetKeyDown(KeyCode.E))
+        {
+            SelectNextColumn(1);
+        }
     }
+
+    private void SelectNextColumn(int direction)
+    {
+        if (allColumns.Count == 0 || hasWon) return;
+
+        if (currentlySelected != null && currentlySelected.interiorPieces.Length > piecesCounter)
+        {
+            currentlySelected.interiorPieces[piecesCounter].DisableOutline();
+            currentlySelected.DeselectPiece();
+        }
+
+        currentColumnIndex += direction;
+        if (currentColumnIndex < 0) currentColumnIndex = allColumns.Count - 1;
+        if (currentColumnIndex >= allColumns.Count) currentColumnIndex = 0;
+
+        var newSelected = allColumns[currentColumnIndex];
+        newSelected.SelectedPiece();
+    }
+
 
     private void CheckAllAlignments()
     {
