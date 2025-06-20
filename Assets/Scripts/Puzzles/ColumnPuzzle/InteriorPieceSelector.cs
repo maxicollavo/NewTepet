@@ -39,6 +39,7 @@ public class InteriorPieceSelector : MonoBehaviour
     public void OnWin()
     {
         hasWon = true;
+        outline.enabled = false;
         coll.enabled = false;
     }
 }

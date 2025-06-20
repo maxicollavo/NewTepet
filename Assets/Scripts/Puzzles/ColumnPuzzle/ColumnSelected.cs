@@ -27,21 +27,21 @@ public class ColumnSelected : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (isSelected) return;
+        if (isSelected || interactManager.hasWon) return;
 
         SelectedPiece();
     }
 
     private void OnMouseEnter()
     {
-        if (isSelected) return;
+        if (isSelected || interactManager.hasWon) return;
 
         EnableOutline();
     }
 
     private void OnMouseExit()
     {
-        if (isSelected) return;
+        if (isSelected || interactManager.hasWon) return;
 
         DisableOutline();
     }

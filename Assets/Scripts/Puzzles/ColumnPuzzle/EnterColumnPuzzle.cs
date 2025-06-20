@@ -27,7 +27,6 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
     {
         if (!canInteract) return;
         EnterPuzzle(true);
-
     }
 
     public void DisableOutline()
