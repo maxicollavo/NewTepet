@@ -33,6 +33,7 @@ public class ObjectCreator : MonoBehaviour
         }
 
         GameObject obj = Instantiate(prefab, position, Quaternion.identity);
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
 
         if (obj.TryGetComponent(out ObjectType objectType))
         {
@@ -40,6 +41,7 @@ public class ObjectCreator : MonoBehaviour
             objectType.weight = weightData.GetWeight(type);
 
             Debug.Log($"Instanciado: {type} con peso {objectType.weight}");
+            StartCoroutine(ChangeMass(rb));
         }
 
         if (obj.TryGetComponent(out PickToInventory pick))
@@ -47,6 +49,13 @@ public class ObjectCreator : MonoBehaviour
             pick.isOnScale = true;
             pick.plateSide = sidePlate;
         }
+
+    }
+
+    public IEnumerator ChangeMass(Rigidbody rb)
+    {
+        yield return new WaitForSeconds(2f);
+        rb.mass = 0.1f;
     }
 }
 
