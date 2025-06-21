@@ -19,10 +19,15 @@ public class VertexSignalReceiver : MonoBehaviour
         StartCoroutine(RotateArmToX(rightArm, 0f, 0.25f));
     }
 
+    private Coroutine disableCoroutine;
+
     public void DisableArm()
     {
+        if (disableCoroutine != null) return;
+
+        Debug.Log("Disable Arm");
         Quaternion original = originalRotations[rightArm];
-        StartCoroutine(RotateToRotation(rightArm, original, 0.25f));
+        disableCoroutine = StartCoroutine(RotateToRotation(rightArm, original, 0.25f));
     }
 
     private IEnumerator RotateArmToX(Transform arm, float targetX, float duration)
@@ -60,6 +65,10 @@ public class VertexSignalReceiver : MonoBehaviour
         }
 
         arm.localEulerAngles = targetEuler;
+
+        yield return null;
         arm.gameObject.SetActive(false);
+
+        disableCoroutine = null;
     }
 }

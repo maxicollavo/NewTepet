@@ -50,33 +50,24 @@ public class HieroglyficManager : MonoBehaviour
             hasWonPuzzle = true;
             OnWinAction?.Invoke(this);
             OwlManager.Instance.DeactivateColliders();
-            Debug.Log("Se activa la cinemática del cuenco");
             StartCoroutine(Cinematic());
         }
     }
 
     private IEnumerator Cinematic()
     {
-        yield return WaitForBlendEnd();
-
+        yield return new WaitForSeconds(1.5f);
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
-
-        foreach (var light in owlLights)
-        {
-            //Guardas el estado original de todo lo que vayas a cambiar por ejemplo var originalIntensity = light.intensity;
-            //Cambias lo que tengas que cambiar
-        }
-
         originalLookAt = cam.LookAt;
         cam.LookAt = lookAtTarget;
         cam.gameObject.SetActive(true);
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         cinematic.Play();
         AudioManager.Instance.PlaySound("OpenTramp");
         rocksParticle.Play();
         yield return new WaitForSeconds(0.5f);
-        
+
         AudioManager.Instance.PlaySound("StoneParticleSound");
         yield return new WaitForSeconds(0.5f);
 
@@ -87,19 +78,7 @@ public class HieroglyficManager : MonoBehaviour
         cam.gameObject.SetActive(false);
 
         yield return new WaitForSeconds(1.5f);
-
-        foreach (var light in owlLights)
-        {
-            //Acá las devolves a su estado original con lo que guardaste antes
-        }
-
         hasEndedCinematic = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
-    }
-
-    private IEnumerator WaitForBlendEnd()
-    {
-        while (brain.IsBlending)
-            yield return null;
     }
 }
