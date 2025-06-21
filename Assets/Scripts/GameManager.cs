@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour
         CinemachineCore.BlendFinishedEvent.AddListener(OnBlendFinished);
 
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+
+        Time.timeScale = 1;
     }
 
     private void OnDestroy()
@@ -80,7 +82,6 @@ public class GameManager : MonoBehaviour
             OnGameplayMethod();
         }
     }
-
 
     private void Update()
     {
