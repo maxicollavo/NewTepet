@@ -1,0 +1,72 @@
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+[RequireComponent(typeof(Outline))]
+public class RiverPiece : MonoBehaviour
+{
+    public Action<RiverPiece> OnPieceSelected;
+    public RiverWaypoint currentWp;
+
+    Outline outline;
+    [HideInInspector]
+    public BoxCollider coll;
+    public bool IsSelected;
+    public bool OnPositionWinner;
+
+    private void Awake()
+    {
+        outline = GetComponent<Outline>();
+        coll = GetComponent<BoxCollider>();
+    }
+
+    private void Start()
+    {
+        outline.enabled = false;
+        transform.position = currentWp.transform.position;
+    }
+
+    private void OnMouseDown()
+    {
+        if (IsSelected) return;
+        SelectedPiece();
+    }
+
+    private void OnMouseEnter()
+    {
+        if (IsSelected) return;
+
+        outline.enabled = true;
+    }
+
+    private void OnMouseExit()
+    {
+        if (IsSelected) return;
+
+        outline.enabled = false;
+    }
+
+    public void SelectedPiece()
+    {
+        IsSelected = true;
+        AudioManager.Instance.PlaySound("SelectPiece");
+        EnableOutline();
+        OnPieceSelected?.Invoke(this);
+    }
+
+    public void DeselectPiece()
+    {
+        IsSelected = false;
+        DisableOutline();
+    }
+
+    public void DisableOutline()
+    {
+        outline.enabled = false;
+    }
+
+    public void EnableOutline()
+    {
+        outline.enabled = true;
+    }
+}
