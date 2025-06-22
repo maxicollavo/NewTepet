@@ -13,6 +13,8 @@ public class C_PyramidGrab : MonoBehaviour
     [SerializeField] PlayableDirector pickPyramidTimeline;
     [SerializeField] GameObject basePyramid;
     GameObject[] basePyramidChildrens;
+    [SerializeField] AudioSource door3DSound;
+
 
     private void Start()
     {
@@ -54,7 +56,9 @@ public class C_PyramidGrab : MonoBehaviour
 
     public void PlayDoorSound()
     {
-        AudioManager.Instance.PlaySound("rocaMoviendose");
+        //AudioManager.Instance.PlaySound("rocaMoviendose");
+        door3DSound.Play();
+        
     }
 
     public void ChangeBasePyramidLayer()

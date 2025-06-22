@@ -4,8 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
-    [SerializeField] GameObject optionMenu;
-    [SerializeField] GameObject creditMenu;
+    [SerializeField] GameObject creditMenuUI;
+    [SerializeField] GameObject AreYouSureUI;
+    [SerializeField] GameObject PauseMenuUI;
+    [SerializeField] GameObject OptionMainMenu;
 
     public bool isMenu;
 
@@ -19,25 +21,38 @@ public class ScenesManager : MonoBehaviour
         SceneManager.LoadScene("Level_One");
     }
 
-    public void Options()
-    {
-        optionMenu.SetActive(true);
-    }
 
     public void BackToMenu()
     {
-        optionMenu.SetActive(false);
-        creditMenu.SetActive(false);
+        creditMenuUI.SetActive(false);
+        OptionMainMenu.SetActive(false);
     }
 
     public void Credits()
     {
-        creditMenu.SetActive(true);
-        optionMenu.SetActive(false);
+       creditMenuUI.SetActive(true);
     }
 
     public void GoToMenu()
     {
         SceneManager.LoadScene("MenuScene");
     }
-}
+
+    public void AreYouSureMenu()
+    {
+      AreYouSureUI.SetActive(true);      
+    }
+    public void DisableAreYouSure()
+    {
+        AreYouSureUI.SetActive(false);
+    }
+    public void UnPause()
+    {
+         PauseMenuUI.SetActive(false);   
+    }                         
+
+    public void OptionMenu()
+    {
+        OptionMainMenu.SetActive(true);
+    }                         
+}                         

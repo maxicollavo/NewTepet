@@ -35,7 +35,7 @@ public class RiverPuzzleManager : MonoBehaviour
     private bool HasWon;
     private bool canInteract = false;
     private bool canGoBack;
-    //public GameObject uiRiverPuzzle;
+    public GameObject uiRiverPuzzle;
     private Dictionary<RiverPiece, RiverWaypoint> pieceTargetMap = new Dictionary<RiverPiece, RiverWaypoint>();
     [SerializeField] GameObject interactorGO;
     BoxCollider interactorCollider;
@@ -176,8 +176,8 @@ public class RiverPuzzleManager : MonoBehaviour
     {
         movePiece.enabled = true;
         OnPuzzle = true;
-        //if (uiRiverPuzzle != null)
-        //    uiRiverPuzzle.SetActive(true);
+        if (uiRiverPuzzle != null)
+            uiRiverPuzzle.SetActive(true);
     }
 
     public void BackToGameplay()
@@ -193,8 +193,8 @@ public class RiverPuzzleManager : MonoBehaviour
             selectedPiece = null;
         }
 
-        //if (uiRiverPuzzle != null)
-        //    uiRiverPuzzle.SetActive(false);
+       if (uiRiverPuzzle != null)
+           uiRiverPuzzle.SetActive(false);
 
         movePiece.enabled = false;
         OnPuzzle = false;

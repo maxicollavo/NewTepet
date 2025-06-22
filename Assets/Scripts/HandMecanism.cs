@@ -7,6 +7,8 @@ public class HandMecanism : MonoBehaviour, Interactor
     [SerializeField] Animator doorAnim;
     Animator touchButton;
     BoxCollider coll;
+    [SerializeField] AudioSource door3DSound;
+
 
     private void Awake()
     {
@@ -47,7 +49,8 @@ public class HandMecanism : MonoBehaviour, Interactor
         DisableOutline();
         yield return new WaitForSeconds(1f);
         doorAnim.SetTrigger("Open");
-        AudioManager.Instance.PlaySound("rocaMoviendose");
+        door3DSound.Play();
+        //AudioManager.Instance.PlaySound("rocaMoviendose");
     }
 
     public void Interact()
