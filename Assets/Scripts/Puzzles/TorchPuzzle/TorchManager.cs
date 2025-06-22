@@ -56,7 +56,7 @@ public class TorchManager : MonoBehaviour
         {
             shake.TriggerShake();
             mimicSphereAnim.SetBool("CanStart", true);
-            mimicSphereFillMat.SetFloat("_FillAmount", 2f);
+            mimicSphereFillMat.SetFloat("_OffsetPoint", 1f);
             canEnter = false;
         }
     }
