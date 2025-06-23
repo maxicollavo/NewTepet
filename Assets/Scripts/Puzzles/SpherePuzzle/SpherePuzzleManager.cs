@@ -8,6 +8,7 @@ public class SpherePuzzleManager : MonoBehaviour
 
     [Header("Acciones al ganar")]
     public Animator openDoor;
+    public Animator mimicAnim;
     [SerializeField] private MeshRenderer sphereRenderer;
     private Material emissiveMat;
     private bool hasWon;
@@ -51,6 +52,7 @@ public class SpherePuzzleManager : MonoBehaviour
         openDoor.SetTrigger("Open");
 
         yield return new WaitForSeconds(1f);
+        mimicAnim.SetBool("CanStart", false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 }

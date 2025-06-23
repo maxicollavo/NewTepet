@@ -9,6 +9,7 @@ public class StatueInteractor : MonoBehaviour, Interactor
     BoxCollider coll;
 
     bool HasInteract;
+    public bool isCat;
 
     private void Awake()
     {
@@ -47,6 +48,13 @@ public class StatueInteractor : MonoBehaviour, Interactor
 
     void OnInteract()
     {
+        if (isCat)
+        {
+            DisableOutline();
+            InteractorAction?.Invoke(this);
+            return;
+        }
+
         if (HasInteract) return;
 
         DisableOutline();
