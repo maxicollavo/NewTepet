@@ -6,7 +6,6 @@ using UnityEngine;
 public class PieceBoxOnWin : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] VertexSignalReceiver receiver;
     [SerializeField] TrackerManager manager;
     [SerializeField] CinemachineCamera cinematicCam;
     [SerializeField] BoxCollider interactorColl;
@@ -30,25 +29,28 @@ public class PieceBoxOnWin : MonoBehaviour
 
     private IEnumerator Cinematic()
     {
-        manager.trail.gameObject.SetActive(false); //Apagamos el rayo
-        receiver.DisableArm(); //Bajamos la mano y la apagamos al finalizar la corrutina
+        manager.trail.gameObject.SetActive(false);           // Apagamos el rayo del jugador
+        interactorColl.enabled = false;                      // Desactivamos el collider de interacción
+
         yield return new WaitForSeconds(0.5f);
-        manager.TurnPuzzleCamera(false);
-        EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty); //Sacamos el cursor
-        interactorColl.enabled = false; //Desactivamos el collider del interactor
-        cinematicCam.gameObject.SetActive(true); //Encendemos la camara de la cinemática
-        AudioManager.Instance.PlaySound("SlideClick"); //Sonido de desbloqueo de caja
+
+        manager.TurnPuzzleCamera(false);                   // Apagamos la cámara de puzzle
+        EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty); // Ocultamos el cursor o HUD
+        cinematicCam.gameObject.SetActive(true);             // Activamos la cámara de cinemática
+        AudioManager.Instance.PlaySound("SlideClick");       // Reproducimos sonido de desbloqueo
+
         yield return new WaitForSeconds(1.3f);
-        //interactorColl.enabled = false;
-        boxAnim.SetTrigger("Open"); //Abrimos caja
-        AudioManager.Instance.PlaySound("OpenBox"); //Sonido de apertura de caja
-        //interactorColl.enabled = false;
+
+        boxAnim.SetTrigger("Open");                          // Disparamos animación
+        AudioManager.Instance.PlaySound("OpenBox");          // Reproducimos sonido de apertura
+
         yield return new WaitForSeconds(1f);
-        //interactorColl.enabled = false;
-        cinematicCam.gameObject.SetActive(false); //Apagamos la camara de cinematica
-        pieceColl.enabled = true; //Encendemos el collider de la recompensa
-        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty); //Devolvemos el cursor
-        manager.BackToGameplay(true); //Volvemos a la camara de gameplay
-        manager.HasWon = true;
+
+        cinematicCam.gameObject.SetActive(false);            // Apagamos la cámara de cinemática
+        pieceColl.enabled = true;                            // Activamos el collider de la pieza recompensa
+
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty); // Restauramos el HUD/cursor
+        manager.BackToGameplay(true);                        // Volvemos a la cámara de gameplay
+        manager.HasWon = true;                               // Marcamos que se ganó
     }
 }

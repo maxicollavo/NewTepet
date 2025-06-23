@@ -10,7 +10,8 @@ public class TrackerManager : MonoBehaviour
     [HideInInspector] public List<Tracker> trackerList = new List<Tracker>();
     public Action<TrackerManager> JeroglificAction;
     public FollowMouseClick trail;
-    [SerializeField] VertexSignalReceiver receiver;
+    [SerializeField] HieroglyficArmHandler armHandler;
+    [SerializeField] Transform rightArm;
     [SerializeField] GameObject interactor;
     BoxCollider interactorCollider;
     PuzzleInteractor puzzleInteractor;
@@ -23,8 +24,7 @@ public class TrackerManager : MonoBehaviour
     [SerializeField] GameObject CM_PuzzleCamera;
     [SerializeField] HieroglyficManager hieroglyficManager;
     [SerializeField] Transform[] armsTransforms;
-    [SerializeField] PlayableDirector enableArm;
-    // Diccionario para guardar las rotaciones originales
+    // Diccionario para guardar las rotaciones originales de las manos originales
     private Dictionary<Transform, Quaternion> originalRotations = new Dictionary<Transform, Quaternion>();
 
     private void Awake()
@@ -91,7 +91,7 @@ public class TrackerManager : MonoBehaviour
         canGoBack = false;
         canInteract = false;
         yield return new WaitForSeconds(1.3f);
-        enableArm.Play();
+        armHandler.EnableArm(rightArm);
         yield return new WaitForSeconds(.5f);
         canGoBack = true;
         canInteract = true;
@@ -103,8 +103,7 @@ public class TrackerManager : MonoBehaviour
         if (HasWon) return;
 
         OnPuzzle = false;
-        receiver.DisableArm();
-        TurnPuzzleCamera(false);
+        armHandler.DisableArm(rightArm);
         trail.gameObject.SetActive(false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
         StartCoroutine(ExitPuzzleCoroutine(onWin));
@@ -112,6 +111,8 @@ public class TrackerManager : MonoBehaviour
 
     public IEnumerator ExitPuzzleCoroutine(bool hasWon)
     {
+        yield return new WaitForSeconds(0.3f);
+        TurnPuzzleCamera(false);
         canGoBack = false;
         yield return new WaitForSeconds(1f);
         foreach (var arm in armsTransforms)
@@ -179,7 +180,7 @@ public class TrackerManager : MonoBehaviour
     private IEnumerator DisableArms()
     {
         trail.gameObject.SetActive(false); //Apagamos el rayo
-        receiver.DisableArm(); //Bajamos la mano y la apagamos al finalizar la corrutina
+        armHandler.DisableArm(rightArm); //Bajamos la mano y la apagamos al finalizar la corrutina
         yield return new WaitForSeconds(0.5f);
         TurnPuzzleCamera(false);
         BackToGameplay(true); //Volvemos a la camara de gameplay

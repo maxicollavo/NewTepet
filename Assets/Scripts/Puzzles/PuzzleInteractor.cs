@@ -18,7 +18,6 @@ public class PuzzleInteractor : MonoBehaviour, Interactor
     public void Interact()
     {
         PuzzleMethod();
-        Debug.Log("Interactua");
     }
 
     public void PuzzleMethod()
@@ -41,7 +40,6 @@ public class PuzzleInteractor : MonoBehaviour, Interactor
     public void Aiming()
     {
         EnableOutline();
-        Debug.Log("Apunta");
 
         UIManager.Instance.ChangeCursor(true);
     }
