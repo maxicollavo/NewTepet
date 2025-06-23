@@ -9,8 +9,6 @@ public class FPSController : MonoBehaviour
 {
     [Header("Speed Settings")]
     [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float crouchSpeed = 1.5f;
-    private bool shouldCrouch;
 
     [Header("Camera Settings")]
     [SerializeField] private bool invertYAxis = false;
@@ -31,8 +29,6 @@ public class FPSController : MonoBehaviour
     private bool canUseHeadBob = true;
     [SerializeField] private float walkBobSpeed = 14f;
     [SerializeField] private float walkBobAmount = 0.05f;
-    [SerializeField] private float crouchBobSpeed = 8f;
-    [SerializeField] private float crouchBobAmount = 0.025f;
     private float defaultYPos = 0;
     private float timer;
 
@@ -47,10 +43,8 @@ public class FPSController : MonoBehaviour
     private float verticalRotation;
 
     private Vector3 originalCameraLocalPosition;
-    private Vector3 crouchedCameraLocalPosition;
 
     private float originalHeight;
-    private float crouchedHeight;
     private float currentSpeed;
     [SerializeField] private LayerMask ceilingLayerMask;
 
@@ -84,10 +78,8 @@ public class FPSController : MonoBehaviour
         VolumeValue = VolumeSlider.value;
 
         originalCameraLocalPosition = cameraHolder.localPosition;
-        crouchedCameraLocalPosition = originalCameraLocalPosition + new Vector3(0, -1.5f, 0);
 
         originalHeight = characterController.height;
-        crouchedHeight = 2.5f;
         currentSpeed = moveSpeed;
 
         characterController.center = Vector3.zero;
@@ -161,7 +153,7 @@ public class FPSController : MonoBehaviour
 
         if (characterController.isGrounded && (Mathf.Abs(currentMovement.x) > 0.1f || Mathf.Abs(currentMovement.z) > 0.1f))
         {
-            float bobTimer = Time.time * (shouldCrouch ? crouchBobSpeed : handBobSpeed);
+            float bobTimer = Time.time * handBobSpeed;
             float bobOffsetY = Mathf.Sin(bobTimer) * handBobAmount;
             float bobOffsetX = Mathf.Cos(bobTimer * 0.5f) * handBobAmount * 0.5f;
 
@@ -178,24 +170,21 @@ public class FPSController : MonoBehaviour
         }
     }
 
-
-
     private void HandleMovement()
     {
         bool wantsToStand = !Keyboard.current.cKey.isPressed;
         bool ceilingAbove = IsCeilingAbove();
-        shouldCrouch = Keyboard.current.cKey.isPressed || ceilingAbove;
 
-        float targetHeight = shouldCrouch ? crouchedHeight : originalHeight;
+        float targetHeight = originalHeight;
         float currentHeight = Mathf.Lerp(characterController.height, targetHeight, Time.deltaTime * 10f);
         float heightDifference = currentHeight - characterController.height;
         characterController.height = currentHeight;
         characterController.center += new Vector3(0, heightDifference / 2f, 0);
 
-        Vector3 targetCamPos = shouldCrouch ? crouchedCameraLocalPosition : originalCameraLocalPosition;
+        Vector3 targetCamPos = originalCameraLocalPosition;
         cameraHolder.localPosition = Vector3.Lerp(cameraHolder.localPosition, targetCamPos, Time.deltaTime * 10f);
 
-        currentSpeed = shouldCrouch ? crouchSpeed : moveSpeed;
+        currentSpeed = moveSpeed;
 
         Vector3 inputDirection = new Vector3(inputHandler.MoveInput.x, 0f, inputHandler.MoveInput.y);
         Vector3 worldDirection = transform.TransformDirection(inputDirection).normalized;
@@ -226,9 +215,9 @@ public class FPSController : MonoBehaviour
 
         if (Mathf.Abs(currentMovement.x) > 0.1f || Mathf.Abs(currentMovement.z) > 0.1f)
         {
-            timer += Time.deltaTime * (shouldCrouch ? crouchBobSpeed : walkBobSpeed);
+            timer += Time.deltaTime * walkBobSpeed;
             float sinValue = Mathf.Sin(timer);
-            float bobAmount = shouldCrouch ? crouchBobAmount : walkBobAmount;
+            float bobAmount = walkBobAmount;
 
             playerCam.transform.localPosition = new Vector3(
                 playerCam.transform.localPosition.x,
@@ -238,7 +227,7 @@ public class FPSController : MonoBehaviour
 
             if (sinValue <= -0.9f && !stepPlayedThisCycle)
             {
-                footstepAudioSource.volume = shouldCrouch ? UnityEngine.Random.Range(0.3f, 0.5f) : UnityEngine.Random.Range(0.8f, 1f);
+                footstepAudioSource.volume = UnityEngine.Random.Range(0.8f, 1f);
                 footstepAudioSource.PlayOneShot(footstepClip);
                 stepPlayedThisCycle = true;
             }
