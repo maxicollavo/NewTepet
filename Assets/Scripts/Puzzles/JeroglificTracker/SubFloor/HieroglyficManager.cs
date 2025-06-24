@@ -11,6 +11,7 @@ public class HieroglyficManager : MonoBehaviour
     private int counter;
     [HideInInspector] public bool hasWonPuzzle;
     [SerializeField] PlayableDirector cinematic;
+    [SerializeField] Light[] lights;
 
     [Header("References")]
     [SerializeField] CinemachineCamera cam;
@@ -62,6 +63,12 @@ public class HieroglyficManager : MonoBehaviour
         cam.LookAt = lookAtTarget;
         cam.gameObject.SetActive(true);
 
+        yield return new WaitForSeconds(0.5f);
+        foreach (var light in lights)
+        {
+            light.intensity = 5;
+        }
+
         yield return new WaitForSeconds(1.5f);
         cinematic.Play();
         AudioManager.Instance.PlaySound("OpenTramp");
@@ -73,9 +80,14 @@ public class HieroglyficManager : MonoBehaviour
 
         AudioManager.Instance.PlaySound("StopBall");
         yield return new WaitForSeconds(2f);
-
         cam.LookAt = originalLookAt;
         cam.gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.75f);
+        foreach (var light in lights)
+        {
+            light.intensity = 30;
+        }
 
         yield return new WaitForSeconds(1.5f);
         hasEndedCinematic = true;
