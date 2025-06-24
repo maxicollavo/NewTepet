@@ -15,6 +15,12 @@ public class RiverOnWin : MonoBehaviour
 
     private void OnWinMethod(RiverPuzzleManager manager)
     {
+        StartCoroutine(OpenBoxCoroutine());
+    }
+
+    private IEnumerator OpenBoxCoroutine()
+    {
+        yield return new WaitForSeconds(1.5f);
         anim.SetTrigger("Open");
         winParticles.Play();
     }
