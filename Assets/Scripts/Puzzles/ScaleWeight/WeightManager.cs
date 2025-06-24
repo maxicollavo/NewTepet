@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeightManager : MonoBehaviour
 {
     public Action<float> OnResultAction;
-    [SerializeField] private PlateCollision[] collisions;
+    [SerializeField] private ObjectCreator creator;
 
     public float leftWeight = 0f;
     public float rightWeight = 0f;
@@ -15,26 +15,25 @@ public class WeightManager : MonoBehaviour
     {
         Instance = this;
 
-        foreach (var col in collisions)
-        {
-            col.OnCollisionAction += OnCollisionMethod;
-        }
+        creator.OnCreateAction += ResultMethod;
     }
 
-    private void OnCollisionMethod(Plate plate, float weight)
+    public void ResultMethod(ObjectCreator creator, Plate plate, float weight, bool isAdding = true)
     {
+        float value = isAdding ? weight : -weight;
+
         switch (plate)
         {
             case Plate.Left:
-                leftWeight += weight;
+                leftWeight += value;
                 break;
 
             case Plate.Right:
-                rightWeight += weight;
+                rightWeight += value;
                 break;
         }
 
-        float result = leftWeight > rightWeight ? leftWeight - rightWeight : rightWeight - leftWeight;
+        float result = Mathf.Abs(leftWeight - rightWeight);
         Debug.Log(result);
         OnResultAction?.Invoke(result);
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class ObjectCreator : MonoBehaviour
 {
     [SerializeField] private List<ObjectPrefabPair> prefabsByType;
+    public Action<ObjectCreator, Plate, float, bool> OnCreateAction;
 
     [SerializeField] private WeightData weightData;
 
@@ -40,7 +42,6 @@ public class ObjectCreator : MonoBehaviour
             objectType.type = type;
             objectType.weight = weightData.GetWeight(type);
 
-            Debug.Log($"Instanciado: {type} con peso {objectType.weight}");
             StartCoroutine(ChangeMass(rb));
         }
 
@@ -49,6 +50,9 @@ public class ObjectCreator : MonoBehaviour
             pick.isOnScale = true;
             pick.plateSide = sidePlate;
         }
+
+        Debug.Log($"Instanciado: {type} con peso {objectType.weight} en el plato {sidePlate}");
+        OnCreateAction?.Invoke(this, sidePlate, objectType.weight, true);
 
     }
 

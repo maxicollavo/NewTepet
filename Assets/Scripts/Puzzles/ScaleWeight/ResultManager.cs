@@ -23,24 +23,19 @@ public class ResultManager : MonoBehaviour
         switch (rounded)
         {
             case 2:
-                OpenDoor();
-                Debug.Log("Se abre la puerta con peso 2");
+                TryOpenDoor(0);
                 break;
             case 7:
-                OpenDoor();
-                Debug.Log("Se abre la puerta con peso 7");
+                TryOpenDoor(1);
                 break;
             case 9:
-                OpenDoor();
-                Debug.Log("Se abre la puerta con peso 9");
+                TryOpenDoor(2);
                 break;
             case 15:
-                OpenDoor();
-                Debug.Log("Se abre la puerta con peso 15");
+                TryOpenDoor(3);
                 break;
             case 50:
-                OpenDoor();
-                Debug.Log("Se abre la puerta con peso 50");
+                TryOpenDoor(4);
                 break;
             default:
                 Debug.Log("No se llega a ningun peso");
@@ -48,18 +43,19 @@ public class ResultManager : MonoBehaviour
         }
     }
 
-    private void OpenDoor()
+    private void TryOpenDoor(int doorIndex)
     {
-        if (counter >= doorAnims.Length)
+        if (doorIndex >= doorAnims.Length)
         {
-            Debug.LogWarning("No hay más puertas para abrir.");
+            Debug.LogWarning("Índice de puerta fuera de rango.");
             return;
         }
 
-        if (doorsDone[counter]) return;
-        doorAnims[counter].SetTrigger("Open");
-        doorSounds3D[counter].Play();
-        doorsDone[counter] = true;
-        counter++;
+        if (doorsDone[doorIndex]) return;
+
+        doorAnims[doorIndex].SetTrigger("Open");
+        doorSounds3D[doorIndex].Play();
+        doorsDone[doorIndex] = true;
+        Debug.Log($"Se abre la puerta con peso {doorIndex}");
     }
 }

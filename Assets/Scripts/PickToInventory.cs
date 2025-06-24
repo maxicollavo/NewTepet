@@ -59,20 +59,9 @@ public class PickToInventory : MonoBehaviour, Interactor
         //Sonido de pickeo
         AudioManager.Instance.PlaySound("Grab");
 
-        if (isOnScale)
+        if (isOnScale && plateSide != Plate.None)
         {
-            if (plateSide == Plate.None) return;
-
-            if (plateSide == Plate.Left)
-            {
-                WeightManager.Instance.leftWeight -= type.weight;
-                Debug.Log($"El weight izquierdo es de {WeightManager.Instance.leftWeight}");
-            }
-            else
-            {
-                WeightManager.Instance.rightWeight -= type.weight;
-                Debug.Log($"El weight derecho es de {WeightManager.Instance.rightWeight}");
-            }
+            WeightManager.Instance.ResultMethod(null, plateSide, type.weight, false);
         }
     }
 
