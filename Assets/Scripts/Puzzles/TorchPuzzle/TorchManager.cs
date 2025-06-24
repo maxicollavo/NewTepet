@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class TorchManager : MonoBehaviour
 {
+    public Action<TorchManager> TorchOnWinAction;
+
     [SerializeField] List<Torch> torches;
     [SerializeField] List<int> correctTorchesIndex;
     [SerializeField] CameraShake shake;
     bool HasWon;
     bool canEnter = true;
+    [SerializeField] bool onSecondLevel;
 
     [SerializeField] GameObject mimicSphere;
     Animator mimicSphereAnim;
@@ -17,15 +20,24 @@ public class TorchManager : MonoBehaviour
 
     private void OnEnable()
     {
-        mimicSphereAnim = mimicSphere.transform.parent.GetComponent<Animator>();
-        mimicSphereRend = mimicSphere.GetComponent<MeshRenderer>();
-        mimicSphereFillMat = mimicSphereRend.materials[1];
+        if (mimicSphere != null)
+        {
+            mimicSphereAnim = mimicSphere.transform.parent.GetComponent<Animator>();
+            mimicSphereRend = mimicSphere.GetComponent<MeshRenderer>();
+            mimicSphereFillMat = mimicSphereRend.materials[1];
+        }
     }
 
     private void Start()
     {
         foreach (var t in torches) t.OnInteractAction += OnInteract;
         foreach (var t in torches) t.OnAnimFinishAction += OnWinMethod;
+    }
+
+    private void OnDisable()
+    {
+        foreach (var t in torches) t.OnInteractAction -= OnInteract;
+        foreach (var t in torches) t.OnAnimFinishAction -= OnWinMethod;
     }
 
     private void OnInteract(Torch torch, int index)
@@ -51,6 +63,12 @@ public class TorchManager : MonoBehaviour
     private void OnWinMethod(Torch torch)
     {
         if (!HasWon) return;
+
+        if (onSecondLevel)
+        {
+            TorchOnWinAction?.Invoke(this);
+            return;
+        }
 
         if (canEnter)
         {

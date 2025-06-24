@@ -22,7 +22,6 @@ public class InteriorPieceSelector : MonoBehaviour
         if (!interactManager.interiorPieceSelected.ContainsKey(this))
         {
             interactManager.interiorPieceSelected.Add(this, false);
-            Debug.Log("Cantidad de piezas registradas: " + interactManager.interiorPieceSelected.Count);
         }
     }
 
