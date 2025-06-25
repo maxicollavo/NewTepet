@@ -22,6 +22,7 @@ public class HieroglyficManager : MonoBehaviour
 
     private bool hasEndedCinematic;
     public ParticleSystem rocksParticle;
+    public GameObject RockGO;
     public static HieroglyficManager Instance;
 
     private void Awake()
@@ -72,7 +73,8 @@ public class HieroglyficManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         cinematic.Play();
         AudioManager.Instance.PlaySound("OpenTramp");
-        rocksParticle.Play();
+        //rocksParticle.Play();
+        RockGO.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
 
         AudioManager.Instance.PlaySound("StoneParticleSound");

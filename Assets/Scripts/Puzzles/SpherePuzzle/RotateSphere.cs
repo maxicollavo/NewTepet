@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using Unity.Cinemachine;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 public class RotateSphere : MonoBehaviour, Interactor
@@ -17,6 +18,10 @@ public class RotateSphere : MonoBehaviour, Interactor
     private float fillAmount;
     private int fillCounter;
     public GameObject uiPuzzle;
+
+    public Animator animator;
+    public bool isLost = false;
+
 
     [Header("Rotación")]
     private Transform pivot;
@@ -63,8 +68,10 @@ public class RotateSphere : MonoBehaviour, Interactor
     private void Start()
     {
         outline.enabled = false;
+        animator.enabled = false;
 
         winImagePoints = winImagePoints.OrderBy(p => p.name).ToArray();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -292,6 +299,7 @@ public class RotateSphere : MonoBehaviour, Interactor
             currentImageIndex++;
             fillCounter++;
             particle.Play();
+            animator.enabled = false;
             //StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
 
             if (currentImageIndex >= winImagePoints.Length)
@@ -303,8 +311,13 @@ public class RotateSphere : MonoBehaviour, Interactor
         }
         else
         {
-            currentImageIndex = 0;
-            fillCounter = 0;
+
+            StartCoroutine(LoseInSphere());
+            //Debug.Log("mal movimiento");
+            //animator.enabled = true;
+            //animator.SetBool("Lose", true);
+            //currentImageIndex = 0;
+            //fillCounter = 0;
             //Cuando hacemos mal el movimiento
             //StartCoroutine(ConfirmMovement(SphereStates.Loose, SphereStates.Idle));
         }
@@ -326,4 +339,14 @@ public class RotateSphere : MonoBehaviour, Interactor
         canUse = true;
     }
 
+    public IEnumerator LoseInSphere()
+    {
+        animator.enabled = true;
+        animator.SetBool("Lose", true);
+        currentImageIndex = 0;
+        fillCounter = 0;
+        yield return new WaitForSeconds(1f);
+        animator.SetBool("Lose", false);
+        animator.enabled = false;
+    }
 }
