@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeightManager : MonoBehaviour
 {
-    public Action<float> OnResultAction;
+    public Action<float, bool> OnResultAction;
     [SerializeField] private ObjectCreator creator;
 
     public float leftWeight = 0f;
@@ -18,7 +18,7 @@ public class WeightManager : MonoBehaviour
         creator.OnCreateAction += ResultMethod;
     }
 
-    public void ResultMethod(ObjectCreator creator, Plate plate, float weight, bool isAdding = true)
+    public void ResultMethod(ObjectCreator creator, Plate plate, float weight, bool canOpenDoor, bool isAdding = true)
     {
         float value = isAdding ? weight : -weight;
 
@@ -35,6 +35,6 @@ public class WeightManager : MonoBehaviour
 
         float result = Mathf.Abs(leftWeight - rightWeight);
         Debug.Log(result);
-        OnResultAction?.Invoke(result);
+        OnResultAction?.Invoke(result, canOpenDoor);
     }
 }

@@ -23,6 +23,8 @@ public class PickToInventory : MonoBehaviour, Interactor
     [HideInInspector]
     public bool isOnScale;
 
+    public bool canBePicked;
+
     [HideInInspector]
     public Plate plateSide;
 
@@ -38,16 +40,28 @@ public class PickToInventory : MonoBehaviour, Interactor
     {
         outline.enabled = false;
         originalColor = outline.OutlineColor;
+        canBePicked = true;
+    }
+
+    private void Update()
+    {
+        if (!ObjectCreator.Instance.canPick)
+        {
+            canBePicked = false;
+        }
     }
 
     public void Interact()
     {
+        if (!canBePicked) return;
+
         if (HandInventory.IsHoldingSomething())
         {
             StartCoroutine(CannotPick());
             return;
         }
 
+        ObjectCreator.Instance.RemoveSpawnedObject(gameObject);
         //Marcamos que pickeamos un objeto y cual es
         PickedObjData.Instance.MarkAsPicked(obj);
         //Deshabilitamos el Outline
@@ -61,7 +75,7 @@ public class PickToInventory : MonoBehaviour, Interactor
 
         if (isOnScale && plateSide != Plate.None)
         {
-            WeightManager.Instance.ResultMethod(null, plateSide, type.weight, false);
+            WeightManager.Instance.ResultMethod(null, plateSide, type.weight, false, false);
         }
     }
 
@@ -78,6 +92,8 @@ public class PickToInventory : MonoBehaviour, Interactor
 
     public void Aiming()
     {
+        if (!canBePicked) return;
+
         EnableOutline();
         UIManager.Instance.ChangeCursor(true);
     }

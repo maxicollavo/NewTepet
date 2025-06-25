@@ -6,11 +6,17 @@ using UnityEngine;
 public class ObjectCreator : MonoBehaviour
 {
     [SerializeField] private List<ObjectPrefabPair> prefabsByType;
-    public Action<ObjectCreator, Plate, float, bool> OnCreateAction;
+    private List<GameObject> leftPlateObjects = new List<GameObject>();
+    private List<GameObject> rightPlateObjects = new List<GameObject>();
+
+    public Action<ObjectCreator, Plate, float, bool, bool> OnCreateAction;
 
     [SerializeField] private WeightData weightData;
 
     public static ObjectCreator Instance;
+
+    bool shouldOpenDoor;
+    public bool canPick;
 
     private Dictionary<ObjectsToPick, GameObject> prefabDict;
 
@@ -26,6 +32,11 @@ public class ObjectCreator : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        canPick = true;
+    }
+
     public void InstantiateObject(ObjectsToPick type, Vector3 position, Plate sidePlate)
     {
         if (!prefabDict.TryGetValue(type, out var prefab))
@@ -37,12 +48,41 @@ public class ObjectCreator : MonoBehaviour
         GameObject obj = Instantiate(prefab, position, Quaternion.identity);
         Rigidbody rb = obj.GetComponent<Rigidbody>();
 
+        if (sidePlate == Plate.Left)
+            leftPlateObjects.Add(obj);
+        else if (sidePlate == Plate.Right)
+            rightPlateObjects.Add(obj);
+
         if (obj.TryGetComponent(out ObjectType objectType))
         {
             objectType.type = type;
             objectType.weight = weightData.GetWeight(type);
 
-            StartCoroutine(ChangeMass(rb));
+            Plate otherPlate = sidePlate == Plate.Left ? Plate.Right : Plate.Left;
+            float otherWeight = otherPlate == Plate.Left ? WeightManager.Instance.leftWeight : WeightManager.Instance.rightWeight;
+
+            List<GameObject> otherPlateObjects = otherPlate == Plate.Left ? leftPlateObjects : rightPlateObjects;
+
+            if (type == ObjectsToPick.Heart &&
+                Mathf.Approximately(otherWeight, 1f) &&
+                otherPlateObjects.Count == 1 &&
+                otherPlateObjects[0].GetComponent<ObjectType>().type == ObjectsToPick.Feather)
+            {
+                Debug.Log("Corazón compensado: pasa de 51 a 1");
+                objectType.weight = 1f;
+                shouldOpenDoor = true;
+            }
+            else if (type == ObjectsToPick.Feather &&
+                     Mathf.Approximately(otherWeight, 51f) &&
+                     otherPlateObjects.Count == 1 &&
+                     otherPlateObjects[0].GetComponent<ObjectType>().type == ObjectsToPick.Heart)
+            {
+                Debug.Log("Pluma compensada: pasa de 1 a 51");
+                objectType.weight = 51f;
+                shouldOpenDoor = true;
+            }
+
+            StartCoroutine(ChangeMass(rb, objectType.weight));
         }
 
         if (obj.TryGetComponent(out PickToInventory pick))
@@ -51,16 +91,27 @@ public class ObjectCreator : MonoBehaviour
             pick.plateSide = sidePlate;
         }
 
-        Debug.Log($"Instanciado: {type} con peso {objectType.weight} en el plato {sidePlate}");
-        OnCreateAction?.Invoke(this, sidePlate, objectType.weight, true);
-
+        Debug.Log($"Instanciado: {type} con peso final {objectType.weight} en el plato {sidePlate}");
+        OnCreateAction?.Invoke(this, sidePlate, objectType.weight, shouldOpenDoor, true);
     }
 
-    public IEnumerator ChangeMass(Rigidbody rb)
+    public IEnumerator ChangeMass(Rigidbody rb, float weight)
     {
         yield return new WaitForSeconds(2f);
-        rb.mass = 0.1f;
+        rb.mass = weight > 20f ? weight / 2f : weight;
     }
+
+    public void RemoveSpawnedObject(GameObject obj)
+    {
+        if (obj.TryGetComponent(out PickToInventory pick))
+        {
+            if (pick.plateSide == Plate.Left)
+                leftPlateObjects.Remove(obj);
+            else if (pick.plateSide == Plate.Right)
+                rightPlateObjects.Remove(obj);
+        }
+    }
+
 }
 
 [System.Serializable]
