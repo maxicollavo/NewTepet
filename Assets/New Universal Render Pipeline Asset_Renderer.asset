@@ -19,7 +19,7 @@ MonoBehaviour:
     AfterOpaque: 1
     Source: 1
     NormalSamples: 1
-    Intensity: 0.35
+    Intensity: 1.04
     DirectLightingStrength: 1
     Radius: 0.7
     Samples: 2
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: PyramidHide
-    Event: 250
+    Event: 300
     filterSettings:
       RenderQueueType: 0
       LayerMask:
@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: PyramidShow
-    Event: 350
+    Event: 300
     filterSettings:
       RenderQueueType: 0
       LayerMask:

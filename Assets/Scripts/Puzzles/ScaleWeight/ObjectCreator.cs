@@ -62,10 +62,11 @@ public class ObjectCreator : MonoBehaviour
             float otherWeight = otherPlate == Plate.Left ? WeightManager.Instance.leftWeight : WeightManager.Instance.rightWeight;
 
             List<GameObject> otherPlateObjects = otherPlate == Plate.Left ? leftPlateObjects : rightPlateObjects;
+            List<GameObject> myPlateObjects = sidePlate == Plate.Left ? leftPlateObjects : rightPlateObjects;
 
             if (type == ObjectsToPick.Heart &&
                 Mathf.Approximately(otherWeight, 1f) &&
-                otherPlateObjects.Count == 1 &&
+                otherPlateObjects.Count == 1 && myPlateObjects.Count == 1 &&
                 otherPlateObjects[0].GetComponent<ObjectType>().type == ObjectsToPick.Feather)
             {
                 Debug.Log("Corazón compensado: pasa de 51 a 1");
@@ -74,7 +75,7 @@ public class ObjectCreator : MonoBehaviour
             }
             else if (type == ObjectsToPick.Feather &&
                      Mathf.Approximately(otherWeight, 51f) &&
-                     otherPlateObjects.Count == 1 &&
+                     otherPlateObjects.Count == 1 && myPlateObjects.Count == 1 &&
                      otherPlateObjects[0].GetComponent<ObjectType>().type == ObjectsToPick.Heart)
             {
                 Debug.Log("Pluma compensada: pasa de 1 a 51");
@@ -82,7 +83,7 @@ public class ObjectCreator : MonoBehaviour
                 shouldOpenDoor = true;
             }
 
-            StartCoroutine(ChangeMass(rb, objectType.weight));
+            StartCoroutine(ChangeMass(rb));
         }
 
         if (obj.TryGetComponent(out PickToInventory pick))
@@ -95,10 +96,10 @@ public class ObjectCreator : MonoBehaviour
         OnCreateAction?.Invoke(this, sidePlate, objectType.weight, shouldOpenDoor, true);
     }
 
-    public IEnumerator ChangeMass(Rigidbody rb, float weight)
+    public IEnumerator ChangeMass(Rigidbody rb)
     {
         yield return new WaitForSeconds(2f);
-        rb.mass = weight > 20f ? weight / 2f : weight;
+        rb.mass = 0.1f;
     }
 
     public void RemoveSpawnedObject(GameObject obj)
@@ -109,6 +110,23 @@ public class ObjectCreator : MonoBehaviour
                 leftPlateObjects.Remove(obj);
             else if (pick.plateSide == Plate.Right)
                 rightPlateObjects.Remove(obj);
+
+            if (leftPlateObjects.Count == 1 && rightPlateObjects.Count == 1)
+            {
+                var leftType = leftPlateObjects[0].GetComponent<ObjectType>();
+                var rightType = rightPlateObjects[0].GetComponent<ObjectType>();
+
+                if (leftType == null || rightType == null) return;
+
+                if ((leftType.type == ObjectsToPick.Feather && rightType.type == ObjectsToPick.Heart) || (leftType.type == ObjectsToPick.Heart && rightType.type == ObjectsToPick.Feather))
+                {
+                    leftType.weight = 1;
+                    rightType.weight = 1;
+                    shouldOpenDoor = true;
+                    WeightManager.Instance.UpdateWeight(true, leftType.weight, shouldOpenDoor);
+                    WeightManager.Instance.UpdateWeight(false, rightType.weight, shouldOpenDoor);
+                }
+            }
         }
     }
 
