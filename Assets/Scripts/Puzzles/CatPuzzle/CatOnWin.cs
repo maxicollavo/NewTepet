@@ -7,6 +7,7 @@ public class CatOnWin : MonoBehaviour
 {
     [SerializeField] Animator boxAnim;
     [SerializeField] TrackerManager manager;
+    [SerializeField] ParticleSystem WinParticleCat;
 
     private void Awake()
     {
@@ -16,5 +17,6 @@ public class CatOnWin : MonoBehaviour
     private void OnWinMethod(TrackerManager manager)
     {
         boxAnim.SetTrigger("Open");
+        WinParticleCat.Play();
     }
 }
