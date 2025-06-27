@@ -6,7 +6,6 @@ using UnityEngine;
 public class StatueManager : MonoBehaviour
 {
     [SerializeField] StatueInteractor statueInteractor;
-    [SerializeField] HieroglyficManager hieroManager;
     [SerializeField] OwlEvents owlEvents;
     public Action<StatueManager, int> SetNodes;
 
@@ -86,7 +85,6 @@ public class StatueManager : MonoBehaviour
         }
 
         onLeft = !onLeft;
-        Debug.Log(onLeft);
         anim.SetBool("OnLeft", onLeft);
     }
 

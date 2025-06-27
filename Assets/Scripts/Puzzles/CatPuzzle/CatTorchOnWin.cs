@@ -8,8 +8,7 @@ public class CatTorchOnWin : MonoBehaviour
     [SerializeField] TorchManager manager;
 
     [SerializeField] GameObject lights;
-    [SerializeField] GameObject path;
-    [SerializeField] GameObject[] colliders;
+    [SerializeField] BoxCollider coll;
 
     private void OnEnable()
     {
@@ -24,8 +23,6 @@ public class CatTorchOnWin : MonoBehaviour
     private void OnWinMethod(TorchManager manager)
     {
         lights.SetActive(true);
-        path.SetActive(true);
-        foreach (var collider in colliders)
-            collider.SetActive(true);
+        coll.enabled = true;
     }
 }
