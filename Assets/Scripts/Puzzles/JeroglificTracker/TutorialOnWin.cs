@@ -21,9 +21,9 @@ public class TutorialOnWin : MonoBehaviour
 
     public IEnumerator OpenDoorCoroutine()
     {
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(1.7f);
         doorAnim.SetTrigger("Open");
-        //AudioManager.Instance.PlaySound("rocaMoviendose");
+        yield return new WaitForSeconds(0.025f);
         door3DSound.Play();
     }
 }
