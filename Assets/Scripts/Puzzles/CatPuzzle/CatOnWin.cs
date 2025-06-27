@@ -8,8 +8,9 @@ public class CatOnWin : MonoBehaviour
     [SerializeField] Animator boxAnim;
     [SerializeField] TrackerManager manager;
     [SerializeField] ParticleSystem WinParticleCat;
+    [SerializeField] OwlManager owlManager;
 
-    private bool HasWon;
+    public bool HasWon;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class CatOnWin : MonoBehaviour
         HasWon = true;
         boxAnim.SetTrigger("Open");
         WinParticleCat.Play();
+        owlManager.DeactivateColliders();
     }
 
     private void OnWinMethod(TrackerManager manager)
