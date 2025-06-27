@@ -17,7 +17,7 @@ public class PieceBoxOnWin : MonoBehaviour
 
     void Start()
     {
-        manager.JeroglificAction += Win;
+        manager.HieroglyphCompletedAction += Win;
 
         brain = Camera.main.GetComponent<CinemachineBrain>();
     }

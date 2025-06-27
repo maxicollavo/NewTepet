@@ -8,7 +8,7 @@ using UnityEngine.Playables;
 public class TrackerManager : MonoBehaviour
 {
     [HideInInspector] public List<Tracker> trackerList = new List<Tracker>();
-    public Action<TrackerManager> JeroglificAction;
+    public Action<TrackerManager> HieroglyphCompletedAction;
     public FollowMouseClick trail;
     [SerializeField] HieroglyficArmHandler armHandler;
     [SerializeField] Transform rightArm;
@@ -166,7 +166,7 @@ public class TrackerManager : MonoBehaviour
     {
         if (trackerList.All(t => t.HasWon))
         {
-            JeroglificAction?.Invoke(this);
+            HieroglyphCompletedAction?.Invoke(this);
             StartCoroutine(DisableArms());
             interactorCollider.enabled = false; // Desactiva el collider
 

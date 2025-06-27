@@ -9,14 +9,24 @@ public class CatOnWin : MonoBehaviour
     [SerializeField] TrackerManager manager;
     [SerializeField] ParticleSystem WinParticleCat;
 
+    private bool HasWon;
+
     private void Awake()
     {
-        manager.JeroglificAction += OnWinMethod;
+        manager.HieroglyphCompletedAction += OnWinMethod;
+    }
+
+    public void OnWinMethod()
+    {
+        if (HasWon) return;
+
+        HasWon = true;
+        boxAnim.SetTrigger("Open");
+        WinParticleCat.Play();
     }
 
     private void OnWinMethod(TrackerManager manager)
     {
-        boxAnim.SetTrigger("Open");
-        WinParticleCat.Play();
+        OnWinMethod();
     }
 }

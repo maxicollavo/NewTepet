@@ -9,13 +9,7 @@ public class OwlManager : MonoBehaviour
     Dictionary<OwlEvents, bool> owlStates = new Dictionary<OwlEvents, bool>();
     public bool hasWon;
     public List<BoxCollider> colliders;
-
-    public static OwlManager Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-    }
+    [SerializeField] HieroglyficManager hieroglyficManager;
 
     private void Start()
     {
@@ -43,8 +37,8 @@ public class OwlManager : MonoBehaviour
 
         if (hasWon)
         {
-            Debug.Log("Chequea Puzzle Win");
-            HieroglyficManager.Instance.CheckPuzzleWin();
+            if (hieroglyficManager != null)
+                hieroglyficManager.CheckPuzzleWin();
         }
     }
 

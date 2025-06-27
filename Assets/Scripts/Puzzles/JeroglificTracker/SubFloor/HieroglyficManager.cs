@@ -19,6 +19,7 @@ public class HieroglyficManager : MonoBehaviour
     [SerializeField] Transform lookAtTarget;
     Transform originalLookAt;
     [SerializeField] Light[] owlLights;
+    [SerializeField] OwlManager owlManager;
 
     private bool hasEndedCinematic;
     public ParticleSystem rocksParticle;
@@ -47,11 +48,11 @@ public class HieroglyficManager : MonoBehaviour
     {
         if (hasEndedCinematic) return;
 
-        if (counter == 2 & OwlManager.Instance.hasWon)
+        if (counter == 2 & owlManager.hasWon)
         {
             hasWonPuzzle = true;
             OnWinAction?.Invoke(this);
-            OwlManager.Instance.DeactivateColliders();
+            owlManager.DeactivateColliders();
             StartCoroutine(Cinematic());
         }
     }
