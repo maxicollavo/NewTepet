@@ -6,6 +6,8 @@ using UnityEngine;
 public class OwlEvents : MonoBehaviour
 {
     [SerializeField] StatueManager manager;
+    [SerializeField] HieroglyficManager hieroManager;
+    [SerializeField] CatOnWin catOnWin;
     public Action<OwlEvents, int> AnimFinishAction;
     [SerializeField] GameObject path;
     [SerializeField] List<GameObject> nodes;
@@ -45,7 +47,13 @@ public class OwlEvents : MonoBehaviour
 
             firstInteract = false;
         }
-        if (HieroglyficManager.Instance.hasWonPuzzle) return;
+
+        if (hieroManager != null)
+            if (hieroManager.hasWonPuzzle) return;
+
+        if (catOnWin != null)
+            if (catOnWin.HasWon) return;
+
         Debug.Log("activa collider");
         manager.SetCollider();
     }

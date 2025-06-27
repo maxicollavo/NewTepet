@@ -11,7 +11,7 @@ public class TutorialOnWin : MonoBehaviour
 
     void Start()
     {
-        manager.JeroglificAction += Win;
+        manager.HieroglyphCompletedAction += Win;
     }
 
     void Win(TrackerManager manager)
