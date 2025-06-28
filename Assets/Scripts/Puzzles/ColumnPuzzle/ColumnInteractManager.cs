@@ -124,6 +124,7 @@ public class ColumnInteractManager : MonoBehaviour
         {
             enterPuzzle.EnterPuzzle(false);
             if (currentlySelected == null) return;
+            Debug.Log("Llama a Deselect Piece");
             currentlySelected.DeselectPiece();
         }
 

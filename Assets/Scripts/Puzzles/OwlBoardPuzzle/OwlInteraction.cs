@@ -66,7 +66,11 @@ public class OwlInteraction : MonoBehaviour, Interactor
         {
             figure.SetActive(true);
         }
-        foreach (var figure in leftFigures)
+    }
+
+    public void TurnOffRight()
+    {
+        foreach (var figure in rightFigures)
         {
             figure.SetActive(false);
         }
@@ -74,13 +78,17 @@ public class OwlInteraction : MonoBehaviour, Interactor
 
     public void OwlOnLeft()
     {
-        foreach (var figure in rightFigures)
-        {
-            figure.SetActive(false);
-        }
         foreach (var figure in leftFigures)
         {
             figure.SetActive(true);
+        }
+    }
+
+    public void TurnOffLeft()
+    {
+        foreach (var figure in leftFigures)
+        {
+            figure.SetActive(false);
         }
     }
 }

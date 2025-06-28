@@ -7,6 +7,7 @@ public class OwlBoardOnWin : MonoBehaviour
     [SerializeField] BoardPuzzleManager manager;
     [SerializeField] Animator anim;
     [SerializeField] ParticleSystem OnBoardWin;
+    [SerializeField] BoxCollider owlColl;
 
     private void Awake()
     {
@@ -17,5 +18,6 @@ public class OwlBoardOnWin : MonoBehaviour
     {
         anim.SetTrigger("Open");
         OnBoardWin.Play();
+        owlColl.enabled = false;
     }
 }

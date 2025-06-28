@@ -15,4 +15,14 @@ public class OwlBoardEvents : MonoBehaviour
     {
         owlInteraction.OwlOnLeft();
     }
+
+    public void TurnOffLeft()
+    {
+        owlInteraction.TurnOffLeft();
+    }
+
+    public void TurnOffRight()
+    {
+        owlInteraction.TurnOffRight();
+    }
 }

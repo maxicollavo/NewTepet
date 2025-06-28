@@ -66,10 +66,18 @@ public class ColumnSelected : MonoBehaviour
 
     public void DeselectPiece()
     {
+        Debug.Log("Entra a Deselect Piece");
         if (!isSelected) return;
-
+        Debug.Log("Entra a Deselect Piece y pasa el primer if");
         isSelected = false;
         DisableOutline();
         OnSelectedAction?.Invoke(isSelected, this, columnTransform);
+        if (interiorPieces.Length > 0)
+        {
+            foreach (var piece in interiorPieces)
+            {
+                piece.DisableOutline();
+            }
+        }
     }
 }
