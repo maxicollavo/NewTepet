@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using Unity.Cinemachine;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 public class RotateSphere : MonoBehaviour, Interactor
@@ -10,21 +8,19 @@ public class RotateSphere : MonoBehaviour, Interactor
     [Header("Interacción")]
     private Outline outline;
     private bool canUse = true;
-    public bool hasWon;
-    private bool isBeingHeld = true;
+    [HideInInspector] public bool hasWon;
+    bool isBeingHeld = true;
     [SerializeField] ParticleSystem particle;
     [SerializeField] private float emissionIntensity;
     Material fillMat;
     private float fillAmount;
     private int fillCounter;
     public GameObject uiPuzzle;
-
-    public Animator animator;
-    public bool isLost = false;
-
+    public float proximityTolerance;
 
     [Header("Rotación")]
     private Transform pivot;
+    Animator anim;
 
     [Header("Cinemachine")]
     [SerializeField] private GameObject puzzleCamera;
@@ -63,15 +59,14 @@ public class RotateSphere : MonoBehaviour, Interactor
     {
         outline = GetComponent<Outline>();
         pivot = GetComponent<Transform>();
+        anim = GetComponent<Animator>();
     }
 
     private void Start()
     {
         outline.enabled = false;
-        animator.enabled = false;
 
         winImagePoints = winImagePoints.OrderBy(p => p.name).ToArray();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -292,7 +287,6 @@ public class RotateSphere : MonoBehaviour, Interactor
 
         Transform currentImage = winImagePoints[currentImageIndex];
         float distance = Vector3.Distance(puzzleCamera.transform.position, currentImage.position);
-        float proximityTolerance = 0.54f;
 
         Debug.Log($"La distancia de la {currentImage} es de {distance}");
 
@@ -301,8 +295,6 @@ public class RotateSphere : MonoBehaviour, Interactor
             currentImageIndex++;
             fillCounter++;
             particle.Play();
-            animator.enabled = false;
-            //StartCoroutine(ConfirmMovement(SphereStates.Win, SphereStates.Idle));
 
             if (currentImageIndex >= winImagePoints.Length)
             {
@@ -321,12 +313,12 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     public IEnumerator LoseInSphere()
     {
-        animator.enabled = true;
-        animator.SetBool("Lose", true);
+        canUse = false;
+        anim.SetBool("Lose", true);
         currentImageIndex = 0;
         fillCounter = 0;
         yield return new WaitForSeconds(1f);
-        animator.SetBool("Lose", false);
-        animator.enabled = false;
+        anim.SetBool("Lose", false);
+        canUse = true;
     }
 }

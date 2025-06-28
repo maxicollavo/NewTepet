@@ -12,6 +12,7 @@ public class ColumnsOnWin : MonoBehaviour
 
     [Header("If there are 4 columns")]
     public bool areFourColumns;
+    [SerializeField] PickToInventory spherePick;
 
     private void Awake()
     {
@@ -25,19 +26,16 @@ public class ColumnsOnWin : MonoBehaviour
 
     private IEnumerator OnWinCoroutine()
     {
+        boxAnim.SetTrigger("Open");
+        ColumnsWin.Play();
+        yield return new WaitForSeconds(1f);
+        enterPuzzle.EnterPuzzle(false);
+        yield return new WaitForSeconds(0.1f);
+        enterPuzzle.canInteract = false;
+
         if (areFourColumns)
         {
-            Debug.Log("Gano las 4 columnas");
-        }
-        else
-        {
-            boxAnim.SetTrigger("Open");
-            //Sonido de apertura de caja
-            ColumnsWin.Play();
-            yield return new WaitForSeconds(1f);
-            enterPuzzle.EnterPuzzle(false);
-            yield return new WaitForSeconds(0.1f);
-            enterPuzzle.canInteract = false;
+            spherePick.canBePicked = true;
         }
     }
 }
