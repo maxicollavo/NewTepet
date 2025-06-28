@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MimicSphereActions : MonoBehaviour
 {
+    [SerializeField] RotateSphere rotateSphere;
     [SerializeField] GameObject mimicSphere;
     MeshRenderer mimicSphereRend;
     Material mimicSphereFillMat;
@@ -43,6 +44,9 @@ public class MimicSphereActions : MonoBehaviour
         yield return wfs;
         mimicSphereFillMat.SetFloat("_FillAmount", 2f);
         yield return wfs;
-        mimicSphereAnim.SetBool("CanStart", true);
+        if (rotateSphere.hasWon)
+            mimicSphereAnim.SetBool("CanStart", false);
+        else
+            mimicSphereAnim.SetBool("CanStart", true);
     }
 }

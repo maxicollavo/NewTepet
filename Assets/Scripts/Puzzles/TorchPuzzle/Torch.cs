@@ -18,8 +18,11 @@ public class Torch : MonoBehaviour, Interactor
     private bool CanInteract = true;
     public ParticleSystem ParticleSystem;
     public GameObject torchLight;
+    public GameObject ambientLight;
     private Light torchLightSource;
     private float originalLightIntensity;
+    private Light ambientLightSource;
+    private float originalAmbientIntensity;
     public AudioSource FireSound;
 
     private void Awake()
@@ -35,6 +38,12 @@ public class Torch : MonoBehaviour, Interactor
         originalLightIntensity = torchLightSource.intensity;
 
         outline.enabled = false;
+
+        if (ambientLight != null)
+        {
+            ambientLightSource = ambientLight.GetComponent<Light>();
+            originalAmbientIntensity = ambientLightSource.intensity;
+        }
     }
 
     void EnableOutline()
@@ -126,12 +135,19 @@ public class Torch : MonoBehaviour, Interactor
         }
 
         torchLight.SetActive(true);
+        ambientLight.SetActive(true);
+
         torchLightSource.enabled = true;
-     
+        if (ambientLight != null)
+            ambientLightSource.enabled = true;
 
         Color startColor = main.startColor.color;
-        float startIntensity = torchLightSource != null ? originalLightIntensity : 0f;
+
+        float startIntensity = originalLightIntensity;
+        float startAmbient = originalAmbientIntensity;
+
         float targetIntensity = (toAlpha == 0f) ? 0f : originalLightIntensity;
+        float targetAmbient = (toAlpha == 0f) ? 0f : originalAmbientIntensity;
 
         while (elapsed < duration)
         {
@@ -143,9 +159,10 @@ public class Torch : MonoBehaviour, Interactor
             main.startColor = newColor;
 
             if (torchLightSource != null)
-            {
                 torchLightSource.intensity = Mathf.Lerp(startIntensity, targetIntensity, t);
-            }
+
+            if (ambientLightSource != null)
+                ambientLightSource.intensity = Mathf.Lerp(startAmbient, targetAmbient, t);
 
             yield return null;
         }
@@ -154,12 +171,16 @@ public class Torch : MonoBehaviour, Interactor
         main.startColor = finalColor;
 
         torchLightSource.intensity = targetIntensity;
+        if (ambientLight != null)
+            ambientLightSource.intensity = targetAmbient;
 
         if (Mathf.Approximately(toAlpha, 0f))
         {
             ParticleSystem.Stop();
             torchLight.SetActive(false);
             FireSound.Stop();
+            if (ambientLight != null)
+                ambientLight.SetActive(false);
         }
     }
 }
