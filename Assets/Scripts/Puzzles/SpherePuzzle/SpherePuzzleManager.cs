@@ -13,6 +13,7 @@ public class SpherePuzzleManager : MonoBehaviour
 
     [Header("If is on level one")]
     public Animator openDoor;
+    public AudioSource WinSound;
 
     [Header("If is on level three")]
     public bool isOnLevelThree;
@@ -60,6 +61,7 @@ public class SpherePuzzleManager : MonoBehaviour
         else
         {
             openDoor.SetTrigger("Open");
+            WinSound.Play();
         }
 
         yield return new WaitForSeconds(1f);

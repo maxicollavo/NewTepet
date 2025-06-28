@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class ResultManager : MonoBehaviour
 {
     [SerializeField] WeightManager weightManager;
     [SerializeField] Animator[] doorAnims;
     [SerializeField] AudioSource[] doorSounds3D;
+    [SerializeField] VisualEffect visualEffect;
     bool[] doorsDone;
     int counter;
 
@@ -63,6 +65,9 @@ public class ResultManager : MonoBehaviour
 
         if (doorIndex == 4)
         {
+            Debug.Log("se abre la ultima puerta");
+            //visualEffect.SetFloat("alpha", 0f);
+            visualEffect.Stop();
             ObjectCreator.Instance.canPick = false;
         }
     }
