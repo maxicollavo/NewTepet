@@ -4,14 +4,13 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class ColumnSelected : MonoBehaviour
 {
-    public Action<bool, ColumnSelected, Transform> OnSelectedAction;
+    public Action<bool, ColumnSelected> OnSelectedAction;
 
     private bool isSelected;
 
     Outline outline;
     [HideInInspector] public BoxCollider coll;
     [SerializeField] ColumnInteractManager interactManager;
-    [SerializeField] Transform columnTransform;
 
     [Header("Interior Pieces")]
     public InteriorPieceSelector[] interiorPieces;
@@ -61,7 +60,7 @@ public class ColumnSelected : MonoBehaviour
         isSelected = true;
         AudioManager.Instance.PlaySound("SelectPiece");
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this, columnTransform);
+        OnSelectedAction?.Invoke(isSelected, this);
     }
 
     public void DeselectPiece()
@@ -71,7 +70,7 @@ public class ColumnSelected : MonoBehaviour
         Debug.Log("Entra a Deselect Piece y pasa el primer if");
         isSelected = false;
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this, columnTransform);
+        OnSelectedAction?.Invoke(isSelected, this);
         if (interiorPieces.Length > 0)
         {
             foreach (var piece in interiorPieces)

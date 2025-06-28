@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class SpherePuzzleManager : MonoBehaviour
 {
+    [Header("General References")]
     public Action<SpherePuzzleManager> OnWinAction;
-
-    [Header("Acciones al ganar")]
-    public Animator openDoor;
+    private bool hasWon;
     public Animator mimicAnim;
     [SerializeField] private MeshRenderer sphereRenderer;
     private Material emissiveMat;
-    private bool hasWon;
+
+    [Header("If is on level one")]
+    public Animator openDoor;
+
+    [Header("If is on level three")]
+    public bool isOnLevelThree;
 
     private void Start()
     {
@@ -49,7 +53,14 @@ public class SpherePuzzleManager : MonoBehaviour
 
         emissiveMat.SetColor("_EmissionColor", Color.yellow);
         yield return new WaitForSeconds(0.5f);
-        openDoor.SetTrigger("Open");
+        if (isOnLevelThree)
+        {
+            Debug.Log("Baja Obelisco");
+        }
+        else
+        {
+            openDoor.SetTrigger("Open");
+        }
 
         yield return new WaitForSeconds(1f);
         mimicAnim.SetBool("CanStart", false);

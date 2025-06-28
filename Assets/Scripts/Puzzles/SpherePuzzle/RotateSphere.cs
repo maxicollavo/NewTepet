@@ -76,7 +76,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     private void Update()
     {
-        if (!isBeingHeld) return;
+        if (!isBeingHeld || hasWon) return;
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -294,6 +294,8 @@ public class RotateSphere : MonoBehaviour, Interactor
         float distance = Vector3.Distance(puzzleCamera.transform.position, currentImage.position);
         float proximityTolerance = 0.54f;
 
+        Debug.Log($"La distancia de la {currentImage} es de {distance}");
+
         if (distance < proximityTolerance)
         {
             currentImageIndex++;
@@ -311,32 +313,10 @@ public class RotateSphere : MonoBehaviour, Interactor
         }
         else
         {
-
             StartCoroutine(LoseInSphere());
-            //Debug.Log("mal movimiento");
-            //animator.enabled = true;
-            //animator.SetBool("Lose", true);
-            //currentImageIndex = 0;
-            //fillCounter = 0;
-            //Cuando hacemos mal el movimiento
-            //StartCoroutine(ConfirmMovement(SphereStates.Loose, SphereStates.Idle));
         }
 
         CheckFillAmount();
-    }
-
-    private IEnumerator ConfirmMovement(SphereStates first, SphereStates second)
-    {
-        canUse = false;
-        //SetSphereMaterials(first);
-        yield return new WaitForSeconds(0.5f);
-
-        if (!hasWon)
-        {
-            //SetSphereMaterials(second);
-        }
-
-        canUse = true;
     }
 
     public IEnumerator LoseInSphere()

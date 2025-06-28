@@ -30,7 +30,7 @@ public class ColumnInteractManager : MonoBehaviour
     [SerializeField] private List<ColumnSelected> allColumns = new List<ColumnSelected>();
     private int currentColumnIndex = 0;
 
-    public void OnSelectedMethod(bool isSelected, ColumnSelected selected, Transform column)
+    public void OnSelectedMethod(bool isSelected, ColumnSelected selected)
     {
         if (currentlySelected != null && currentlySelected != selected)
         {
@@ -64,9 +64,6 @@ public class ColumnInteractManager : MonoBehaviour
             forward = null;
             lookAtTarget = null;
         }
-
-        if (column != null)
-            columnTransform = column;
     }
 
     private void Update()

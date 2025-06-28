@@ -5,6 +5,7 @@ public enum ObjectsToPick
 {
     BoardPiece,
     GlassSphere,
+    ColumnSphere,
     Feather,
     Stone,
     Knife,
