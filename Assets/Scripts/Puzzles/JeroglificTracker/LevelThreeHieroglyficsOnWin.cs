@@ -57,7 +57,6 @@ public class LevelThreeHieroglyficsOnWin : MonoBehaviour
 
     private IEnumerator Cinematic()
     {
-        yield return new WaitForSeconds(1.5f);
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
 
         originalLookAt = cam.LookAt;
