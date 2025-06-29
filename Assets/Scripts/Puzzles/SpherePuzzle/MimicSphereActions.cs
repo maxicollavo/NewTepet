@@ -34,15 +34,15 @@ public class MimicSphereActions : MonoBehaviour
         mimicSphereAnim.SetBool("CanStart", false);
         mimicSphereFillMat.SetFloat("_FillAmount", 0f);
         yield return wfs;
-        mimicSphereFillMat.SetFloat("_FillAmount", 2f);
+        mimicSphereFillMat.SetFloat("_FillAmount", 7f);
         yield return wfs;
         mimicSphereFillMat.SetFloat("_FillAmount", 0f);
         yield return wfs;
-        mimicSphereFillMat.SetFloat("_FillAmount", 2f);
+        mimicSphereFillMat.SetFloat("_FillAmount", 7f);
         yield return wfs;
         mimicSphereFillMat.SetFloat("_FillAmount", 0f);
         yield return wfs;
-        mimicSphereFillMat.SetFloat("_FillAmount", 2f);
+        mimicSphereFillMat.SetFloat("_FillAmount", 7f);
         yield return wfs;
         if (rotateSphere.hasWon)
             mimicSphereAnim.SetBool("CanStart", false);

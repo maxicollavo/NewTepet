@@ -49,6 +49,7 @@ public class TrackerManager : MonoBehaviour
     private void OnWinMethod(HieroglyficManager manager)
     {
         if (!interactorCollider.enabled) return;
+        Debug.Log($"Llama al action y desactiva el collider del objeto {this.gameObject}");
         interactorCollider.enabled = false;
     }
 
@@ -159,6 +160,7 @@ public class TrackerManager : MonoBehaviour
             HieroglyphCompletedAction?.Invoke(this);
             WinPuzzle();
             interactorCollider.enabled = false; // Desactiva el collider
+            Debug.Log($"Se desactivo el collider del objeto {this.gameObject}");
             if (levelThreeOnWin != null)
                 levelThreeOnWin.CheckToUpdateCounter();
 
