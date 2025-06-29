@@ -39,7 +39,6 @@ public class PuzzleInteractor : MonoBehaviour, Interactor
 
     public void Aiming()
     {
-        Debug.Log("Apunta");
         EnableOutline();
 
         UIManager.Instance.ChangeCursor(true);
