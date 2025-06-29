@@ -9,11 +9,10 @@ public class ColumnsOnWin : MonoBehaviour
     [SerializeField] EnterColumnPuzzle enterPuzzle;
     [SerializeField] Animator boxAnim;
     [SerializeField] ParticleSystem ColumnsWin;
-    [SerializeField] AudioSource WinBoxSound;
-    [SerializeField] AudioSource WinSound;
     [Header("If there are 4 columns")]
     public bool areFourColumns;
     [SerializeField] PickToInventory spherePick;
+    public Action ColumnsOnWinAction;
 
     private void Awake()
     {
@@ -29,8 +28,6 @@ public class ColumnsOnWin : MonoBehaviour
     {
         boxAnim.SetTrigger("Open");
         ColumnsWin.Play();
-        WinSound.Play();
-        WinBoxSound.Play();
         yield return new WaitForSeconds(1f);
         enterPuzzle.EnterPuzzle(false);
         yield return new WaitForSeconds(0.1f);
@@ -39,6 +36,7 @@ public class ColumnsOnWin : MonoBehaviour
         if (areFourColumns)
         {
             spherePick.canBePicked = true;
+            ColumnsOnWinAction?.Invoke();
         }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine;
 public class RiverPuzzleManager : MonoBehaviour
 {
     [Header("Callbacks")]
-    public Action<RiverPuzzleManager> OnWin;
+    public Action OnWin;
 
     [Header("Piece Movement")]
     public float moveSpeed;
@@ -312,7 +312,7 @@ public class RiverPuzzleManager : MonoBehaviour
     {
         HasWon = true;
         BackToGameplay();
-        OnWin?.Invoke(this);
+        OnWin?.Invoke();
         foreach (var piece in pieces) piece.DisableOutline();
     }
 }

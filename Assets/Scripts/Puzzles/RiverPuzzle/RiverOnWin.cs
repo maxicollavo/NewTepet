@@ -16,7 +16,7 @@ public class RiverOnWin : MonoBehaviour
         manager.OnWin += OnWinMethod;
     }
 
-    private void OnWinMethod(RiverPuzzleManager manager)
+    private void OnWinMethod()
     {
         StartCoroutine(OpenBoxCoroutine());
     }

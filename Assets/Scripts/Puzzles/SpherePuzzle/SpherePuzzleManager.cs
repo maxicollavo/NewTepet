@@ -19,6 +19,7 @@ public class SpherePuzzleManager : MonoBehaviour
     public bool isOnLevelThree;
     [SerializeField] GameObject obelisk;
     [SerializeField] BoxCollider owlColl;
+    public Action SphereCompletedAction;
 
     private void Start()
     {
@@ -58,8 +59,7 @@ public class SpherePuzzleManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         if (isOnLevelThree)
         {
-            //Bajar Obelisco
-            //Activar colliders del buho
+            SphereCompletedAction?.Invoke();
             owlColl.enabled = true;
         }
         else

@@ -7,7 +7,7 @@ using UnityEngine.Playables;
 
 public class LevelThreeHieroglyficsOnWin : MonoBehaviour
 {
-    public Action<LevelThreeHieroglyficsOnWin> OnWinAction;
+    public Action OnWinAction;
 
     private int counter;
     [HideInInspector] public bool hasWonPuzzle;
@@ -50,7 +50,6 @@ public class LevelThreeHieroglyficsOnWin : MonoBehaviour
         {
             Debug.Log($"Se ganaron los 2 jeroglificos");
             hasWonPuzzle = true;
-            OnWinAction?.Invoke(this);
             owlManager.DeactivateColliders();
             StartCoroutine(Cinematic());
         }
@@ -104,6 +103,7 @@ public class LevelThreeHieroglyficsOnWin : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         hasEndedCinematic = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+        OnWinAction?.Invoke();
     }
 
     private IEnumerator LerpLookAtTarget(Vector3 targetPos, float duration)

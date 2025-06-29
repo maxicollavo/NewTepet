@@ -3,7 +3,6 @@ using Unity.Cinemachine;
 
 public class CameraShake : MonoBehaviour
 {
-    private float shakeDuration = 0.75f;
     private float shakeMagnitude = 0.3f;
 
     private CinemachineCameraOffset cameraOffset;
@@ -16,9 +15,10 @@ public class CameraShake : MonoBehaviour
         originalOffset = cameraOffset.Offset;
     }
 
-    public void TriggerShake()
+    public void TriggerShake(float duration, float magnitude)
     {
-        shakeTime = shakeDuration;
+        shakeMagnitude = magnitude;
+        shakeTime = duration;
     }
 
     void Update()
