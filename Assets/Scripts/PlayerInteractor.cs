@@ -8,5 +8,10 @@ public class PlayerInteractor : MonoBehaviour
         {
             tutorial.Exit();
         }
+
+        if (other.TryGetComponent(out IEnter enterLevel))
+        {
+            enterLevel.Enter();
+        }
     }
 }

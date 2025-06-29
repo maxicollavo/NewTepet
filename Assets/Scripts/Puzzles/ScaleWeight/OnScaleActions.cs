@@ -14,6 +14,9 @@ public class OnScaleActions : MonoBehaviour, Interactor
     Outline outline;
     Color originalColor;
 
+    public bool isLast;
+    [SerializeField] Animator anim;
+
     private void Awake()
     {
         outline = GetComponent<Outline>();
@@ -55,6 +58,20 @@ public class OnScaleActions : MonoBehaviour, Interactor
 
     public void Interact()
     {
+        if (isLast)
+        {
+            if (HandInventory.hasObjInHand)
+            {
+                anim.SetTrigger("Open");
+                garbageInteractAction?.Invoke(this);
+                return;
+            }
+            else
+            {
+                StartCoroutine(CannotEnter());
+            }
+        }
+
         if (isScale)
             plateInteractAction?.Invoke(sidePlate, this);
         else
