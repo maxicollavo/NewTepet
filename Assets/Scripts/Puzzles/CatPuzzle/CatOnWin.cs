@@ -9,6 +9,8 @@ public class CatOnWin : MonoBehaviour
     [SerializeField] TrackerManager manager;
     [SerializeField] ParticleSystem WinParticleCat;
     [SerializeField] BoxCollider[] colliders;
+    [SerializeField] AudioSource WinBoxSound;
+    [SerializeField] AudioSource WinSound;
 
     public bool HasWon;
 
@@ -24,6 +26,8 @@ public class CatOnWin : MonoBehaviour
         HasWon = true;
         boxAnim.SetTrigger("Open");
         WinParticleCat.Play();
+        WinSound.Play();
+        WinBoxSound.Play();
 
         foreach (var collider in colliders)
         {

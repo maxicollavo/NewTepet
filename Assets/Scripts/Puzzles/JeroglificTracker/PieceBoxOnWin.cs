@@ -14,7 +14,8 @@ public class PieceBoxOnWin : MonoBehaviour
     [SerializeField] Animator boxAnim;
     [SerializeField] Transform lookAtTarget;
     Transform originalLookAt;
-
+    [SerializeField] AudioSource WinBoxSound;
+    [SerializeField] AudioSource WinSound;
     void Start()
     {
         manager.HieroglyphCompletedAction += Win;
@@ -42,8 +43,9 @@ public class PieceBoxOnWin : MonoBehaviour
         yield return new WaitForSeconds(1.3f);
 
         boxAnim.SetTrigger("Open");                          // Disparamos animación
-        AudioManager.Instance.PlaySound("OpenBox");          // Reproducimos sonido de apertura
-
+        //AudioManager.Instance.PlaySound("OpenBox");          // Reproducimos sonido de apertura
+        //WinSound.Play();
+        WinBoxSound.Play();
         yield return new WaitForSeconds(1f);
 
         cinematicCam.gameObject.SetActive(false);            // Apagamos la cámara de cinemática

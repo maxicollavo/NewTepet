@@ -8,6 +8,8 @@ public class OwlBoardOnWin : MonoBehaviour
     [SerializeField] Animator anim;
     [SerializeField] ParticleSystem OnBoardWin;
     [SerializeField] BoxCollider owlColl;
+    [SerializeField] AudioSource WinBoxSound;
+    [SerializeField] AudioSource WinSound;
 
     private void Awake()
     {
@@ -18,6 +20,8 @@ public class OwlBoardOnWin : MonoBehaviour
     {
         anim.SetTrigger("Open");
         OnBoardWin.Play();
+        WinBoxSound.Play();
+        WinSound.Play();
         owlColl.enabled = false;
     }
 }

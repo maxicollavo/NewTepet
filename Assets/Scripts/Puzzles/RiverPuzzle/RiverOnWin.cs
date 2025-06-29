@@ -7,6 +7,9 @@ public class RiverOnWin : MonoBehaviour
     [SerializeField] RiverPuzzleManager manager;
     [SerializeField] Animator anim;
     [SerializeField] ParticleSystem winParticles;
+    [SerializeField] AudioSource WinBoxSound;
+    [SerializeField] AudioSource WinSound;
+
 
     private void Awake()
     {
@@ -23,5 +26,7 @@ public class RiverOnWin : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         anim.SetTrigger("Open");
         winParticles.Play();
+        WinBoxSound.Play();
+        WinSound.Play();
     }
 }
