@@ -17,6 +17,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private int fillCounter;
     public GameObject uiPuzzle;
     public float proximityTolerance;
+    Animator animator;
 
     [Header("Rotación")]
     private Transform pivot;
@@ -29,6 +30,11 @@ public class RotateSphere : MonoBehaviour, Interactor
     [SerializeField] private SpherePuzzleManager puzzleManager;
     [SerializeField] private Transform[] winImagePoints;
     [SerializeField] private Transform[] allImages;
+
+    [Header("Fills")]
+    [SerializeField] float firstFillAmount;
+    [SerializeField] float secondFillAmount;
+    [SerializeField] float thirdFillAmount;
 
     private int currentImageIndex = 0;
     private bool canScore = true;
@@ -60,11 +66,13 @@ public class RotateSphere : MonoBehaviour, Interactor
         outline = GetComponent<Outline>();
         pivot = GetComponent<Transform>();
         anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
         outline.enabled = false;
+        animator.enabled = false;
 
         winImagePoints = winImagePoints.OrderBy(p => p.name).ToArray();
     }
@@ -244,13 +252,13 @@ public class RotateSphere : MonoBehaviour, Interactor
                 targetFill = 0f;
                 break;
             case 1:
-                targetFill = 0.7f;
+                targetFill = firstFillAmount;
                 break;
             case 2:
-                targetFill = 0.9f;
+                targetFill = secondFillAmount;
                 break;
             case 3:
-                targetFill = 2f;
+                targetFill = thirdFillAmount;
                 break;
             default:
                 return;
@@ -314,11 +322,13 @@ public class RotateSphere : MonoBehaviour, Interactor
     public IEnumerator LoseInSphere()
     {
         canUse = false;
+        animator.enabled = true;
         anim.SetBool("Lose", true);
         currentImageIndex = 0;
         fillCounter = 0;
         yield return new WaitForSeconds(1f);
         anim.SetBool("Lose", false);
         canUse = true;
+        animator.enabled = false;
     }
 }

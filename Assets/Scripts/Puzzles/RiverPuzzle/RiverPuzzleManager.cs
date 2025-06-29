@@ -193,8 +193,8 @@ public class RiverPuzzleManager : MonoBehaviour
             selectedPiece = null;
         }
 
-       if (uiRiverPuzzle != null)
-           uiRiverPuzzle.SetActive(false);
+        if (uiRiverPuzzle != null)
+            uiRiverPuzzle.SetActive(false);
 
         movePiece.enabled = false;
         OnPuzzle = false;
@@ -208,9 +208,7 @@ public class RiverPuzzleManager : MonoBehaviour
         canGoBack = false;
         yield return new WaitForSeconds(1.5f);
         canGoBack = true;
-
-        if (!HasWon)
-            interactorCollider.enabled = true;
+        interactorCollider.enabled = true;
     }
 
     private void TurnPuzzleCamera(bool state)
