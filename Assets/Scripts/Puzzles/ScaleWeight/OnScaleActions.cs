@@ -16,6 +16,7 @@ public class OnScaleActions : MonoBehaviour, Interactor
 
     public bool isLast;
     [SerializeField] Animator anim;
+    [SerializeField] AudioSource doorSound;
 
     private void Awake()
     {
@@ -62,6 +63,7 @@ public class OnScaleActions : MonoBehaviour, Interactor
         {
             if (HandInventory.hasObjInHand)
             {
+                doorSound.Play();
                 anim.SetTrigger("Open");
                 garbageInteractAction?.Invoke(this);
                 return;

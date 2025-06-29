@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ColumnsOnWin : MonoBehaviour
 {
+    [SerializeField] AudioSource WinBoxSound;
+    [SerializeField] AudioSource WinSound;
     [Header("If there are 2 columns")]
     [SerializeField] ColumnInteractManager manager;
     [SerializeField] EnterColumnPuzzle enterPuzzle;
@@ -26,6 +28,8 @@ public class ColumnsOnWin : MonoBehaviour
 
     private IEnumerator OnWinCoroutine()
     {
+        WinSound.Play();
+        WinBoxSound.Play();
         boxAnim.SetTrigger("Open");
         ColumnsWin.Play();
         yield return new WaitForSeconds(1f);
