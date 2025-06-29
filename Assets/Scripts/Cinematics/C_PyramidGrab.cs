@@ -63,6 +63,7 @@ public class C_PyramidGrab : MonoBehaviour
 
     public void ChangeBasePyramidLayer()
     {
+        Debug.Log("Cambia layer");
         int pyramidLayer = LayerMask.NameToLayer("Pyramid");
 
         basePyramid.layer = pyramidLayer;

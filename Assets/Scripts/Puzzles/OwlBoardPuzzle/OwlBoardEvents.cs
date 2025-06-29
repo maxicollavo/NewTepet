@@ -25,4 +25,9 @@ public class OwlBoardEvents : MonoBehaviour
     {
         owlInteraction.TurnOffRight();
     }
+
+    public void ColliderCallback()
+    {
+        owlInteraction.coll.enabled = true;
+    }
 }

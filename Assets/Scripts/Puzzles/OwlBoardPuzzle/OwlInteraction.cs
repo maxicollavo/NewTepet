@@ -5,6 +5,7 @@ using UnityEngine;
 public class OwlInteraction : MonoBehaviour, Interactor
 {
     Outline outline;
+    [HideInInspector] public BoxCollider coll;
     [SerializeField] Animator anim;
     [SerializeField] GameObject lights;
     [SerializeField] GameObject[] rightFigures;
@@ -16,6 +17,7 @@ public class OwlInteraction : MonoBehaviour, Interactor
     private void Awake()
     {
         outline = GetComponent<Outline>();
+        coll = GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -47,6 +49,8 @@ public class OwlInteraction : MonoBehaviour, Interactor
 
     private void OnInteraction()
     {
+        coll.enabled = false;
+
         if (isFirstInteraction)
         {
             anim.SetTrigger("FirstInteraction");
