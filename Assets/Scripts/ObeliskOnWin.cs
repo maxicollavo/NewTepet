@@ -12,6 +12,8 @@ public class ObeliskOnWin : MonoBehaviour
     [SerializeField] RiverPuzzleManager Board;
     [SerializeField] Transform obeliskTransform;
     [SerializeField] CameraShake shake;
+    [SerializeField] AudioSource ObeliskMoveSound;
+
 
     private int counter;
     private bool hasWon;
@@ -56,7 +58,7 @@ public class ObeliskOnWin : MonoBehaviour
     private IEnumerator MoveObelisk(Vector3 start, Vector3 end)
     {
         shake.TriggerShake(moveDuration, 0.1f);
-
+        ObeliskMoveSound.Play();
         float elapsed = 0f;
         while (elapsed < moveDuration)
         {
