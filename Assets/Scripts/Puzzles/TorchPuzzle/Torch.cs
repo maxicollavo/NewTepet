@@ -135,10 +135,13 @@ public class Torch : MonoBehaviour, Interactor
         }
 
         torchLight.SetActive(true);
-        ambientLight.SetActive(true);
+
+        if (ambientLight != null)
+            ambientLight.SetActive(true);
 
         torchLightSource.enabled = true;
-        if (ambientLight != null)
+
+        if (ambientLightSource != null)
             ambientLightSource.enabled = true;
 
         Color startColor = main.startColor.color;
@@ -171,7 +174,8 @@ public class Torch : MonoBehaviour, Interactor
         main.startColor = finalColor;
 
         torchLightSource.intensity = targetIntensity;
-        if (ambientLight != null)
+
+        if (ambientLightSource != null)
             ambientLightSource.intensity = targetAmbient;
 
         if (Mathf.Approximately(toAlpha, 0f))
@@ -179,6 +183,7 @@ public class Torch : MonoBehaviour, Interactor
             ParticleSystem.Stop();
             torchLight.SetActive(false);
             FireSound.Stop();
+
             if (ambientLight != null)
                 ambientLight.SetActive(false);
         }
