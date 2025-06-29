@@ -8,8 +8,6 @@ public class StatueInteractor : MonoBehaviour, Interactor
     Outline outline;
     BoxCollider coll;
 
-    public bool isCat;
-
     private void Awake()
     {
         coll = GetComponent<BoxCollider>();
@@ -47,14 +45,6 @@ public class StatueInteractor : MonoBehaviour, Interactor
 
     void OnInteract()
     {
-        if (isCat)
-        {
-            DisableOutline();
-            coll.enabled = false;
-            InteractorAction?.Invoke(this);
-            return;
-        }
-
         DisableOutline();
         coll.enabled = false;
         InteractorAction?.Invoke(this);

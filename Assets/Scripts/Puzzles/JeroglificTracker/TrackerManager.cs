@@ -23,6 +23,7 @@ public class TrackerManager : MonoBehaviour
     public bool isTarget;
     [SerializeField] GameObject CM_PuzzleCamera;
     [SerializeField] HieroglyficManager hieroglyficManager;
+    [SerializeField] LevelThreeHieroglyficsOnWin levelThreeOnWin;
     [SerializeField] Transform[] armsTransforms;
     // Diccionario para guardar las rotaciones originales de las manos originales
     private Dictionary<Transform, Quaternion> originalRotations = new Dictionary<Transform, Quaternion>();
@@ -169,10 +170,13 @@ public class TrackerManager : MonoBehaviour
             HieroglyphCompletedAction?.Invoke(this);
             StartCoroutine(DisableArms());
             interactorCollider.enabled = false; // Desactiva el collider
+            if (levelThreeOnWin != null)
+                levelThreeOnWin.CheckToUpdateCounter();
 
             if (subFloor && isTarget)
             {
-                hieroglyficManager.CheckToUpdateCounter();
+                if (hieroglyficManager != null)
+                    hieroglyficManager.CheckToUpdateCounter();
             }
         }
     }

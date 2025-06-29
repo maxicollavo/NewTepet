@@ -13,7 +13,7 @@ public class StatueManager : MonoBehaviour
     [SerializeField] BoxCollider coll;
 
     private bool firstInteract;
-    bool onLeft;
+    public bool onLeft;
     int owlPos;
     private Coroutine intensityRoutine;
     private float intensityLerpDuration = 0.15f;
@@ -75,7 +75,7 @@ public class StatueManager : MonoBehaviour
     {
         if (firstInteract)
         {
-            onLeft = true;
+            onLeft = !onLeft;
             lights.SetActive(true);
             anim.SetBool("OnLeft", onLeft);
             anim.SetTrigger("Start");
