@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RiverPuzzleManager : MonoBehaviour
 {
@@ -28,12 +29,15 @@ public class RiverPuzzleManager : MonoBehaviour
     [Header("Colliders")]
     List<BoxCollider> colliders = new List<BoxCollider>();
     private bool previousState;
+    [SerializeField] BoxCollider tableColl;
+    [SerializeField] BoxCollider wallColl;
 
     [Header("Settings")]
     [SerializeField] GameObject CM_PuzzleCamera;
     public bool OnPuzzle { get; private set; }
     private bool HasWon;
-    private bool canInteract = false;
+    [HideInInspector] public bool canInteract;
+    public bool canEnterTable;
     private bool canGoBack;
     public GameObject uiRiverPuzzle;
     private Dictionary<RiverPiece, RiverWaypoint> pieceTargetMap = new Dictionary<RiverPiece, RiverWaypoint>();
@@ -148,6 +152,12 @@ public class RiverPuzzleManager : MonoBehaviour
 
     void OnPuzzleMethod(PuzzleInteractor interactor)
     {
+        if (!canEnterTable)
+        {
+            StartCoroutine(CannotEnter(interactor));
+            return;
+        }
+
         EnterPuzzle();
     }
 
@@ -209,6 +219,9 @@ public class RiverPuzzleManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         canGoBack = true;
         interactorCollider.enabled = true;
+
+        if (HasWon)
+            interactorCollider.enabled = false;
     }
 
     private void TurnPuzzleCamera(bool state)
@@ -314,5 +327,18 @@ public class RiverPuzzleManager : MonoBehaviour
         BackToGameplay();
         OnWin?.Invoke();
         foreach (var piece in pieces) piece.DisableOutline();
+
+        if (wallColl != null)
+            wallColl.enabled = true;
+    }
+
+    private IEnumerator CannotEnter(PuzzleInteractor interactor)
+    {
+        interactor.EnableOutline();
+        var originalColor = interactor.outline.OutlineColor;
+        interactor.outline.OutlineColor = Color.red;
+        yield return new WaitForSeconds(0.5f);
+        interactor.outline.OutlineColor = originalColor;
+        interactor.DisableOutline();
     }
 }

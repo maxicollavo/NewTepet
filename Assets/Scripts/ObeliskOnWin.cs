@@ -13,6 +13,7 @@ public class ObeliskOnWin : MonoBehaviour
     [SerializeField] Transform obeliskTransform;
     [SerializeField] CameraShake shake;
     [SerializeField] AudioSource ObeliskMoveSound;
+    [SerializeField] SarcoInteract sarcoInteract;
 
 
     private int counter;
@@ -52,6 +53,7 @@ public class ObeliskOnWin : MonoBehaviour
         if (counter >= 4)
         {
             hasWon = true;
+            sarcoInteract.canInteract = true;
         }
     }
 

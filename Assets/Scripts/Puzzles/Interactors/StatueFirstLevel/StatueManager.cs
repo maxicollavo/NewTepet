@@ -23,10 +23,12 @@ public class StatueManager : MonoBehaviour
     private void Start()
     {
         body.material = lightsOff;
-        lights.SetActive(false);
         statueInteractor.InteractorAction += OnStatueInteract;
         owlEvents.AnimFinishAction += OnAnimFinish;
         firstInteract = true;
+
+        if (lights != null)
+            lights.SetActive(false);
     }
 
     private void OnAnimFinish(OwlEvents events, int pos)
@@ -76,11 +78,13 @@ public class StatueManager : MonoBehaviour
         if (firstInteract)
         {
             onLeft = !onLeft;
-            lights.SetActive(true);
             anim.SetBool("OnLeft", onLeft);
             anim.SetTrigger("Start");
             body.material = lightsOn;
             firstInteract = false;
+
+            if (lights != null)
+                lights.SetActive(true);
             return;
         }
 

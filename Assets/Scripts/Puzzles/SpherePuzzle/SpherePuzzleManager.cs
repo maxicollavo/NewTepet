@@ -17,8 +17,8 @@ public class SpherePuzzleManager : MonoBehaviour
 
     [Header("If is on level three")]
     public bool isOnLevelThree;
-    [SerializeField] GameObject obelisk;
     [SerializeField] BoxCollider owlColl;
+    [SerializeField] GameObject owlLights;
     public Action SphereCompletedAction;
 
     private void Start()
@@ -37,7 +37,7 @@ public class SpherePuzzleManager : MonoBehaviour
     {
         if (hasWon) return;
         hasWon = true;
-        Debug.Log("¡Puzzle resuelto!");
+        Debug.Log("Â¡Puzzle resuelto!");
         emissiveMat = sphereRenderer.material;
         StartCoroutine(WinSequence());
     }
@@ -61,6 +61,7 @@ public class SpherePuzzleManager : MonoBehaviour
         {
             SphereCompletedAction?.Invoke();
             owlColl.enabled = true;
+            owlLights.SetActive(true);
         }
         else
         {

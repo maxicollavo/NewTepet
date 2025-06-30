@@ -8,7 +8,7 @@ public class SarcoInteract : MonoBehaviour, Interactor
 
     [SerializeField] Animator anim;
 
-    bool canInteract;
+    [HideInInspector] public bool canInteract;
 
     private void Awake()
     {
