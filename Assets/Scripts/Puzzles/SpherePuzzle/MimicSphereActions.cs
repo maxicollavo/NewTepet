@@ -10,6 +10,8 @@ public class MimicSphereActions : MonoBehaviour
     Material mimicSphereFillMat;
     Animator mimicSphereAnim;
 
+    public float offValue;
+
     WaitForSeconds wfs = new WaitForSeconds(1f);
 
     private void OnEnable()
@@ -32,15 +34,15 @@ public class MimicSphereActions : MonoBehaviour
     public IEnumerator RestartSphereCoroutine()
     {
         mimicSphereAnim.SetBool("CanStart", false);
-        mimicSphereFillMat.SetFloat("_FillAmount", 0f);
+        mimicSphereFillMat.SetFloat("_FillAmount", offValue);
         yield return wfs;
         mimicSphereFillMat.SetFloat("_FillAmount", 7f);
         yield return wfs;
-        mimicSphereFillMat.SetFloat("_FillAmount", 0f);
+        mimicSphereFillMat.SetFloat("_FillAmount", offValue);
         yield return wfs;
         mimicSphereFillMat.SetFloat("_FillAmount", 7f);
         yield return wfs;
-        mimicSphereFillMat.SetFloat("_FillAmount", 0f);
+        mimicSphereFillMat.SetFloat("_FillAmount", offValue);
         yield return wfs;
         mimicSphereFillMat.SetFloat("_FillAmount", 7f);
         yield return wfs;
