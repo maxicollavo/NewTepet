@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class FadeBlackImage : MonoBehaviour
 {
-    private GameObject parent;
     private Image _sceneFadeImage;
 
     public static FadeBlackImage Instance;
@@ -12,13 +11,11 @@ public class FadeBlackImage : MonoBehaviour
     private void Awake()
     {
         _sceneFadeImage = GetComponent<Image>();
-        parent = transform.parent.gameObject;
         Instance = this;
     }
 
     public void StartFadeToBlack(float duration)
     {
-        parent.SetActive(true);
         _sceneFadeImage.color = new Color(0f, 0f, 0f, 0f);
         StartCoroutine(FadeInCoroutine(duration));
     }

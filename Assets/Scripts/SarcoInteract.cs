@@ -8,6 +8,7 @@ public class SarcoInteract : MonoBehaviour, Interactor
     BoxCollider coll;
 
     [SerializeField] Animator anim;
+    [SerializeField] GameObject canvasBlackScreen;
 
     public bool canInteract = true;
 
@@ -34,6 +35,7 @@ public class SarcoInteract : MonoBehaviour, Interactor
         canInteract = false;
         DisableOutline();
         anim.SetTrigger("Open");
+        canvasBlackScreen.SetActive(true);
         yield return new WaitForSeconds(1f);
         FadeBlackImage.Instance.StartFadeToBlack(2f);
         yield return new WaitForSeconds(2f);

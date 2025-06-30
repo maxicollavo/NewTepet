@@ -11,6 +11,15 @@ public class ScenesManager : MonoBehaviour
 
     public bool isMenu;
 
+    private void Start()
+    {
+        if (isMenu)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+    }
+
     public void Exit()
     {
         Application.Quit();
@@ -30,7 +39,7 @@ public class ScenesManager : MonoBehaviour
 
     public void Credits()
     {
-       creditMenuUI.SetActive(true);
+        creditMenuUI.SetActive(true);
     }
 
     public void GoToMenu()
@@ -40,7 +49,7 @@ public class ScenesManager : MonoBehaviour
 
     public void AreYouSureMenu()
     {
-      AreYouSureUI.SetActive(true);      
+        AreYouSureUI.SetActive(true);
     }
     public void DisableAreYouSure()
     {
@@ -48,11 +57,11 @@ public class ScenesManager : MonoBehaviour
     }
     public void UnPause()
     {
-         PauseMenuUI.SetActive(false);   
-    }                         
+        PauseMenuUI.SetActive(false);
+    }
 
     public void OptionMenu()
     {
         OptionMainMenu.SetActive(true);
-    }                         
-}                         
+    }
+}
