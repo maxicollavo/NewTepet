@@ -20,6 +20,8 @@ public class HieroglyficManager : MonoBehaviour
     Transform originalLookAt;
     [SerializeField] Light[] owlLights;
     [SerializeField] OwlManager owlManager;
+    [SerializeField] AudioSource OpenTramp3DSound;
+
 
     private bool hasEndedCinematic;
     public ParticleSystem rocksParticle;
@@ -59,6 +61,7 @@ public class HieroglyficManager : MonoBehaviour
 
     private IEnumerator Cinematic()
     {
+        OpenTramp3DSound.Play();
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
         originalLookAt = cam.LookAt;
         cam.LookAt = lookAtTarget;
