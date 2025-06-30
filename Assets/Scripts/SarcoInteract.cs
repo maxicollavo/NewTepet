@@ -9,7 +9,7 @@ public class SarcoInteract : MonoBehaviour, Interactor
 
     [SerializeField] Animator anim;
 
-    [HideInInspector] public bool canInteract;
+    public bool canInteract = true;
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class SarcoInteract : MonoBehaviour, Interactor
         DisableOutline();
         anim.SetTrigger("Open");
         yield return new WaitForSeconds(1f);
-        FadeBlackImage.Instance.StartFadeIn(2f);
+        FadeBlackImage.Instance.StartFadeToBlack(2f);
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene("Endgame");
     }

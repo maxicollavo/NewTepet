@@ -11,21 +11,20 @@ public class FadeBlackImage : MonoBehaviour
     private void Awake()
     {
         _sceneFadeImage = GetComponent<Image>();
-
         Instance = this;
     }
 
-    public void StartFadeIn(float duration)
+    public void StartFadeToBlack(float duration)
     {
         gameObject.SetActive(true);
-        _sceneFadeImage.color = new Color(_sceneFadeImage.color.r, _sceneFadeImage.color.g, _sceneFadeImage.color.b, 1f);
-        StartCoroutine(FadeOutCoroutine(duration));
+        _sceneFadeImage.color = new Color(0f, 0f, 0f, 0f);
+        StartCoroutine(FadeInCoroutine(duration));
     }
 
-    private IEnumerator FadeOutCoroutine(float duration)
+    private IEnumerator FadeInCoroutine(float duration)
     {
-        Color startColor = _sceneFadeImage.color;
-        Color targetColor = new Color(startColor.r, startColor.g, startColor.b, 0f);
+        Color startColor = new Color(0f, 0f, 0f, 0f);
+        Color targetColor = new Color(0f, 0f, 0f, 1f);
 
         yield return FadeCoroutine(startColor, targetColor, duration);
     }
