@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SarcoInteract : MonoBehaviour, Interactor
 {
@@ -31,9 +32,12 @@ public class SarcoInteract : MonoBehaviour, Interactor
     public IEnumerator OpenSarco()
     {
         canInteract = false;
+        DisableOutline();
         anim.SetTrigger("Open");
         yield return new WaitForSeconds(1f);
-        //Hacer que cambie la pantalla a negro o te lleve al menu de terminar demo
+        FadeBlackImage.Instance.StartFadeIn(2f);
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene("Endgame");
     }
 
     public void DisableOutline()
