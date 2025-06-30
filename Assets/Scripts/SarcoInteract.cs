@@ -30,6 +30,7 @@ public class SarcoInteract : MonoBehaviour, Interactor
 
     public IEnumerator OpenSarco()
     {
+        canInteract = false;
         anim.SetTrigger("Open");
         yield return new WaitForSeconds(1f);
         //Hacer que cambie la pantalla a negro o te lleve al menu de terminar demo

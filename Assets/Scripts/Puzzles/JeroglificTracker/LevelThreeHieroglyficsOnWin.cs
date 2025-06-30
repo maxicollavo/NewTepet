@@ -104,7 +104,7 @@ public class LevelThreeHieroglyficsOnWin : MonoBehaviour
         hasEndedCinematic = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
         OnWinAction?.Invoke();
-        riverManager.canInteract = true;
+        riverManager.canEnterTable = true;
     }
 
     private IEnumerator LerpLookAtTarget(Vector3 targetPos, float duration)
