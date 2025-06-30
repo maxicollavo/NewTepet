@@ -8,8 +8,12 @@ public class CheckLevelThree : MonoBehaviour, IEnter
     [SerializeField] Animator openDoorAnim;
     [SerializeField] AudioSource doorSound;
 
+    bool hasBeenActivated;
+
     public void Enter()
     {
+        if (hasBeenActivated) return;
+
         closeDoorAnim.SetTrigger("Close");
 
         if (!HandInventory.hasObjInHand)
@@ -17,5 +21,7 @@ public class CheckLevelThree : MonoBehaviour, IEnter
             doorSound.Play();
             openDoorAnim.SetTrigger("Open");
         }
+
+        hasBeenActivated = true;
     }
 }
