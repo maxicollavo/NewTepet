@@ -57,4 +57,12 @@ public class PlayerInputHandler : MonoBehaviour
         moveAction.Disable();
         lookAction.Disable();
     }
+
+    public void EnableLook(bool enable)
+    {
+        if (enable)
+            lookAction.Enable();
+        else
+            lookAction.Disable();
+    }
 }

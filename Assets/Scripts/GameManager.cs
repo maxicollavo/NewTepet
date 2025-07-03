@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
     private void PauseTrigger()
     {
         menuPressed = !menuPressed;
+        PlayerInputHandler.Instance.EnableLook(!menuPressed);
         pauseMenu.SetActive(menuPressed);
 
         if (menuPressed)
