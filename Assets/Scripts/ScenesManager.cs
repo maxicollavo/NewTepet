@@ -8,6 +8,7 @@ public class ScenesManager : MonoBehaviour
     [SerializeField] GameObject AreYouSureUI;
     [SerializeField] GameObject PauseMenuUI;
     [SerializeField] GameObject OptionMainMenu;
+    [SerializeField] AudioSource ClickAudio;
 
     public bool isMenu;
 
@@ -63,5 +64,10 @@ public class ScenesManager : MonoBehaviour
     public void OptionMenu()
     {
         OptionMainMenu.SetActive(true);
+    }
+
+    public void Sound()
+    {
+        ClickAudio.Play();
     }
 }
