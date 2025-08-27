@@ -9,6 +9,7 @@ public class ScenesManager : MonoBehaviour
     [SerializeField] GameObject PauseMenuUI;
     [SerializeField] GameObject OptionMainMenu;
     [SerializeField] AudioSource ClickAudio;
+    public BGSound bgSound;
 
     public bool isMenu;
 
@@ -29,6 +30,7 @@ public class ScenesManager : MonoBehaviour
     public void StartScene()
     {
         SceneManager.LoadScene("Level_One");
+        BGSound.instance.PlayBG();
     }
 
 
