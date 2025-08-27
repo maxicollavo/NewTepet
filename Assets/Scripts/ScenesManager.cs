@@ -30,7 +30,7 @@ public class ScenesManager : MonoBehaviour
     public void StartScene()
     {
         SceneManager.LoadScene("Level_One");
-        BGSound.instance.PlayBG();
+        bgSound.PlayBG();
     }
 
 
