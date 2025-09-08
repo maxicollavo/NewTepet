@@ -1,14 +1,18 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class ScenesManager : MonoBehaviour
+public class ScenesManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+
 {
     [SerializeField] GameObject creditMenuUI;
     [SerializeField] GameObject AreYouSureUI;
     [SerializeField] GameObject PauseMenuUI;
     [SerializeField] GameObject OptionMainMenu;
     [SerializeField] AudioSource ClickAudio;
+    public AudioSource brickAudio;
     public BGSound bgSound;
 
     public bool isMenu;
@@ -71,5 +75,18 @@ public class ScenesManager : MonoBehaviour
     public void Sound()
     {
         ClickAudio.Play();
+
+    }
+
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        brickAudio.Play();
+        Debug.Log("Mouse ha entrado al botón!");
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("Mouse ha salido del botón.");
     }
 }
