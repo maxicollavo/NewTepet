@@ -4,7 +4,7 @@ using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class ScenesManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ScenesManager : MonoBehaviour //IPointerEnterHandler, IPointerExitHandler
 
 {
     [SerializeField] GameObject creditMenuUI;
@@ -77,16 +77,20 @@ public class ScenesManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         ClickAudio.Play();
 
     }
+    //public void OnPointerEnter(PointerEventData eventData)
+    //{
+    //    brickAudio.Play();
+    //    Debug.Log("Mouse ha entrado al botón!");
+    //}
+    //
+    //public void OnPointerExit(PointerEventData eventData)
+    //{
+    //    Debug.Log("Mouse ha salido del botón.");
+    //}
 
-
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerMouseEnter()
     {
         brickAudio.Play();
-        Debug.Log("Mouse ha entrado al botón!");
-    }
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Debug.Log("Mouse ha salido del botón.");
     }
 }

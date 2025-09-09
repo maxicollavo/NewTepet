@@ -134,7 +134,7 @@ public class Torch : MonoBehaviour, Interactor
             FireSound.Play();
         }
 
-        torchLight.SetActive(true);
+        //torchLight.SetActive(true);
 
         if (ambientLight != null)
             ambientLight.SetActive(true);
@@ -181,7 +181,7 @@ public class Torch : MonoBehaviour, Interactor
         if (Mathf.Approximately(toAlpha, 0f))
         {
             ParticleSystem.Stop();
-            torchLight.SetActive(false);
+            //torchLight.SetActive(false);
             FireSound.Stop();
 
             if (ambientLight != null)
