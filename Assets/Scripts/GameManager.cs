@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     public CinemachineCamera playerCam;
     public bool canCheck;
     private bool requiresHand;
+    [SerializeField] GameObject playerObj;
+    [SerializeField] Transform playerSpawner;
 
     public bool HasPiece;
 
@@ -39,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        SpawnPlayer();
+
         CinemachineCore.BlendCreatedEvent.AddListener(OnBlendCreated);
         CinemachineCore.BlendFinishedEvent.AddListener(OnBlendFinished);
 
@@ -100,6 +104,12 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("Level_Two");
         }
+    }
+
+    private void SpawnPlayer()
+    {
+        playerObj.transform.position = playerSpawner.position;
+        playerObj.transform.rotation = playerSpawner.rotation;
     }
 
     private void PauseTrigger()
