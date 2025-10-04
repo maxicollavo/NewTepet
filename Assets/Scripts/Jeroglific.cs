@@ -9,6 +9,7 @@ public class Jeroglific : MonoBehaviour, IRead
     private BoxCollider coll;
     private Outline outline;
     public string text;
+    [SerializeField] float onScreenTime;
 
     private void Awake()
     {
@@ -39,6 +40,7 @@ public class Jeroglific : MonoBehaviour, IRead
         outline.enabled = false;
         StartCoroutine(SetSubtitle());
         UIManager.Instance.ChangeCursor(false);
+        NewEventManager.TriggerRead();
     }
 
     IEnumerator SetSubtitle()
@@ -47,7 +49,7 @@ public class Jeroglific : MonoBehaviour, IRead
         subtitle.text = text;
         coll.enabled = false;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(onScreenTime);
 
         panel.SetActive(false);
         coll.enabled = true;

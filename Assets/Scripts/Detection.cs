@@ -3,13 +3,9 @@ using UnityEngine;
 
 public class Detection : MonoBehaviour
 {
-    public Action<Powers> ChangePowerAction;
-
     public float playerReach = 10f;
 
     float interactDistance = 5f;
-
-    public Powers currentPower = Powers.OnRead;
 
     private bool onClick;
 
@@ -18,8 +14,6 @@ public class Detection : MonoBehaviour
     private Interactor lastInteractor = null;
 
     [SerializeField] private LayerMask ignoreMask;
-
-    [SerializeField] AnimationManager animManager;
 
     private bool onPause;
 
@@ -45,34 +39,10 @@ public class Detection : MonoBehaviour
             onClick = true;
         }
 
-        PowersKeyBinding();
-
         Detect();
 
         onClick = false;
     }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * playerReach);
-    }
-
-    public void PowersKeyBinding()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            ChangePower(0);
-            SendPowerSelection();
-        }
-        //Descomentar esto cuando se pueda cambiar de poder
-        // else if (Input.GetKeyDown(KeyCode.Alpha2))
-        // {
-        //     ChangePower(1);
-        //    SendPowerSelection();
-        //}
-    }
-
     void Detect()
     {
         RaycastHit hit;
@@ -100,28 +70,13 @@ public class Detection : MonoBehaviour
                 }
             }
 
-            if (currentPower == Powers.OnTime)
+            if (hit.collider.TryGetComponent(out currentReadeable))
             {
-                if (hit.collider.TryGetComponent(out currentSwitcheable))
-                {
-                    currentSwitcheable.Aiming();
+                currentReadeable.Aiming();
 
-                    if (onClick)
-                    {
-                        currentSwitcheable.Switch();
-                    }
-                }
-            }
-            else if (currentPower == Powers.OnRead)
-            {
-                if (hit.collider.TryGetComponent(out currentReadeable))
+                if (onClick)
                 {
-                    currentReadeable.Aiming();
-
-                    if (onClick)
-                    {
-                        currentReadeable.Read();
-                    }
+                    currentReadeable.Read();
                 }
             }
         }
@@ -145,24 +100,4 @@ public class Detection : MonoBehaviour
         lastReadeable = currentReadeable;
         lastInteractor = currentInteractor;
     }
-
-    void ChangePower(int power)
-    {
-        if ((int)currentPower == power)
-            return;
-
-        currentPower = (Powers)power;
-    }
-
-    public void SendPowerSelection()
-    {
-        animManager.ChangeCurrentPower(currentPower);
-        ChangePowerAction?.Invoke(currentPower);
-    }
-}
-
-public enum Powers
-{
-    OnRead,
-    OnTime
 }
