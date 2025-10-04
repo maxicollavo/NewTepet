@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class FollowMouseClick : MonoBehaviour
@@ -8,9 +10,23 @@ public class FollowMouseClick : MonoBehaviour
     private Camera cam;
     float fixedZ;
 
+    private bool onPause;
+
+    private void OnEnable()
+    {
+        NewEventManager.OnPaused += PauseTriggered;
+    }
+
     private void OnDisable()
     {
         lineRenderer.enabled = false;
+        NewEventManager.OnPaused -= PauseTriggered;
+    }
+
+    private void PauseTriggered(bool state)
+    {
+        onPause = state;
+        Debug.Log(state);
     }
 
     private void Awake()
@@ -18,20 +34,20 @@ public class FollowMouseClick : MonoBehaviour
         lineRenderer = emitterObject.gameObject.GetComponent<LineRenderer>();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         cam = Camera.main;
         fixedZ = transform.position.z;
+        lineRenderer.positionCount = 2;
 
+        yield return null; // espera un frame
         gameObject.SetActive(false);
-
-        if (lineRenderer != null)
-            lineRenderer.positionCount = 2;
     }
+
 
     void Update()
     {
-        if (!gameObject.activeInHierarchy) return;
+        if (!gameObject.activeInHierarchy || onPause) return;
 
         if (Input.GetMouseButton(0))
         {

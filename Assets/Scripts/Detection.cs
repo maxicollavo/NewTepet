@@ -21,6 +21,23 @@ public class Detection : MonoBehaviour
 
     [SerializeField] AnimationManager animManager;
 
+    private bool onPause;
+
+    private void OnEnable()
+    {
+        NewEventManager.OnPaused += TriggerPause;
+    }
+
+    private void OnDisable()
+    {
+        NewEventManager.OnPaused -= TriggerPause;
+    }
+
+    private void TriggerPause(bool state)
+    {
+        onPause = state;
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -76,6 +93,8 @@ public class Detection : MonoBehaviour
 
                     if (onClick)
                     {
+                        if (onPause) return;
+
                         currentInteractor.Interact();
                     }
                 }
@@ -99,7 +118,7 @@ public class Detection : MonoBehaviour
                 {
                     currentReadeable.Aiming();
 
-                    if (onClick && !GameManager.Instance.clickBlock)
+                    if (onClick)
                     {
                         currentReadeable.Read();
                     }

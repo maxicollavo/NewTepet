@@ -6,15 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public bool clickBlock;
-
     [Header("States Manager")]
     [HideInInspector] public PowerStates state;
 
     [Header("Pause Manager")]
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject CurrentPowerUI;
-    private bool menuPressed;
+    private bool pauseTriggered;
 
     [Header("Gameplay")]
     public List<GameObject> TPWaypoints;
@@ -114,17 +112,17 @@ public class GameManager : MonoBehaviour
 
     private void PauseTrigger()
     {
-        menuPressed = !menuPressed;
-        PlayerInputHandler.Instance.EnableLook(!menuPressed);
-        pauseMenu.SetActive(menuPressed);
+        pauseTriggered = !pauseTriggered;
+        NewEventManager.TriggerPause(pauseTriggered);
+        PlayerInputHandler.Instance.EnableLook(!pauseTriggered);
+        pauseMenu.SetActive(pauseTriggered);
 
-        if (menuPressed)
+        if (pauseTriggered)
         {
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             CurrentPowerUI.SetActive(false);
-
         }
         else
         {

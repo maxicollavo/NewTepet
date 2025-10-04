@@ -29,9 +29,25 @@ public class Tracker : MonoBehaviour
     public TrackerManager manager;
     private Camera playerCam;
     private bool previousState = false;
+    private bool isOnPause;
 
     [Header("On Win")]
     public bool HasWon;
+
+    private void OnEnable()
+    {
+        NewEventManager.OnPaused += PauseTriggered;
+    }
+
+    private void OnDisable()
+    {
+        NewEventManager.OnPaused -= PauseTriggered;
+    }
+
+    private void PauseTriggered(bool state)
+    {
+        isOnPause = state;
+    }
 
     private void Start()
     {
@@ -99,10 +115,9 @@ public class Tracker : MonoBehaviour
             }
         }
     }
-
     void Update()
     {
-        if (HasWon || !CanStart || !manager.canInteract) return;
+        if (HasWon || !CanStart || !manager.canInteract || isOnPause) return;
 
         bool currentState = manager.OnPuzzle;
 
