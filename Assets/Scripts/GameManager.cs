@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject playerObj;
     [SerializeField] Transform playerSpawner;
 
+    [HideInInspector] public int roomCounter;
+
     public bool HasPiece;
 
     [SerializeField] Animator pyramidOnEnterAnim;

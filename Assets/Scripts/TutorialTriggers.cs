@@ -25,8 +25,8 @@ public class TutorialTriggers : MonoBehaviour, ITutorial
         }    
 
         door.SetTrigger("Close");
-        //AudioManager.Instance.PlaySound("rocaMoviendose");
         door3DSound.Play();
         coll.enabled = false;
+        NewEventManager.TriggerChangeRoom();
     }
 }

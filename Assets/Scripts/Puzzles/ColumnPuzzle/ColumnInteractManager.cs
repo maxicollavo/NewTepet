@@ -30,6 +30,10 @@ public class ColumnInteractManager : MonoBehaviour
     [SerializeField] private List<ColumnSelected> allColumns = new List<ColumnSelected>();
     private int currentColumnIndex = 0;
 
+    [Header("Camera Shake")]
+    [SerializeField] private CameraShake cameraShake;
+    [SerializeField] private float shakeMagnitude;
+
     public void OnSelectedMethod(bool isSelected, ColumnSelected selected)
     {
         if (currentlySelected != null && currentlySelected != selected)
@@ -73,12 +77,23 @@ public class ColumnInteractManager : MonoBehaviour
         if (currentlySelected != null && !currentlySelected.interiorPieces[piecesCounter].hasWon)
         {
             Transform columnTransform = currentlySelected.interiorPieces[piecesCounter].columnTransform;
+            Transform tableColumnTransform = currentlySelected.interiorPieces[piecesCounter].transform.parent.transform;
 
             if (Input.GetKey(KeyCode.A))
+            {
                 columnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+                tableColumnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
+
+                cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
+            }
 
             if (Input.GetKey(KeyCode.D))
+            {
                 columnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
+                tableColumnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
+
+                cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
+            }
 
             if (Input.GetKeyDown(KeyCode.W))
             {
