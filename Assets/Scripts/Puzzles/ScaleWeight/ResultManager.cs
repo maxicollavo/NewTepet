@@ -62,12 +62,12 @@ public class ResultManager : MonoBehaviour
         doorAnims[doorIndex].SetTrigger("Open");
         doorSounds3D[doorIndex].Play();
         doorsDone[doorIndex] = true;
+            Debug.Log("se abre la ultima puerta");
 
         if (doorIndex == 4)
         {
-            Debug.Log("se abre la ultima puerta");
-            //visualEffect.SetFloat("alpha", 0f);
             visualEffect.Stop();
+            //visualEffect.SetFloat("alpha", 0f);
             ObjectCreator.Instance.canPick = false;
         }
     }
