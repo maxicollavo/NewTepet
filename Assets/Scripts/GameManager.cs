@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Pause Manager")]
     [SerializeField] GameObject pauseMenu;
-    [SerializeField] GameObject CurrentPowerUI;
     private bool pauseTriggered;
 
     [Header("Gameplay")]
@@ -124,14 +123,12 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            CurrentPowerUI.SetActive(false);
         }
         else
         {
             Time.timeScale = 1;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            CurrentPowerUI.SetActive(true);
         }
     }
 
