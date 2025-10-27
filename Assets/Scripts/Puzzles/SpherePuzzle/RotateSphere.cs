@@ -272,19 +272,18 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     private IEnumerator LerpFillAmount(float target)
     {
-        float elapsed = 0f;
         float start = fillMat.GetFloat("_FillAmount");
+        float speed = 1.4f;
 
-        while (elapsed < shaderLerpDuration)
+        while (!Mathf.Approximately(start, target))
         {
-            elapsed += Time.deltaTime;
-            float t = elapsed / shaderLerpDuration;
-            float value = Mathf.Lerp(start, target, t);
-            fillMat.SetFloat("_FillAmount", value);
+            start = Mathf.MoveTowards(start, target, speed * Time.deltaTime);
+            fillMat.SetFloat("_FillAmount", start);
             yield return null;
         }
 
         fillMat.SetFloat("_FillAmount", target);
+
     }
 
     private void CheckFrontImage()
