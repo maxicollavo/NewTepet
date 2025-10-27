@@ -2,17 +2,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RouletteSlideTest : MonoBehaviour
+public class RouletteSlideTest : MonoBehaviour, Interactor
 {
-    // Start is called before the first frame update
-    void Start()
+    Outline outline;
+    Animator touchButton;
+    BoxCollider coll;
+
+    private void Awake()
     {
-        
+        outline = GetComponent<Outline>();
+        touchButton = GetComponent<Animator>();
+        coll = GetComponent<BoxCollider>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        outline.enabled = false;
+    }
+
+    public void DisableOutline()
+    {
+        outline.enabled = false;
+
+        UIManager.Instance.ChangeCursor(false);
+    }
+
+    void EnableOutline()
+    {
+        outline.enabled = true;
+    }
+
+    public void Aiming()
+    {
+        EnableOutline();
+
+        UIManager.Instance.ChangeCursor(true);
+    }
+
+    private IEnumerator TouchButtonCoroutine()
+    {
+        coll.enabled = false;
+        UIManager.Instance.ChangeCursor(false);
+        touchButton.SetTrigger("Interact");
+        DisableOutline();
+        yield return new WaitForSeconds(1f);
+    }
+
+    public void Interact()
+    {
+        StartCoroutine(TouchButtonCoroutine());
     }
 }
