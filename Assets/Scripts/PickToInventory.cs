@@ -19,9 +19,7 @@ public enum ObjectsToPick
 public class PickToInventory : MonoBehaviour, Interactor
 {
     Outline outline;
-    public Renderer objetoRenderer;
-    [SerializeField]
-    GameObject Light;
+    public GameObject Light;
     Color originalColor;
     [SerializeField] private ObjectsToPick obj;
 
@@ -71,8 +69,6 @@ public class PickToInventory : MonoBehaviour, Interactor
         PickedObjData.Instance.MarkAsPicked(obj);
         //Deshabilitamos el Outline
         DisableOutline();
-        //apagamos la luz 
-        Light.SetActive(false);
         //Encendemos el objeto de la mano
         HandInventory.Instance.ShowObjectInHand(obj);
         //Deshabilitamos el objeto pickeado
