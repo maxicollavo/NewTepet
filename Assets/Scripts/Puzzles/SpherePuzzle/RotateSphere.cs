@@ -277,7 +277,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
         while (!Mathf.Approximately(start, target))
         {
-            start = Mathf.MoveTowards(start, target, speed * Time.deltaTime);
+            start = Mathf.MoveTowards(start, target, speed * 2 *Time.deltaTime);
             fillMat.SetFloat("_FillAmount", start);
             yield return null;
         }
