@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public enum ObjectsToPick
 {
@@ -19,7 +18,6 @@ public enum ObjectsToPick
 public class PickToInventory : MonoBehaviour, Interactor
 {
     Outline outline;
-    public GameObject Light;
     Color originalColor;
     [SerializeField] private ObjectsToPick obj;
 
@@ -32,6 +30,9 @@ public class PickToInventory : MonoBehaviour, Interactor
     public Plate plateSide;
 
     private ObjectType type;
+
+    [SerializeField] private bool _triggersAction;
+    [SerializeField] private GameObject _light;
 
     private void Awake()
     {
@@ -75,6 +76,12 @@ public class PickToInventory : MonoBehaviour, Interactor
         gameObject.SetActive(false);
         //Sonido de pickeo
         AudioManager.Instance.PlaySound("Grab");
+        //Si necesita hacer una acción al pickear
+        if (_triggersAction)
+        {
+            if (_light == null) return;
+            _light.SetActive(false);
+        }
 
         if (isOnScale && plateSide != Plate.None)
         {

@@ -9,7 +9,6 @@ public class HandMecanism : MonoBehaviour, Interactor
     BoxCollider coll;
     [SerializeField] AudioSource door3DSound;
 
-
     private void Awake()
     {
         outline = GetComponent<Outline>();
