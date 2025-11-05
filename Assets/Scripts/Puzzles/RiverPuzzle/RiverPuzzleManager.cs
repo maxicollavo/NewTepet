@@ -46,6 +46,7 @@ public class RiverPuzzleManager : MonoBehaviour
     PuzzleInteractor interactor;
     PuzzleDefiner definer;
 
+
     private void Awake()
     {
         foreach (var piece in pieces)
@@ -80,6 +81,7 @@ public class RiverPuzzleManager : MonoBehaviour
         interactor.PuzzleAction += OnPuzzleMethod;
     }
 
+       
     private void OnDestroy()
     {
         foreach (var p in pieces) p.OnPieceSelected -= GetSelectedPiece;
@@ -302,10 +304,17 @@ public class RiverPuzzleManager : MonoBehaviour
         if (wp == targetWp)
         {
             piece.OnPositionWinner = true;
+           var mat = piece.GetComponent<RiverMat>();
+           if (mat != null)
+               mat.ActiveBloom();
         }
-        else
+        else 
         {
             piece.OnPositionWinner = false;
+            var mat = piece.GetComponent<RiverMat>();
+
+            if (mat != null)
+                mat.DesactiveBloom();
         }
 
         CheckWin();
@@ -341,4 +350,5 @@ public class RiverPuzzleManager : MonoBehaviour
         interactor.outline.OutlineColor = originalColor;
         interactor.DisableOutline();
     }
+
 }
