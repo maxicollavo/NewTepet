@@ -12,10 +12,7 @@ public class CheckAlignmentsDial : MonoBehaviour
     {
         dialsGos = new GameObject[dials.Length];
 
-        foreach (var dial in dials)
-        {
-            dial.OnClickRelease += CheckAlignments;
-        }
+        DialManager.Instance.OnSpaceAction += CheckAlignments;
 
         for (int i = 0; i < dials.Length; i++)
         {

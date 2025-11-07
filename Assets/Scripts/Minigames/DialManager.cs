@@ -8,6 +8,16 @@ public class DialManager : MonoBehaviour
     [SerializeField] CheckAlignmentsDial checkAlignments;
     [SerializeField] EnterDial enterDial;
 
+    [SerializeField] List<GameObject> _dialElements;
+
+    public Action OnSpaceAction;
+    public static DialManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         enterDial.EnterDialAction += EnterDialMethod;
@@ -23,6 +33,11 @@ public class DialManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse1) && _onPuzzle)
         {
             ExitDialMethod();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && _onPuzzle)
+        {
+            OnSpaceAction?.Invoke();
         }
     }
 
@@ -63,8 +78,17 @@ public class DialManager : MonoBehaviour
         TurnDialCamera(true);
         RotatableDialState(true);
         GameplayStates(true);
+        TurnUI(true);
 
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
+    }
+
+    private void TurnUI(bool state)
+    {
+        foreach(var e in _dialElements)
+        {
+            e.SetActive(state);
+        }
     }
 
     private void ExitDialMethod()
@@ -72,6 +96,7 @@ public class DialManager : MonoBehaviour
         TurnDialCamera(false);
         RotatableDialState(false);
         GameplayStates(false);
+        TurnUI(false);
 
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }

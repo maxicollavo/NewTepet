@@ -9,7 +9,6 @@ public class RotatableDial : MonoBehaviour, IPointerDownHandler, IDragHandler, I
     private float startAngle;
 
     public bool canRotateDial;
-    public Action OnClickRelease;
 
     private static RotatableDial currentlySelectedDial;
 
@@ -37,7 +36,6 @@ public class RotatableDial : MonoBehaviour, IPointerDownHandler, IDragHandler, I
 
         if (currentlySelectedDial == this)
         {
-            CheckAlignment();
             currentlySelectedDial = null;
         }
     }
@@ -75,11 +73,5 @@ public class RotatableDial : MonoBehaviour, IPointerDownHandler, IDragHandler, I
         Vector2 dir = worldPoint - rectTransform.position;
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         return angle;
-    }
-
-    private void CheckAlignment()
-    {
-        Debug.Log("Se envia el evento");
-        OnClickRelease?.Invoke();
     }
 }
