@@ -106,11 +106,12 @@ public class ColumnInteractManager : MonoBehaviour
                 if (isRotating)
                 {
                     foreach (var vfxEffect in vfxEffects)
-                        vfx.Play();
+                        vfx.SetFloat("alpha", 1);
+                    Debug.Log("entro a play");
                 }
                 else
                     foreach (var vfxEffect in vfxEffects)
-                        vfx.Stop();
+                        vfx.SetFloat("alpha", 0);
             }
 
             if (Input.GetKeyDown(KeyCode.W))

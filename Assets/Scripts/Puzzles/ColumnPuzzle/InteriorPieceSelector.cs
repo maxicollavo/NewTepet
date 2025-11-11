@@ -45,4 +45,5 @@ public class InteriorPieceSelector : MonoBehaviour
         outline.enabled = false;
         coll.enabled = false;
     }
+
 }
