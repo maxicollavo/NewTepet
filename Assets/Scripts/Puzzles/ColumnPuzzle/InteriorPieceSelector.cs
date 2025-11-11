@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.VFX;
+
 
 [RequireComponent(typeof(Outline))]
 public class InteriorPieceSelector : MonoBehaviour
@@ -12,6 +14,8 @@ public class InteriorPieceSelector : MonoBehaviour
     public Transform lookAtTarget;
     [HideInInspector] public bool isAligned;
     [HideInInspector] public bool hasWon;
+
+    public VisualEffect[] vfxEffects;
 
     private void Awake()
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class ColumnInteractManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class ColumnInteractManager : MonoBehaviour
     [Header("Columnas")]
     [SerializeField] private List<ColumnSelected> allColumns = new List<ColumnSelected>();
     private int currentColumnIndex = 0;
+    private bool isRotating;
 
     [Header("Camera Shake")]
     [SerializeField] private CameraShake cameraShake;
@@ -78,21 +80,37 @@ public class ColumnInteractManager : MonoBehaviour
         {
             Transform columnTransform = currentlySelected.interiorPieces[piecesCounter].columnTransform;
             Transform tableColumnTransform = currentlySelected.interiorPieces[piecesCounter].transform.parent.transform;
+            VisualEffect[] vfxEffects = currentlySelected.interiorPieces[piecesCounter].vfxEffects;
 
             if (Input.GetKey(KeyCode.A))
             {
                 columnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
                 tableColumnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-
                 cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
-            }
+                isRotating = true;
 
-            if (Input.GetKey(KeyCode.D))
+                Debug.Log($"Los efectos visuales de la columna {columnTransform.gameObject} son {vfxEffects[0].gameObject} y {vfxEffects[1].gameObject}");
+            }
+            else if (Input.GetKey(KeyCode.D))
             {
                 columnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
                 tableColumnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
-
                 cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
+                isRotating = true;
+            }
+
+            foreach (var vfx in vfxEffects)
+            {
+                if (vfx == null) continue;
+
+                if (isRotating)
+                {
+                    foreach (var vfxEffect in vfxEffects)
+                        vfx.Play();
+                }
+                else
+                    foreach (var vfxEffect in vfxEffects)
+                        vfx.Stop();
             }
 
             if (Input.GetKeyDown(KeyCode.W))
