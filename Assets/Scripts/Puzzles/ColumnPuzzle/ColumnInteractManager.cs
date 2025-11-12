@@ -35,6 +35,14 @@ public class ColumnInteractManager : MonoBehaviour
     [Header("Camera Shake")]
     [SerializeField] private CameraShake cameraShake;
     [SerializeField] private float shakeMagnitude;
+
+
+
+    [SerializeField] private float alphaLerpSpeed = 2f;
+    private float currentAlpha = 0f;
+    private float targetAlpha = 0f;
+
+
     public void OnSelectedMethod(int columnIndex, bool isSelected, ColumnSelected selected)
     {
         currentColumnIndex = columnIndex;
@@ -75,6 +83,8 @@ public class ColumnInteractManager : MonoBehaviour
 
     private void Update()
     {
+        targetAlpha = isRotating ? 1f : 0f;
+        currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, Time.deltaTime * alphaLerpSpeed);
         if (!canRotate) return;
 
         if (currentlySelected != null && !currentlySelected.interiorPieces[piecesCounter].hasWon)
@@ -111,15 +121,7 @@ public class ColumnInteractManager : MonoBehaviour
             foreach (var vfx in vfxEffects)
             {
                 if (vfx == null) continue;
-
-                if (isRotating)
-                {
-                    foreach (var vfxEffect in vfxEffects)
-                        vfx.SetFloat("alpha", 1);
-                }
-                else
-                    foreach (var vfxEffect in vfxEffects)
-                        vfx.SetFloat("alpha", 0);
+                vfx.SetFloat("alpha", currentAlpha);
             }
 
             if (Input.GetKeyDown(KeyCode.W))
