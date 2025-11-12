@@ -35,9 +35,10 @@ public class ColumnInteractManager : MonoBehaviour
     [Header("Camera Shake")]
     [SerializeField] private CameraShake cameraShake;
     [SerializeField] private float shakeMagnitude;
-
-    public void OnSelectedMethod(bool isSelected, ColumnSelected selected)
+    public void OnSelectedMethod(int columnIndex, bool isSelected, ColumnSelected selected)
     {
+        currentColumnIndex = columnIndex;
+
         if (currentlySelected != null && currentlySelected != selected)
         {
             oldPieceCounter = piecesCounter;
@@ -99,6 +100,14 @@ public class ColumnInteractManager : MonoBehaviour
                 isRotating = true;
             }
 
+            if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+            {
+                if (isRotating)
+                {
+                    isRotating = false;
+                }
+            }
+
             foreach (var vfx in vfxEffects)
             {
                 if (vfx == null) continue;
@@ -107,7 +116,6 @@ public class ColumnInteractManager : MonoBehaviour
                 {
                     foreach (var vfxEffect in vfxEffects)
                         vfx.SetFloat("alpha", 1);
-                    Debug.Log("entro a play");
                 }
                 else
                     foreach (var vfxEffect in vfxEffects)
@@ -155,7 +163,6 @@ public class ColumnInteractManager : MonoBehaviour
         {
             enterPuzzle.EnterPuzzle(false);
             if (currentlySelected == null) return;
-            Debug.Log("Llama a Deselect Piece");
             currentlySelected.DeselectPiece();
         }
 

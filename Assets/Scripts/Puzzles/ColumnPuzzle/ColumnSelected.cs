@@ -4,9 +4,10 @@ using UnityEngine;
 [RequireComponent(typeof(Outline))]
 public class ColumnSelected : MonoBehaviour
 {
-    public Action<bool, ColumnSelected> OnSelectedAction;
+    public Action<int, bool, ColumnSelected> OnSelectedAction;
 
     private bool isSelected;
+    public int columnIndex;
 
     Outline outline;
     [HideInInspector] public BoxCollider coll;
@@ -60,7 +61,7 @@ public class ColumnSelected : MonoBehaviour
         isSelected = true;
         AudioManager.Instance.PlaySound("SelectPiece");
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this);
+        OnSelectedAction?.Invoke(columnIndex, isSelected, this);
     }
 
     public void DeselectPiece()
@@ -70,7 +71,7 @@ public class ColumnSelected : MonoBehaviour
         Debug.Log("Entra a Deselect Piece y pasa el primer if");
         isSelected = false;
         DisableOutline();
-        OnSelectedAction?.Invoke(isSelected, this);
+        OnSelectedAction?.Invoke(columnIndex, isSelected, this);
         if (interiorPieces.Length > 0)
         {
             foreach (var piece in interiorPieces)
