@@ -5,7 +5,8 @@ using UnityEngine.VFX;
 
 public class ColumnInteractManager : MonoBehaviour
 {
-    [HideInInspector] public Dictionary<InteriorPieceSelector, bool> interiorPieceSelected = new Dictionary<InteriorPieceSelector, bool>();
+    [HideInInspector]
+    public Dictionary<InteriorPieceSelector, bool> interiorPieceSelected = new Dictionary<InteriorPieceSelector, bool>();
     public Action<ColumnInteractManager> OnWinAction;
 
     [SerializeField] float rotationSpeed = 50f;
@@ -14,34 +15,32 @@ public class ColumnInteractManager : MonoBehaviour
     [SerializeField] EnterColumnPuzzle enterPuzzle;
 
     private ColumnSelected currentlySelected;
-    private Transform columnTransform;
     private Transform forward;
     private Transform lookAtTarget;
 
-    private Quaternion targetRotation;
-
     public bool canRotate;
+    private bool isRotating;
     [HideInInspector] public bool hasWon;
 
-    [Header("Interior Pieces Settings")]
     private int piecesCounter;
     private int oldPieceCounter;
 
     [Header("Columnas")]
     [SerializeField] private List<ColumnSelected> allColumns = new List<ColumnSelected>();
     private int currentColumnIndex = 0;
-    private bool isRotating;
 
     [Header("Camera Shake")]
     [SerializeField] private CameraShake cameraShake;
     [SerializeField] private float shakeMagnitude;
 
-
-
-    [SerializeField] private float alphaLerpSpeed = 2f;
+    [Header("VFX Alpha")]
+    [SerializeField] private float alphaLerpSpeed;
+    [SerializeField] private float targetAlpha;
     private float currentAlpha = 0f;
-    private float targetAlpha = 0f;
 
+    private InteriorPieceSelector previousPiece;
+    private List<InteriorPieceSelector> fadingPieces = new List<InteriorPieceSelector>();
+    private InteriorPieceSelector rotatingPiece;
 
     public void OnSelectedMethod(int columnIndex, bool isSelected, ColumnSelected selected)
     {
@@ -52,9 +51,7 @@ public class ColumnInteractManager : MonoBehaviour
             oldPieceCounter = piecesCounter;
 
             if (currentlySelected.interiorPieces.Length > piecesCounter)
-            {
                 currentlySelected.interiorPieces[piecesCounter].DisableOutline();
-            }
 
             currentlySelected.DeselectPiece();
         }
@@ -65,13 +62,12 @@ public class ColumnInteractManager : MonoBehaviour
 
             oldPieceCounter = piecesCounter;
             piecesCounter = oldPieceCounter;
+
             forward = currentlySelected.interiorPieces[piecesCounter].forward;
             lookAtTarget = currentlySelected.interiorPieces[piecesCounter].lookAtTarget;
 
             if (currentlySelected.interiorPieces.Length > 0)
-            {
                 currentlySelected.interiorPieces[piecesCounter].EnableOutline();
-            }
         }
         else
         {
@@ -83,99 +79,147 @@ public class ColumnInteractManager : MonoBehaviour
 
     private void Update()
     {
-        targetAlpha = isRotating ? 1f : 0f;
-        currentAlpha = Mathf.Lerp(currentAlpha, targetAlpha, Time.deltaTime * alphaLerpSpeed);
         if (!canRotate) return;
+
+        float target = isRotating ? targetAlpha : 0f;
+        currentAlpha = Mathf.MoveTowards(currentAlpha, target, alphaLerpSpeed * Time.deltaTime);
+        ApplyVFXAlpha(currentAlpha);
+
+        if (fadingPieces.Count > 0)
+        {
+            for (int i = fadingPieces.Count - 1; i >= 0; i--)
+            {
+                var p = fadingPieces[i];
+                bool finished = FadeOutPiece(p);
+                if (finished)
+                    fadingPieces.RemoveAt(i);
+            }
+        }
 
         if (currentlySelected != null && !currentlySelected.interiorPieces[piecesCounter].hasWon)
         {
             Transform columnTransform = currentlySelected.interiorPieces[piecesCounter].columnTransform;
             Transform tableColumnTransform = currentlySelected.interiorPieces[piecesCounter].transform.parent.transform;
-            VisualEffect[] vfxEffects = currentlySelected.interiorPieces[piecesCounter].vfxEffects;
 
             if (Input.GetKey(KeyCode.A))
             {
-                columnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-                tableColumnTransform.Rotate(Vector3.up, rotationSpeed * Time.deltaTime);
-                cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
-                isRotating = true;
-
-                Debug.Log($"Los efectos visuales de la columna {columnTransform.gameObject} son {vfxEffects[0].gameObject} y {vfxEffects[1].gameObject}");
+                RotatePiece(columnTransform, tableColumnTransform, +rotationSpeed);
             }
             else if (Input.GetKey(KeyCode.D))
             {
-                columnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
-                tableColumnTransform.Rotate(Vector3.up, -rotationSpeed * Time.deltaTime);
-                cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
-                isRotating = true;
+                RotatePiece(columnTransform, tableColumnTransform, -rotationSpeed);
             }
 
             if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-            {
-                if (isRotating)
-                {
-                    isRotating = false;
-                }
-            }
-
-            foreach (var vfx in vfxEffects)
-            {
-                if (vfx == null) continue;
-                vfx.SetFloat("alpha", currentAlpha);
-            }
+                StopRotating();
 
             if (Input.GetKeyDown(KeyCode.W))
             {
-                AudioManager.Instance.PlaySound("SelectPiece");
-
-                var currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
-                currentlyPieceSelected.DisableOutline();
-
-                piecesCounter++;
-                if (piecesCounter > currentlySelected.interiorPieces.Length - 1)
-                    piecesCounter = 0;
-
-                currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
-                currentlyPieceSelected.EnableOutline();
+                SelectNextPiece(+1);
+                StopRotating();
             }
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                AudioManager.Instance.PlaySound("SelectPiece");
-
-                var currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
-                currentlyPieceSelected.DisableOutline();
-
-                piecesCounter--;
-                if (piecesCounter < 0)
-                    piecesCounter = currentlySelected.interiorPieces.Length - 1;
-
-                currentlyPieceSelected = currentlySelected.interiorPieces[piecesCounter];
-                currentlyPieceSelected.EnableOutline();
+                SelectNextPiece(-1);
+                StopRotating();
             }
-
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
-        {
             CheckAllAlignments();
-        }
 
         if (Input.GetMouseButtonDown(1))
         {
             enterPuzzle.EnterPuzzle(false);
+            rotatingPiece = null;
+            CutVFX();
+
             if (currentlySelected == null) return;
             currentlySelected.DeselectPiece();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q)) SelectNextColumn(-1);
+        if (Input.GetKeyDown(KeyCode.E)) SelectNextColumn(+1);
+    }
+
+    private void StopRotating()
+    {
+        isRotating = false;
+        AddFadeOut(currentlySelected.interiorPieces[piecesCounter]);
+    }
+
+    private void RotatePiece(Transform columnTrans, Transform tableTrans, float speed)
+    {
+        columnTrans.Rotate(Vector3.up, speed * Time.deltaTime);
+        tableTrans.Rotate(Vector3.up, speed * Time.deltaTime);
+        cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
+
+        isRotating = true;
+    }
+
+    private void ApplyVFXAlpha(float alpha)
+    {
+        if (currentlySelected == null) return;
+        if (currentlySelected.interiorPieces[piecesCounter] == null) return;
+
+        rotatingPiece = currentlySelected.interiorPieces[piecesCounter];
+
+        foreach (var vfx in rotatingPiece.vfxEffects)
         {
-            SelectNextColumn(-1);
+            if (vfx != null)
+                vfx.SetFloat("alpha", alpha);
         }
-        else if (Input.GetKeyDown(KeyCode.E))
+    }
+
+    private void AddFadeOut(InteriorPieceSelector piece)
+    {
+        if (!fadingPieces.Contains(piece))
+            fadingPieces.Add(piece);
+    }
+
+    private bool FadeOutPiece(InteriorPieceSelector piece)
+    {
+        if (piece == null) return true;
+
+        bool allZero = true;
+
+        foreach (var vfx in piece.vfxEffects)
         {
-            SelectNextColumn(1);
+            if (vfx == null) continue;
+
+            float current = vfx.GetFloat("alpha");
+            float next = Mathf.MoveTowards(current, 0f, alphaLerpSpeed * Time.deltaTime);
+            vfx.SetFloat("alpha", next);
+
+            if (next > 0f)
+                allZero = false;
         }
+
+        return allZero;
+    }
+
+    private void CutVFX()
+    {
+        isRotating = false;
+        currentAlpha = 0f;
+        ApplyVFXAlpha(0f);
+    }
+
+    private void SelectNextPiece(int dir)
+    {
+        AudioManager.Instance.PlaySound("SelectPiece");
+
+        var oldPiece = currentlySelected.interiorPieces[piecesCounter];
+        oldPiece.DisableOutline();
+        AddFadeOut(oldPiece);
+
+        piecesCounter += dir;
+        if (piecesCounter >= currentlySelected.interiorPieces.Length) piecesCounter = 0;
+        if (piecesCounter < 0) piecesCounter = currentlySelected.interiorPieces.Length - 1;
+
+        var newPiece = currentlySelected.interiorPieces[piecesCounter];
+        newPiece.EnableOutline();
     }
 
     private void SelectNextColumn(int direction)
@@ -196,32 +240,26 @@ public class ColumnInteractManager : MonoBehaviour
         newSelected.SelectedPiece();
     }
 
-
     private void CheckAllAlignments()
     {
         foreach (var pair in interiorPieceSelected)
         {
-            InteriorPieceSelector column = pair.Key;
+            var column = pair.Key;
 
-            if (column.forward == null || column.lookAtTarget == null || column.columnTransform == null)
-            {
-                continue;
-            }
+            if (column.forward == null ||
+                column.lookAtTarget == null ||
+                column.columnTransform == null) continue;
 
-            Transform columnTransform = column.columnTransform;
-            Vector3 pos = columnTransform.position;
+            Vector3 pos = column.columnTransform.position;
 
-            var desiredForward = column.lookAtTarget.position - pos;
-            var actualForward = column.forward.position - pos;
+            Vector3 desiredForward = column.lookAtTarget.position - pos;
+            Vector3 actualForward = column.forward.position - pos;
 
             desiredForward.y = 0;
             actualForward.y = 0;
 
-            var angle = Vector3.Angle(desiredForward, actualForward);
-
-            column.isAligned = angle < alignThreshold;
+            column.isAligned = Vector3.Angle(desiredForward, actualForward) < alignThreshold;
         }
-
 
         CheckIfPuzzleCompleted();
     }
@@ -229,12 +267,7 @@ public class ColumnInteractManager : MonoBehaviour
     private void CheckIfPuzzleCompleted()
     {
         foreach (var pair in interiorPieceSelected)
-        {
-            if (!pair.Key.isAligned)
-            {
-                return;
-            }
-        }
+            if (!pair.Key.isAligned) return;
 
         foreach (var pair in interiorPieceSelected)
         {
@@ -250,42 +283,33 @@ public class ColumnInteractManager : MonoBehaviour
     private void AlignColumn(InteriorPieceSelector column)
     {
         Transform columnTransform = column.columnTransform;
+
         Vector3 pos = columnTransform.position;
-        Transform forwardPoint = column.forward;
-        Transform lookAtPoint = column.lookAtTarget;
 
-        if (forwardPoint == null || lookAtPoint == null)
-        {
-            return;
-        }
-
-        Vector3 currentDir = (forwardPoint.position - pos).normalized;
-        Vector3 targetDir = (lookAtPoint.position - pos).normalized;
+        Vector3 currentDir = (column.forward.position - pos).normalized;
+        Vector3 targetDir = (column.lookAtTarget.position - pos).normalized;
 
         currentDir.y = 0;
         targetDir.y = 0;
 
-        Quaternion deltaRotation = Quaternion.FromToRotation(currentDir, targetDir);
-        Quaternion targetRotation = deltaRotation * columnTransform.rotation;
-
-        columnTransform.rotation = targetRotation;
-
-        //Sonido de alineamiento con algún tipo de eco (puede ser tipo bloqueo)
+        Quaternion deltaRot = Quaternion.FromToRotation(currentDir, targetDir);
+        columnTransform.rotation = deltaRot * columnTransform.rotation;
     }
 
     private void OnDrawGizmos()
     {
         foreach (var pair in interiorPieceSelected)
         {
-            var piece = pair.Key;
-            if (piece.forward != null && piece.lookAtTarget != null && piece.columnTransform != null)
-            {
-                Gizmos.color = Color.green;
-                Gizmos.DrawLine(piece.columnTransform.position, piece.forward.position);
+            var p = pair.Key;
 
-                Gizmos.color = Color.red;
-                Gizmos.DrawLine(piece.columnTransform.position, piece.lookAtTarget.position);
-            }
+            if (p.forward == null || p.lookAtTarget == null || p.columnTransform == null)
+                continue;
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawLine(p.columnTransform.position, p.forward.position);
+
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(p.columnTransform.position, p.lookAtTarget.position);
         }
     }
 
@@ -296,5 +320,8 @@ public class ColumnInteractManager : MonoBehaviour
             currentlySelected.DeselectPiece();
             currentlySelected = null;
         }
+
+        rotatingPiece = null;
+        currentAlpha = 0f;
     }
 }
