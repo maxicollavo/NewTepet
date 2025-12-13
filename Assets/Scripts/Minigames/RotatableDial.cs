@@ -21,9 +21,11 @@ public class RotatableDial : MonoBehaviour, IPointerDownHandler, IDragHandler, I
     {
         if (!canRotateDial)
         {
+            Debug.Log("canRotate en false");
             return;
         }
 
+        Debug.Log("Entra a pointer down");
         eventCamera = eventData.pressEventCamera;
         startAngle = GetMouseAngle(eventData);
         currentlySelectedDial = this;

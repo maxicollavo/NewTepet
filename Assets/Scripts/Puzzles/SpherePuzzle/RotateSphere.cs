@@ -9,7 +9,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private Outline outline;
     private bool canUse = true;
     [HideInInspector] public bool hasWon;
-    bool isBeingHeld = true;
+    bool isBeingHeld;
     [SerializeField] ParticleSystem particle;
     [SerializeField] private float emissionIntensity;
     Material fillMat;

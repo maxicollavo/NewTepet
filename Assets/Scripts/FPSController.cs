@@ -109,6 +109,8 @@ public class FPSController : MonoBehaviour
         cameraHolder.localPosition = originalCameraLocalPosition;
 
         footstepClip = Resources.Load<AudioClip>("Sounds/" + footstepClipName);
+
+        this.enabled = false;
     }
 
     private void Update()
@@ -289,5 +291,10 @@ public class FPSController : MonoBehaviour
     public void ChangeVolume(float VolumeValue)
     {
         AudioListener.volume = VolumeValue;
+    }
+
+    public void StartGame()
+    {
+        this.enabled = true;
     }
 }
