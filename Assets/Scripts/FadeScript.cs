@@ -13,22 +13,14 @@ public class FadeScript : MonoBehaviour
     private Coroutine currentRoutine;
     private List<Graphic> graphics = new List<Graphic>();
 
-    private void Start()
+    public void StartFadeTutorial()
     {
         ShowUI();
     }
+
     private void Awake()
     {
-        // Guarda todos los elementos gráficos (Image, Text, TMP_Text, etc.)
         graphics.AddRange(canvasObject.GetComponentsInChildren<Graphic>(true));
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            ShowUI();
-        }
     }
 
     public void ShowUI()
