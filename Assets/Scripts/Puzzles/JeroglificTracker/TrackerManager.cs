@@ -10,8 +10,6 @@ public class TrackerManager : MonoBehaviour
     [HideInInspector] public List<Tracker> trackerList = new List<Tracker>();
     public Action<TrackerManager> HieroglyphCompletedAction;
     public FollowMouseClick trail;
-    [SerializeField] HieroglyficArmHandler armHandler;
-    [SerializeField] Transform rightArm;
     [SerializeField] GameObject interactor;
     BoxCollider interactorCollider;
     PuzzleInteractor puzzleInteractor;
@@ -24,9 +22,6 @@ public class TrackerManager : MonoBehaviour
     [SerializeField] GameObject CM_PuzzleCamera;
     [SerializeField] HieroglyficManager hieroglyficManager;
     [SerializeField] LevelThreeHieroglyficsOnWin levelThreeOnWin;
-    [SerializeField] Transform leftArmTransform;
-    // Diccionario para guardar las rotaciones originales de las manos originales
-    private Dictionary<Transform, Quaternion> originalRotations = new Dictionary<Transform, Quaternion>();
 
     private void Awake()
     {
@@ -38,10 +33,6 @@ public class TrackerManager : MonoBehaviour
     {
         puzzleInteractor.PuzzleAction += OnPuzzleMethod;
 
-        // Guardamos la rotación original de cada brazo
-        if (leftArmTransform != null)
-            originalRotations[leftArmTransform] = leftArmTransform.localRotation;
-
         if (hieroglyficManager == null) return;
         hieroglyficManager.OnWinAction += OnWinMethod;
     }
@@ -49,7 +40,6 @@ public class TrackerManager : MonoBehaviour
     private void OnWinMethod(HieroglyficManager manager)
     {
         if (!interactorCollider.enabled) return;
-        Debug.Log($"Llama al action y desactiva el collider del objeto {this.gameObject}");
         interactorCollider.enabled = false;
     }
 
@@ -73,7 +63,6 @@ public class TrackerManager : MonoBehaviour
         if (HasWon) return;
 
         OnPuzzle = true;
-        StartCoroutine(RotateArmToX(leftArmTransform, 90f, 0.5f));
         TurnPuzzleCamera(true);
         interactor.DisableOutline();
         interactorCollider.enabled = false;
@@ -85,7 +74,7 @@ public class TrackerManager : MonoBehaviour
         canGoBack = false;
         canInteract = false;
         yield return new WaitForSeconds(1.3f);
-        //armHandler.EnableArm(rightArm);
+        HandsManager.Instance.SetPose(HandPose.Hieroglyfic, ArmTarget.Left);
         yield return new WaitForSeconds(.5f);
         canGoBack = true;
         canInteract = true;
@@ -97,7 +86,6 @@ public class TrackerManager : MonoBehaviour
         if (HasWon) return;
 
         OnPuzzle = false;
-        //armHandler.DisableArm(rightArm);
         trail.gameObject.SetActive(false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
         StartCoroutine(ExitPuzzleCoroutine(onWin));
@@ -109,49 +97,13 @@ public class TrackerManager : MonoBehaviour
         TurnPuzzleCamera(false);
         canGoBack = false;
         yield return new WaitForSeconds(1f);
-        Quaternion original = originalRotations[leftArmTransform];
-        StartCoroutine(RotateToRotation(leftArmTransform, original, 0.5f));
+        HandsManager.Instance.SetPose(HandPose.Gameplay, ArmTarget.Left);
         yield return new WaitForSeconds(.5f);
         canGoBack = true;
 
         if (!hasWon)
             interactorCollider.enabled = true;
     }
-
-    private IEnumerator RotateArmToX(Transform arm, float targetX, float duration)
-    {
-        Quaternion startRotation = arm.localRotation;
-
-        Vector3 currentEuler = arm.localEulerAngles;
-        Vector3 targetEuler = new Vector3(targetX, currentEuler.y, currentEuler.z);
-        Quaternion targetRotation = Quaternion.Euler(targetEuler);
-
-        float time = 0f;
-        while (time < duration)
-        {
-            arm.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        arm.localRotation = targetRotation;
-    }
-
-    private IEnumerator RotateToRotation(Transform arm, Quaternion targetRotation, float duration)
-    {
-        Quaternion startRotation = arm.localRotation;
-        float time = 0f;
-
-        while (time < duration)
-        {
-            arm.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
-            time += Time.deltaTime;
-            yield return null;
-        }
-
-        arm.localRotation = targetRotation;
-    }
-
     // Chequea si se ganó el jeroglífico
     public void OnWinMethod()
     {
