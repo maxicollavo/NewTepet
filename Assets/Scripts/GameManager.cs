@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
     private bool requiresHand;
     [SerializeField] GameObject playerObj;
     [SerializeField] Transform playerSpawner;
+    [SerializeField] float cameraTransitionTime;
+    public float CameraTransitionTime => cameraTransitionTime;
 
     [HideInInspector] public int roomCounter;
 

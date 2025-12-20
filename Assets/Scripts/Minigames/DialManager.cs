@@ -72,33 +72,67 @@ public class DialManager : MonoBehaviour
     #endregion
 
     #region Enter and Exit
+    private Coroutine _executeRoutine;
+    private bool _isTransitioning;
     private void EnterDialMethod()
     {
         if (hasWon) return;
-        TurnDialCamera(true);
-        RotatableDialState(true);
-        GameplayStates(true);
-        TurnUI(true);
-
-        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
-    }
-
-    private void TurnUI(bool state)
-    {
-        foreach(var e in _dialElements)
-        {
-            e.SetActive(state);
-        }
+        Execute(true, GameEventTypes.OnPuzzle);
     }
 
     private void ExitDialMethod()
     {
-        TurnDialCamera(false);
-        RotatableDialState(false);
-        GameplayStates(false);
-        TurnUI(false);
+        Execute(false, GameEventTypes.OnGameplay);
+    }
 
-        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+    private void Execute(bool state, GameEventTypes eventType)
+    {
+        if (state == _onPuzzle) return;
+
+        if (_isTransitioning) return;
+
+        _executeRoutine = StartCoroutine(ExecuteCoroutine(state, eventType));
+    }
+
+    private IEnumerator ExecuteCoroutine(bool state, GameEventTypes eventType)
+    {
+        _isTransitioning = true;
+
+        if (state)
+        {
+            NewEventManager.TriggerFreeze(true);
+            HandsManager.Instance.SetPose(HandPose.Puzzle, ArmTarget.Both);
+
+            GameplayStates(true);
+
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        TurnDialCamera(state);
+        RotatableDialState(state);
+        TurnUI(state);
+
+        if (!state)
+        {
+            yield return new WaitForSeconds(GameManager.Instance.CameraTransitionTime);
+            HandsManager.Instance.SetPose(HandPose.Gameplay, ArmTarget.Both);
+            NewEventManager.TriggerFreeze(false);
+
+            GameplayStates(false);
+        }
+
+        EventManager.Instance.Dispatch(eventType, this, EventArgs.Empty);
+
+        _isTransitioning = false;
+        _executeRoutine = null;
+    }
+
+    private void TurnUI(bool state)
+    {
+        foreach (var e in _dialElements)
+        {
+            e.SetActive(state);
+        }
     }
     #endregion
 
@@ -107,11 +141,15 @@ public class DialManager : MonoBehaviour
     [SerializeField] AudioSource _doorSound;
     private void OnWinMethod()
     {
+        Reward();
+    }
+
+    private void Reward()
+    {
         ExitDialMethod();
-        //Reward();
         hasWon = true;
         _doorAnim.SetTrigger("Open");
-        //_doorSound.Play();
+        _doorSound.Play();
     }
     #endregion
 }

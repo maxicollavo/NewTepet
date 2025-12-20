@@ -68,23 +68,22 @@ public class FPSController : MonoBehaviour
 
     private void OnEnable()
     {
-        NewEventManager.OnRead += PlayerOnRead;
+        NewEventManager.OnFreezePlayer += PlayerOnFreeze;
+        NewEventManager.OnUnfreezePlayer += PlayerOnUnfreeze;
     }
 
     private void OnDisable()
     {
-        NewEventManager.OnRead -= PlayerOnRead;
+        NewEventManager.OnFreezePlayer -= PlayerOnFreeze;
+        NewEventManager.OnUnfreezePlayer -= PlayerOnUnfreeze;
     }
 
-    private void PlayerOnRead()
-    {
-        StartCoroutine(OnReadCoroutine());
-    }
-
-    private IEnumerator OnReadCoroutine()
+    private void PlayerOnFreeze()
     {
         this.enabled = false;
-        yield return new WaitForSeconds(onReadingTime);
+    }
+    private void PlayerOnUnfreeze()
+    {
         this.enabled = true;
     }
 
@@ -149,25 +148,14 @@ public class FPSController : MonoBehaviour
     {
         if (handTransform == null || cameraHolder == null) return;
 
-        // Obtenemos la rotación de la cámara
         Quaternion targetRotation = cameraHolder.rotation;
-
-        // Extraemos yaw (rotación en Y) del cuerpo y de la cámara
         float bodyYaw = transform.eulerAngles.y;
         float targetYaw = targetRotation.eulerAngles.y;
-
-        // Calculamos la diferencia de yaw y la limitamos
         float yawDifference = Mathf.DeltaAngle(bodyYaw, targetYaw);
         yawDifference = Mathf.Clamp(yawDifference, -handMaxYawAngle, handMaxYawAngle);
-
-        // Obtenemos el pitch (rotación en X) y corregimos si pasa de 180°
         float targetPitch = cameraHolder.localEulerAngles.x;
         if (targetPitch > 180f) targetPitch -= 360f;
-
-        // Creamos una rotación limitada con pitch y yaw
         Quaternion limitedTargetRotation = Quaternion.Euler(targetPitch, bodyYaw + yawDifference, 0f);
-
-        // Interpolamos suavemente para dar la sensación de "lag"
         handTransform.rotation = Quaternion.Slerp(handTransform.rotation, limitedTargetRotation, Time.deltaTime * handRotationLagSpeed);
     }
 

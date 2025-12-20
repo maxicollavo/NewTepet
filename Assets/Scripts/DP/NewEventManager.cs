@@ -4,18 +4,22 @@ using UnityEngine;
 public class NewEventManager : MonoBehaviour
 {
     public static event Action<bool> OnPaused;
-    public static event Action OnRead;
+    public static event Action OnFreezePlayer;
+    public static event Action OnUnfreezePlayer;
     public static event Action OnChangeRoom;
 
     public static void TriggerPause(bool state)
     {
-        Debug.Log("TriggerPause called: " + state);
         OnPaused?.Invoke(state);
     }
 
-    public static void TriggerRead()
+    public static void TriggerFreeze(bool state)
     {
-        OnRead?.Invoke();
+        if (state)
+            OnFreezePlayer?.Invoke();
+        else
+            OnUnfreezePlayer?.Invoke();
+
     }
 
     public static void TriggerChangeRoom()

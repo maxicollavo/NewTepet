@@ -40,7 +40,7 @@ public class Jeroglific : MonoBehaviour, IRead
         outline.enabled = false;
         StartCoroutine(SetSubtitle());
         UIManager.Instance.ChangeCursor(false);
-        NewEventManager.TriggerRead();
+        NewEventManager.TriggerFreeze(true);
     }
 
     IEnumerator SetSubtitle()
@@ -51,6 +51,7 @@ public class Jeroglific : MonoBehaviour, IRead
 
         yield return new WaitForSeconds(onScreenTime);
 
+        NewEventManager.TriggerFreeze(false);
         panel.SetActive(false);
         coll.enabled = true;
     }
