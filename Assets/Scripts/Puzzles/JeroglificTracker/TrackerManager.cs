@@ -166,7 +166,6 @@ public class TrackerManager : MonoBehaviour
             HieroglyphCompletedAction?.Invoke(this);
 
             Executor(false, null, true);
-            puzzleInteractor.outline.enabled = false;
 
             HasWon = true;
 
