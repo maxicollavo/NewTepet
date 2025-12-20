@@ -3,25 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class TrackerManager : MonoBehaviour
 {
     [HideInInspector] public List<Tracker> trackerList = new List<Tracker>();
     public Action<TrackerManager> HieroglyphCompletedAction;
+
+    [Header("Trail")]
     public FollowMouseClick trail;
-    [SerializeField] GameObject interactor;
-    BoxCollider interactorCollider;
-    PuzzleInteractor puzzleInteractor;
+
+    [Header("Interactor")]
+    [SerializeField] private GameObject interactor;
+    private BoxCollider interactorCollider;
+    private PuzzleInteractor puzzleInteractor;
+
+    [Header("State")]
     public bool OnPuzzle { get; private set; }
-    public bool HasWon;
-    bool canGoBack;
-    public bool canInteract;
-    public bool subFloor;
+    public bool HasWon { get; private set; }
+    private bool isTransitioning;
+
+    [Header("Flags")]
     public bool isTarget;
-    [SerializeField] GameObject CM_PuzzleCamera;
-    [SerializeField] HieroglyficManager hieroglyficManager;
-    [SerializeField] LevelThreeHieroglyficsOnWin levelThreeOnWin;
+    public bool subFloor;
+
+    [Header("Camera")]
+    [SerializeField] private GameObject CM_PuzzleCamera;
+
+    [Header("Managers")]
+    [SerializeField] private HieroglyficManager hieroglyficManager;
+    [SerializeField] private LevelThreeHieroglyficsOnWin levelThreeOnWin;
 
     private void Awake()
     {
@@ -33,102 +43,141 @@ public class TrackerManager : MonoBehaviour
     {
         puzzleInteractor.PuzzleAction += OnPuzzleMethod;
 
-        if (hieroglyficManager == null) return;
-        hieroglyficManager.OnWinAction += OnWinMethod;
+        if (hieroglyficManager != null)
+            hieroglyficManager.OnWinAction += OnWinMethod;
+
+        if (trail != null)
+            trail.gameObject.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        if (puzzleInteractor != null)
+            puzzleInteractor.PuzzleAction -= OnPuzzleMethod;
+
+        if (hieroglyficManager != null)
+            hieroglyficManager.OnWinAction -= OnWinMethod;
     }
 
     private void OnWinMethod(HieroglyficManager manager)
     {
+        if (interactorCollider == null) return;
         if (!interactorCollider.enabled) return;
+
         interactorCollider.enabled = false;
     }
 
     private void Update()
     {
-        if (!canGoBack) return;
+        if (!OnPuzzle || isTransitioning) return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1) && OnPuzzle)
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            BackToGameplay(false);
+            Executor(false, null, false);
         }
     }
 
     public void TurnPuzzleCamera(bool state)
     {
-        CM_PuzzleCamera.SetActive(state);
+        if (CM_PuzzleCamera != null)
+            CM_PuzzleCamera.SetActive(state);
     }
 
-    private void OnPuzzleMethod(PuzzleInteractor interactor)
+    private void Executor(bool enterPuzzle, PuzzleInteractor interactorArg, bool onWin)
     {
-        if (HasWon) return;
+        if (isTransitioning) return;
 
-        OnPuzzle = true;
-        TurnPuzzleCamera(true);
-        interactor.DisableOutline();
-        interactorCollider.enabled = false;
-        StartCoroutine(EnterPuzzleCoroutine());
-    }
+        if (HasWon && enterPuzzle) return;
 
-    public IEnumerator EnterPuzzleCoroutine()
-    {
-        canGoBack = false;
-        canInteract = false;
-        yield return new WaitForSeconds(1.3f);
-        HandsManager.Instance.SetPose(HandPose.Hieroglyfic, ArmTarget.Left);
-        yield return new WaitForSeconds(.5f);
-        canGoBack = true;
-        canInteract = true;
-        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
-    }
-
-    public void BackToGameplay(bool onWin)
-    {
-        if (HasWon) return;
-
-        OnPuzzle = false;
-        trail.gameObject.SetActive(false);
-        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
-        StartCoroutine(ExitPuzzleCoroutine(onWin));
-    }
-
-    public IEnumerator ExitPuzzleCoroutine(bool hasWon)
-    {
-        yield return new WaitForSeconds(0.3f);
-        TurnPuzzleCamera(false);
-        canGoBack = false;
-        yield return new WaitForSeconds(1f);
-        HandsManager.Instance.SetPose(HandPose.Gameplay, ArmTarget.Left);
-        yield return new WaitForSeconds(.5f);
-        canGoBack = true;
-
-        if (!hasWon)
-            interactorCollider.enabled = true;
-    }
-    // Chequea si se ganó el jeroglífico
-    public void OnWinMethod()
-    {
-        if (trackerList.All(t => t.HasWon))
+        if (enterPuzzle)
         {
-            HieroglyphCompletedAction?.Invoke(this);
-            WinPuzzle();
-            interactorCollider.enabled = false; // Desactiva el collider
-            Debug.Log($"Se desactivo el collider del objeto {this.gameObject}");
-            if (levelThreeOnWin != null)
-                levelThreeOnWin.CheckToUpdateCounter();
+            if (interactorArg != null)
+                interactorArg.DisableOutline();
 
-            if (subFloor && isTarget)
-            {
-                if (hieroglyficManager != null)
-                    hieroglyficManager.CheckToUpdateCounter();
-            }
+            if (interactorCollider != null)
+                interactorCollider.enabled = false;
+
+            StartCoroutine(EnterPuzzleCoroutine());
+        }
+        else
+        {
+            StartCoroutine(ExitPuzzleCoroutine(onWin));
         }
     }
 
-    private void WinPuzzle()
+    private IEnumerator EnterPuzzleCoroutine()
     {
-        trail.gameObject.SetActive(false); //Apagamos el rayo
+        isTransitioning = true;
+        OnPuzzle = true;
+
+        HandsManager.Instance.SetPose(HandPose.Puzzle, ArmTarget.Left);
+        NewEventManager.TriggerFreeze(true);
+
+        yield return new WaitForSeconds(.5f);
+
+        TurnPuzzleCamera(true);
+
+        yield return new WaitForSeconds(GameManager.Instance.CameraTransitionTime);
+
+        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
+        if (trail != null)
+            trail.gameObject.SetActive(true);
+
+        isTransitioning = false;
+    }
+
+    private IEnumerator ExitPuzzleCoroutine(bool hasWon)
+    {
+        isTransitioning = true;
+
+        if (trail != null)
+            trail.gameObject.SetActive(false);
+
         TurnPuzzleCamera(false);
-        BackToGameplay(true); //Volvemos a la camara de gameplay
-        HasWon = true;
+
+        OnPuzzle = false;
+
+        yield return new WaitForSeconds(GameManager.Instance.CameraTransitionTime);
+
+        HandsManager.Instance.SetPose(HandPose.Gameplay, ArmTarget.Left);
+        NewEventManager.TriggerFreeze(false);
+
+        yield return new WaitForSeconds(.5f);
+
+        if (!hasWon && interactorCollider != null)
+            interactorCollider.enabled = true;
+
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+
+        isTransitioning = false;
+    }
+
+    private void OnPuzzleMethod(PuzzleInteractor interactorArg)
+    {
+        Executor(true, interactorArg, false);
+    }
+
+    public void OnWinMethod()
+    {
+        if (HasWon) return;
+
+        if (trackerList.All(t => t.HasWon))
+        {
+            HieroglyphCompletedAction?.Invoke(this);
+
+            Executor(false, null, true);
+            puzzleInteractor.outline.enabled = false;
+
+            HasWon = true;
+
+            if (interactorCollider != null)
+                interactorCollider.enabled = false;
+
+            if (levelThreeOnWin != null)
+                levelThreeOnWin.CheckToUpdateCounter();
+
+            if (subFloor && isTarget && hieroglyficManager != null)
+                hieroglyficManager.CheckToUpdateCounter();
+        }
     }
 }

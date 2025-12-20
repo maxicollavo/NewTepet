@@ -14,7 +14,7 @@ public class FPSController : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private bool invertYAxis = false;
     [SerializeField] private Transform cameraHolder;
-
+    private bool freeze;
 
     [Header("Look Settings")]
     public float mouseSensitivity = 2f;
@@ -66,13 +66,16 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float handBobAmount = 0.03f;
     [SerializeField] private float handBobSpeed = 14f;
 
-    private void OnEnable()
+    private void Awake()
     {
+        characterController = GetComponent<CharacterController>();
+        defaultYPos = playerCam.transform.localPosition.y;
+
         NewEventManager.OnFreezePlayer += PlayerOnFreeze;
         NewEventManager.OnUnfreezePlayer += PlayerOnUnfreeze;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         NewEventManager.OnFreezePlayer -= PlayerOnFreeze;
         NewEventManager.OnUnfreezePlayer -= PlayerOnUnfreeze;
@@ -80,19 +83,12 @@ public class FPSController : MonoBehaviour
 
     private void PlayerOnFreeze()
     {
-        this.enabled = false;
+        freeze = true;
     }
     private void PlayerOnUnfreeze()
     {
-        this.enabled = true;
+        freeze = false;
     }
-
-    private void Awake()
-    {
-        characterController = GetComponent<CharacterController>();
-        defaultYPos = playerCam.transform.localPosition.y;
-    }
-
     private void Start()
     {
         inputHandler = PlayerInputHandler.Instance;
@@ -114,6 +110,8 @@ public class FPSController : MonoBehaviour
 
     private void Update()
     {
+        if (freeze) return;
+
         HandleMovement();
         RotationInputs();
         HandleHandLag();

@@ -38,11 +38,11 @@ public class MimicInteraction : MonoBehaviour, Interactor
         coll.enabled = false;
         TurnCamera(true);
         EventManager.Instance.Dispatch(GameEventTypes.OnCinematic, this, EventArgs.Empty);
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(GameManager.Instance.CameraTransitionTime);
         anim.SetTrigger("OnInteract");
         yield return new WaitForSeconds(7f);
         TurnCamera(false);
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(GameManager.Instance.CameraTransitionTime);
         coll.enabled = true;
     }
 

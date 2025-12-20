@@ -51,10 +51,6 @@ public class HandsManager : MonoBehaviour
     {
         switch (pose)
         {
-            case HandPose.Hieroglyfic:
-                RotateToX(target, 90f, timer);
-                break;
-
             case HandPose.Puzzle:
                 RotateToX(target, 90f, timer);
                 break;
@@ -154,7 +150,6 @@ public class HandsManager : MonoBehaviour
 public enum HandPose
 {
     None,
-    Hieroglyfic,
     Puzzle,
     Gameplay
 }

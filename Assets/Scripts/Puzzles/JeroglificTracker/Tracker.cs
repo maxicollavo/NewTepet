@@ -117,7 +117,7 @@ public class Tracker : MonoBehaviour
     }
     void Update()
     {
-        if (HasWon || !CanStart || !manager.canInteract || isOnPause) return;
+        if (HasWon || !CanStart || !manager.OnPuzzle || isOnPause) return;
 
         bool currentState = manager.OnPuzzle;
 
