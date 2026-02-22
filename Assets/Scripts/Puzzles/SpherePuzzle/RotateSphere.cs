@@ -9,7 +9,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private Outline outline;
     private bool canUse = true;
     [HideInInspector] public bool hasWon;
-    bool isBeingHeld;
+    [HideInInspector] public bool isBeingHeld;
     [SerializeField] ParticleSystem particle;
     [SerializeField] private float emissionIntensity;
     Material fillMat;
@@ -131,6 +131,7 @@ public class RotateSphere : MonoBehaviour, Interactor
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
 
         isBeingHeld = true;
+        Debug.Log(isBeingHeld);
     }
 
     private void Release()

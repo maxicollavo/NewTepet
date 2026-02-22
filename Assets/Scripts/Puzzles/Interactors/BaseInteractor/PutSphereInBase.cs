@@ -54,6 +54,8 @@ public class PutSphereInBase : MonoBehaviour, Interactor
         }
     }
 
+    [SerializeField] RotateSphere sphere;
+
     public IEnumerator EnterPuzzleCoroutine()
     {
         PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
@@ -63,6 +65,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
         yield return new WaitForSeconds(1.5f);
         definer.requiresHand = false;
         sphereTravelToBase.Play();
+        sphere.isBeingHeld = true;
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
