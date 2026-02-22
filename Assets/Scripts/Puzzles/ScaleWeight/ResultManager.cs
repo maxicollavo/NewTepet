@@ -9,6 +9,8 @@ public class ResultManager : MonoBehaviour
     [SerializeField] WeightManager weightManager;
     [SerializeField] Animator[] doorAnims;
     [SerializeField] AudioSource[] doorSounds3D;
+    [SerializeField] BoxCollider[] platesColl;
+    [SerializeField] MeshCollider[] garbageColl;
     [SerializeField] VisualEffect visualEffect;
     bool[] doorsDone;
     int counter;
@@ -62,13 +64,23 @@ public class ResultManager : MonoBehaviour
         doorAnims[doorIndex].SetTrigger("Open");
         doorSounds3D[doorIndex].Play();
         doorsDone[doorIndex] = true;
-            Debug.Log("se abre la ultima puerta");
+        Debug.Log("se abre la ultima puerta");
 
         if (doorIndex == 4)
         {
             visualEffect.Stop();
             //visualEffect.SetFloat("alpha", 0f);
             ObjectCreator.Instance.canPick = false;
+
+            foreach (var plate in platesColl)
+            {
+                plate.enabled = false;
+            }
+
+            foreach (var garb in garbageColl)
+            {
+                garb.enabled = false;
+            }
         }
     }
 }

@@ -46,6 +46,7 @@ public class DialManager : MonoBehaviour
     private bool _onPuzzle;
     private bool _canGoBack;
     private bool hasWon;
+    [SerializeField] private BoxCollider _buttonBoxCollider;
 
     private void RotatableDialState(bool state)
     {
@@ -150,6 +151,7 @@ public class DialManager : MonoBehaviour
         hasWon = true;
         _doorAnim.SetTrigger("Open");
         _doorSound.Play();
+        _buttonBoxCollider.enabled = false;
     }
     #endregion
 }

@@ -13,6 +13,8 @@ public class ObjectCreator : MonoBehaviour
 
     [SerializeField] private WeightData weightData;
 
+    [SerializeField] private List<BoxCollider> platesColl;
+
     public static ObjectCreator Instance;
 
     bool shouldOpenDoor;

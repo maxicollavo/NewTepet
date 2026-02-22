@@ -110,8 +110,6 @@ public class FPSController : MonoBehaviour
 
     private void Update()
     {
-        if (freeze) return;
-
         HandleMovement();
         RotationInputs();
         HandleHandLag();
@@ -123,6 +121,8 @@ public class FPSController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (freeze) return;
+
         HandleRotation();
     }
 
