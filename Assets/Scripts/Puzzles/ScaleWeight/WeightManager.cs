@@ -38,9 +38,9 @@ public class WeightManager : MonoBehaviour
         OnResultAction?.Invoke(result, canOpenDoor);
     }
 
-    public void UpdateWeight(bool isLeftWeigt, float weight, bool canOpenDoor)
+    public void UpdateWeight(bool isLeftWeigth, float weight, bool canOpenDoor)
     {
-        if (isLeftWeigt)
+        if (isLeftWeigth)
             leftWeight = weight;
         else
             rightWeight = weight;

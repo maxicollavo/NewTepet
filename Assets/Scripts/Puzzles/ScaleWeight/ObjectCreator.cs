@@ -48,41 +48,48 @@ public class ObjectCreator : MonoBehaviour
         }
 
         GameObject obj = Instantiate(prefab, position, Quaternion.identity);
+        Debug.Log($"Se instanció el siguiente objeto: {obj}");
         Rigidbody rb = obj.GetComponent<Rigidbody>();
 
         if (sidePlate == Plate.Left)
             leftPlateObjects.Add(obj);
         else if (sidePlate == Plate.Right)
             rightPlateObjects.Add(obj);
+        Debug.Log($"El objeto instanciado lo hizo en el plato {sidePlate}");
 
         if (obj.TryGetComponent(out ObjectType objectType))
         {
             objectType.type = type;
+            Debug.Log($"Se le asignó como tipo de objeto el siguiente: {type}");
+
             objectType.weight = weightData.GetWeight(type);
+            Debug.Log($"Se le asignó como peso de objeto el siguiente: {weightData.GetWeight(type)}");
 
             Plate otherPlate = sidePlate == Plate.Left ? Plate.Right : Plate.Left;
+            Debug.Log($"El otro plato es el siguiente: {otherPlate}");
             float otherWeight = otherPlate == Plate.Left ? WeightManager.Instance.leftWeight : WeightManager.Instance.rightWeight;
+            Debug.Log($"El peso del otro plato es el siguiente: {otherWeight}");
 
             List<GameObject> otherPlateObjects = otherPlate == Plate.Left ? leftPlateObjects : rightPlateObjects;
+            Debug.Log($"Los objetos que están en el otro plato son los siguientes {otherPlateObjects}");
             List<GameObject> myPlateObjects = sidePlate == Plate.Left ? leftPlateObjects : rightPlateObjects;
+            Debug.Log($"Los objetos que están en este plato son los siguientes {myPlateObjects}");
 
             if (type == ObjectsToPick.Heart &&
-                Mathf.Approximately(otherWeight, 1f) &&
                 otherPlateObjects.Count == 1 && myPlateObjects.Count == 1 &&
                 otherPlateObjects[0].GetComponent<ObjectType>().type == ObjectsToPick.Feather)
             {
-                Debug.Log("Corazón compensado: pasa de 51 a 1");
                 objectType.weight = 1f;
                 shouldOpenDoor = true;
+                Debug.Log($"{objectType.type} compensado: pasa de 51 a 1, ");
             }
             else if (type == ObjectsToPick.Feather &&
-                     Mathf.Approximately(otherWeight, 51f) &&
                      otherPlateObjects.Count == 1 && myPlateObjects.Count == 1 &&
                      otherPlateObjects[0].GetComponent<ObjectType>().type == ObjectsToPick.Heart)
             {
-                Debug.Log("Pluma compensada: pasa de 1 a 51");
                 objectType.weight = 51f;
                 shouldOpenDoor = true;
+                Debug.Log($"{objectType.type} compensado: pasa de 1 a 51, ");
             }
 
             StartCoroutine(ChangeMass(rb));
