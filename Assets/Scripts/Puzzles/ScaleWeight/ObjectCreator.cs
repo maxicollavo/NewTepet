@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ObjectCreator : MonoBehaviour
@@ -9,7 +10,7 @@ public class ObjectCreator : MonoBehaviour
     private List<GameObject> leftPlateObjects = new List<GameObject>();
     private List<GameObject> rightPlateObjects = new List<GameObject>();
 
-    public Action<ObjectCreator, Plate, float, bool, bool> OnCreateAction;
+    public Action<Plate, float, float, bool, bool> OnCreateAction;
 
     [SerializeField] private WeightData weightData;
 
@@ -48,32 +49,32 @@ public class ObjectCreator : MonoBehaviour
         }
 
         GameObject obj = Instantiate(prefab, position, Quaternion.identity);
-        Debug.Log($"Se instanció el siguiente objeto: {obj}");
         Rigidbody rb = obj.GetComponent<Rigidbody>();
 
-        if (sidePlate == Plate.Left)
-            leftPlateObjects.Add(obj);
-        else if (sidePlate == Plate.Right)
-            rightPlateObjects.Add(obj);
-        Debug.Log($"El objeto instanciado lo hizo en el plato {sidePlate}");
+        switch (sidePlate)
+        {
+            case Plate.Right:
+                rightPlateObjects.Add(obj);
+                break;
+            case Plate.Left:
+                leftPlateObjects.Add(obj);
+                break;
+            case Plate.None:
+                StartCoroutine(ChangeMass(rb));
+                return;
+        }
 
         if (obj.TryGetComponent(out ObjectType objectType))
         {
             objectType.type = type;
-            Debug.Log($"Se le asignó como tipo de objeto el siguiente: {type}");
 
             objectType.weight = weightData.GetWeight(type);
-            Debug.Log($"Se le asignó como peso de objeto el siguiente: {weightData.GetWeight(type)}");
 
             Plate otherPlate = sidePlate == Plate.Left ? Plate.Right : Plate.Left;
-            Debug.Log($"El otro plato es el siguiente: {otherPlate}");
             float otherWeight = otherPlate == Plate.Left ? WeightManager.Instance.leftWeight : WeightManager.Instance.rightWeight;
-            Debug.Log($"El peso del otro plato es el siguiente: {otherWeight}");
 
             List<GameObject> otherPlateObjects = otherPlate == Plate.Left ? leftPlateObjects : rightPlateObjects;
-            Debug.Log($"Los objetos que están en el otro plato son los siguientes {otherPlateObjects}");
             List<GameObject> myPlateObjects = sidePlate == Plate.Left ? leftPlateObjects : rightPlateObjects;
-            Debug.Log($"Los objetos que están en este plato son los siguientes {myPlateObjects}");
 
             if (type == ObjectsToPick.Heart &&
                 otherPlateObjects.Count == 1 && myPlateObjects.Count == 1 &&
@@ -81,7 +82,6 @@ public class ObjectCreator : MonoBehaviour
             {
                 objectType.weight = 1f;
                 shouldOpenDoor = true;
-                Debug.Log($"{objectType.type} compensado: pasa de 51 a 1, ");
             }
             else if (type == ObjectsToPick.Feather &&
                      otherPlateObjects.Count == 1 && myPlateObjects.Count == 1 &&
@@ -89,7 +89,6 @@ public class ObjectCreator : MonoBehaviour
             {
                 objectType.weight = 51f;
                 shouldOpenDoor = true;
-                Debug.Log($"{objectType.type} compensado: pasa de 1 a 51, ");
             }
 
             StartCoroutine(ChangeMass(rb));
@@ -101,8 +100,7 @@ public class ObjectCreator : MonoBehaviour
             pick.plateSide = sidePlate;
         }
 
-        Debug.Log($"Instanciado: {type} con peso final {objectType.weight} en el plato {sidePlate}");
-        OnCreateAction?.Invoke(this, sidePlate, objectType.weight, shouldOpenDoor, true);
+        UpdateScaleWeights();
     }
 
     public IEnumerator ChangeMass(Rigidbody rb)
@@ -132,14 +130,19 @@ public class ObjectCreator : MonoBehaviour
                     leftType.weight = 1;
                     rightType.weight = 1;
                     shouldOpenDoor = true;
-                    WeightManager.Instance.UpdateWeight(true, leftType.weight, shouldOpenDoor);
-                    WeightManager.Instance.UpdateWeight(false, rightType.weight, shouldOpenDoor);
                 }
             }
         }
+
+        UpdateScaleWeights();
     }
 
+    public void UpdateScaleWeights()
+    {
+        OnCreateAction?.Invoke(Plate.None, leftPlateObjects.Sum(o => o.GetComponent<ObjectType>().weight), rightPlateObjects.Sum(o => o.GetComponent<ObjectType>().weight), shouldOpenDoor, true);
+    }
 }
+
 
 [System.Serializable]
 public class ObjectPrefabPair

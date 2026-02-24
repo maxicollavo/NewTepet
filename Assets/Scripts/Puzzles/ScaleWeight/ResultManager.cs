@@ -21,11 +21,18 @@ public class ResultManager : MonoBehaviour
         doorsDone = new bool[doorAnims.Length];
     }
 
-    private void OnResultMethod(float result, bool canOpenDoor)
+    private void OnResultMethod(bool canOpenDoor, float l, float r)
     {
+        float result = Mathf.Abs(l - r);
         int rounded = Mathf.RoundToInt(result);
         switch (rounded)
         {
+            case 0:
+                if (l == 1 && r == 1)
+                {
+                    TryOpenDoor(4);
+                }
+                break;
             case 2:
                 TryOpenDoor(0);
                 break;

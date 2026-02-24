@@ -77,16 +77,17 @@ public class PickToInventory : MonoBehaviour, Interactor
         //Sonido de pickeo
         AudioManager.Instance.PlaySound("Grab");
         //Si necesita hacer una acción al pickear
+
         if (_triggersAction)
         {
             if (_light == null) return;
             _light.SetActive(false);
         }
 
-        if (isOnScale && plateSide != Plate.None)
-        {
-            WeightManager.Instance.ResultMethod(null, plateSide, type.weight, false, false);
-        }
+        //if (isOnScale && plateSide != Plate.None)
+        //{
+        //    WeightManager.Instance.ResultMethod(plateSide, type.weight, false, false);
+        //}
     }
 
     public void DisableOutline()
