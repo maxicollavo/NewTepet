@@ -132,6 +132,15 @@ public class BoardPuzzleManager : MonoBehaviour
 
     public IEnumerator EnterPuzzleCoroutine()
     {
+        if (!isFirstTime)
+        {
+            RotateArmsToPuzzle();
+            NewEventManager.TriggerFreeze(true);
+            yield return new WaitForSeconds(1f);
+        }
+        else
+            NewEventManager.TriggerFreeze(true);
+
         TurnPuzzleCamera(true);
         interactor.DisableOutline();
         interactorCollider.enabled = false;
@@ -154,6 +163,15 @@ public class BoardPuzzleManager : MonoBehaviour
         {
             CanInteractWithPuzzle();
         }
+    }
+
+    public void RotateArmsToPuzzle()
+    {
+        HandsManager.Instance.SetPose(HandPose.Puzzle);
+    }
+    public void RotateArmsToGameplay()
+    {
+        HandsManager.Instance.SetPose(HandPose.Gameplay);
     }
 
     public void CanInteractWithPuzzle()
@@ -191,6 +209,8 @@ public class BoardPuzzleManager : MonoBehaviour
     {
         canGoBack = false;
         yield return new WaitForSeconds(1.5f);
+        RotateArmsToGameplay();
+        NewEventManager.TriggerFreeze(false);
         canGoBack = true;
 
         if (!HasWon)

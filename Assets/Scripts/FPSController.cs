@@ -183,6 +183,14 @@ public class FPSController : MonoBehaviour
 
     private void HandleMovement()
     {
+        if (freeze)
+        {
+            currentMovement = Vector3.zero;
+            verticalVelocity = -2f;
+            characterController.Move(Vector3.zero);
+            return;
+        }
+
         bool wantsToStand = !Keyboard.current.cKey.isPressed;
         bool ceilingAbove = IsCeilingAbove();
 
