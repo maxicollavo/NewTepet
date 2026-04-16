@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using Unity.Cinemachine;
+using UnityEditor.Animations;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
@@ -65,6 +67,7 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float handMaxYawAngle = 50f;
     [SerializeField] private float handBobAmount = 0.03f;
     [SerializeField] private float handBobSpeed = 14f;
+    [SerializeField] private Animator miAnimator;
 
     private void Awake()
     {
@@ -289,6 +292,41 @@ public class FPSController : MonoBehaviour
 
     public void StartGame()
     {
-        this.enabled = true;
+        this.enabled = true; 
+        IniciarSecuencia(); 
+    }
+
+    [Header("Secuencia Trigger")]
+    [SerializeField] private float tiempoDeEspera = 4f;
+    [SerializeField] private float tiempoApagado = 2f; // Cuánto tiempo querés que se quede quieto antes de volver a arrancar
+    private bool ejecutandoSecuencia = true;
+
+    public void IniciarSecuencia()
+    {
+        StartCoroutine(RutinaDelTrigger());
+    }
+
+    private IEnumerator RutinaDelTrigger()
+    {
+        while (ejecutandoSecuencia)
+        {
+            Debug.Log("Bool Activado (Vuela)");
+
+            if (miAnimator != null)
+            {
+                miAnimator.SetBool("isFly", true);
+            }
+
+            yield return new WaitForSeconds(tiempoDeEspera);
+
+            Debug.Log("Bool Desactivado (Deja de volar)");
+
+            if (miAnimator != null)
+            {
+                miAnimator.SetBool("isFly", false);
+            }
+
+            yield return new WaitForSeconds(tiempoApagado);
+        }
     }
 }
