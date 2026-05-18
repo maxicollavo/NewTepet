@@ -11,7 +11,6 @@ public class RingPuzzleManager : MonoBehaviour
     [HideInInspector] public bool canInteract { get; set; }
     [HideInInspector] public bool isRotating { get; private set; }
 
-    private float currentYRotation;
     [SerializeField] private float rotationDuration = 2f;
     private int currentSelectedRing = -1;
 
@@ -44,7 +43,16 @@ public class RingPuzzleManager : MonoBehaviour
 
     public void SelectRing(int index)
     {
+        if (currentSelectedRing >= 0)
+        {
+            rings[currentSelectedRing].isSelected = false;
+            rings[currentSelectedRing].DisableOutline();
+        }
+
         currentSelectedRing = index;
+
+        rings[currentSelectedRing].isSelected = true;
+        rings[currentSelectedRing].EnableOutline();
     }
 
     private void RotateSelectedRing(float amount)
@@ -53,25 +61,32 @@ public class RingPuzzleManager : MonoBehaviour
 
         if (currentSelectedRing < 0) return;
 
-        currentYRotation += amount;
-
         StartCoroutine(
             RotateRing(
-                rings[currentSelectedRing].transform.parent
+                rings[currentSelectedRing].transform.parent,
+                amount
             )
         );
     }
 
-    private IEnumerator RotateRing(Transform ringTransform)
+    private IEnumerator RotateRing(Transform ringTransform, float amount)
     {
         isRotating = true;
+        canInteract = false;
+
+        rings[currentSelectedRing].OnStartRotation();
+
+        DisableAllOutlines();
 
         Quaternion startRotation = ringTransform.localRotation;
+
+        float targetY =
+            ringTransform.localEulerAngles.y + amount;
 
         Quaternion targetRotation =
             Quaternion.Euler(
                 ringTransform.localEulerAngles.x,
-                currentYRotation,
+                targetY,
                 ringTransform.localEulerAngles.z
             );
 
@@ -92,6 +107,12 @@ public class RingPuzzleManager : MonoBehaviour
 
         ringTransform.localRotation = targetRotation;
 
+        if (currentSelectedRing >= 0)
+        {
+            rings[currentSelectedRing].EnableOutline();
+        }
+
+        canInteract = true;
         isRotating = false;
     }
 
@@ -99,6 +120,14 @@ public class RingPuzzleManager : MonoBehaviour
     {
         currentSelectedRing = -1;
 
+        foreach (Ring ring in rings)
+        {
+            ring.DisableOutline();
+        }
+    }
+
+    private void DisableAllOutlines()
+    {
         foreach (Ring ring in rings)
         {
             ring.DisableOutline();

@@ -12,6 +12,8 @@ public class RingPuzzleController : MonoBehaviour, Interactor
 
     private void Update()
     {
+        if (!onPuzzle) return;
+
         if (Input.GetMouseButtonDown(1))
         {
             StartCoroutine(ExitPuzzle());
@@ -61,6 +63,7 @@ public class RingPuzzleController : MonoBehaviour, Interactor
         RingPuzzleManager.Instance.canInteract = false;
         yield return new WaitForSeconds(1.5f);
         RingPuzzleManager.Instance.canInteract = true;
+        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
     private IEnumerator ExitPuzzle()
@@ -71,5 +74,6 @@ public class RingPuzzleController : MonoBehaviour, Interactor
         yield return new WaitForSeconds(1.5f);
         coll.enabled = true;
         onPuzzle = false;
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 }

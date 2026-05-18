@@ -38,7 +38,6 @@ public class FPSController : MonoBehaviour
     [Header("Other Settings")]
     Vector2 mouseInput;
     private bool stepPlayedThisCycle = false;
-    [SerializeField] float onReadingTime = 1.5f;
 
     [SerializeField] private CinemachineCamera playerCam;
     private CharacterController characterController;
