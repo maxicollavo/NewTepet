@@ -65,6 +65,7 @@ public class RingPuzzleController : MonoBehaviour, Interactor
 
     private IEnumerator ExitPuzzle()
     {
+        RingPuzzleManager.Instance.DeselectAll();
         puzzleCam.SetActive(false);
         RingPuzzleManager.Instance.canInteract = false;
         yield return new WaitForSeconds(1.5f);
