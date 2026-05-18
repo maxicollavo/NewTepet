@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,10 +6,17 @@ public class RingPuzzleController : MonoBehaviour, Interactor
 {
     Outline outline;
     BoxCollider coll;
+    bool onPuzzle;
 
     [SerializeField] GameObject puzzleCam;
-    bool onPuzzle;
-    bool canRotateRings;
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            StartCoroutine(ExitPuzzle());
+        }
+    }
 
     private void Start()
     {
@@ -50,14 +58,15 @@ public class RingPuzzleController : MonoBehaviour, Interactor
         coll.enabled = false;
         onPuzzle = true;
         puzzleCam.SetActive(true);
+        RingPuzzleManager.Instance.canInteract = false;
         yield return new WaitForSeconds(1.5f);
-        canRotateRings = true;
+        RingPuzzleManager.Instance.canInteract = true;
     }
 
     private IEnumerator ExitPuzzle()
     {
-        canRotateRings = false;
         puzzleCam.SetActive(false);
+        RingPuzzleManager.Instance.canInteract = false;
         yield return new WaitForSeconds(1.5f);
         coll.enabled = true;
         onPuzzle = false;

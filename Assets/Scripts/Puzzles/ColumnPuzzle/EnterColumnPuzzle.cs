@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(Outline))]
@@ -51,7 +49,7 @@ public class EnterColumnPuzzle : MonoBehaviour, Interactor
 
     public void EnterPuzzle(bool state)
     {
-        
+
         EnterPuzzleCamera(state);
         EnableColumnColliders(state);
 
