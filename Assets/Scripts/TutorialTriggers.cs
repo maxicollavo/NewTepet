@@ -27,6 +27,6 @@ public class TutorialTriggers : MonoBehaviour, ITutorial
         door.SetTrigger("Close");
         door3DSound.Play();
         coll.enabled = false;
-        NewEventManager.TriggerChangeRoom();
+        //NewEventManager.TriggerChangeRoom();
     }
 }

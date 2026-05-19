@@ -5,12 +5,19 @@ public class Ring : MonoBehaviour
 {
     public int ringIndex;
     public bool isSelected { private get; set; }
-    Outline outline;
+
+    private Outline outline;
+
+    private Color hoverColor;
+    private Color selectedColor;
 
     private void Awake()
     {
         outline = GetComponent<Outline>();
         outline.enabled = false;
+
+        ColorUtility.TryParseHtmlString("#DD9518", out hoverColor);
+        ColorUtility.TryParseHtmlString("#FF0003", out selectedColor);
     }
 
     public void OnStartRotation()
@@ -29,7 +36,7 @@ public class Ring : MonoBehaviour
 
         if (isSelected)
         {
-            EnableOutline();
+            EnableSelectedOutline();
         }
     }
 
@@ -43,7 +50,9 @@ public class Ring : MonoBehaviour
     private void OnMouseEnter()
     {
         if (!RingPuzzleManager.Instance.canInteract || isSelected) return;
-        EnableOutline();
+
+        EnableHoverOutline();
+        UIManager.Instance.ChangeCursor(true);
     }
 
     private void OnMouseExit()
@@ -56,12 +65,23 @@ public class Ring : MonoBehaviour
     public void DisableOutline()
     {
         outline.enabled = false;
-
         UIManager.Instance.ChangeCursor(false);
     }
 
-    public void EnableOutline()
+    public void EnableHoverOutline()
     {
+        ChangeOutlineColor(hoverColor);
         outline.enabled = true;
+    }
+
+    public void EnableSelectedOutline()
+    {
+        ChangeOutlineColor(selectedColor);
+        outline.enabled = true;
+    }
+
+    private void ChangeOutlineColor(Color color)
+    {
+        outline.OutlineColor = color;
     }
 }

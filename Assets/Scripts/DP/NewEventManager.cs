@@ -6,7 +6,8 @@ public class NewEventManager : MonoBehaviour
     public static event Action<bool> OnPaused;
     public static event Action OnFreezePlayer;
     public static event Action OnUnfreezePlayer;
-    public static event Action OnChangeRoom;
+
+    public static event Action<Vector3, Quaternion> OnChangeRoom;
 
     public static void TriggerPause(bool state)
     {
@@ -19,11 +20,10 @@ public class NewEventManager : MonoBehaviour
             OnFreezePlayer?.Invoke();
         else
             OnUnfreezePlayer?.Invoke();
-
     }
 
-    public static void TriggerChangeRoom()
+    public static void TriggerChangeRoom(Vector3 position, Quaternion rotation)
     {
-        OnChangeRoom?.Invoke();
+        OnChangeRoom?.Invoke(position, rotation);
     }
 }

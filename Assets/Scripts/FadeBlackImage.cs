@@ -20,10 +20,24 @@ public class FadeBlackImage : MonoBehaviour
         StartCoroutine(FadeInCoroutine(duration));
     }
 
+    public void StartFadeFromBlack(float duration)
+    {
+        _sceneFadeImage.color = new Color(0f, 0f, 0f, 1f);
+        StartCoroutine(FadeOutCoroutine(duration));
+    }
+
     private IEnumerator FadeInCoroutine(float duration)
     {
         Color startColor = new Color(0f, 0f, 0f, 0f);
         Color targetColor = new Color(0f, 0f, 0f, 1f);
+
+        yield return FadeCoroutine(startColor, targetColor, duration);
+    }
+
+    private IEnumerator FadeOutCoroutine(float duration)
+    {
+        Color startColor = new Color(0f, 0f, 0f, 1f);
+        Color targetColor = new Color(0f, 0f, 0f, 0f);
 
         yield return FadeCoroutine(startColor, targetColor, duration);
     }

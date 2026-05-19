@@ -52,7 +52,7 @@ public class RingPuzzleManager : MonoBehaviour
         currentSelectedRing = index;
 
         rings[currentSelectedRing].isSelected = true;
-        rings[currentSelectedRing].EnableOutline();
+        rings[currentSelectedRing].EnableSelectedOutline();
     }
 
     private void RotateSelectedRing(float amount)
@@ -109,7 +109,7 @@ public class RingPuzzleManager : MonoBehaviour
 
         if (currentSelectedRing >= 0)
         {
-            rings[currentSelectedRing].EnableOutline();
+            rings[currentSelectedRing].EnableSelectedOutline();
         }
 
         canInteract = true;

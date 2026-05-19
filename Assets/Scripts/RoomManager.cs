@@ -13,12 +13,12 @@ public class RoomManager : MonoBehaviour
 
     private void OnEnable()
     {
-        NewEventManager.OnChangeRoom += TriggerChangeRoom;
+        //NewEventManager.OnChangeRoom += TriggerChangeRoom;
     }
 
     private void OnDisable()
     {
-        NewEventManager.OnChangeRoom -= TriggerChangeRoom;
+        //NewEventManager.OnChangeRoom -= TriggerChangeRoom;
     }
 
     private void TriggerChangeRoom()

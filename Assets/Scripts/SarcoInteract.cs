@@ -1,11 +1,9 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SarcoInteract : MonoBehaviour, Interactor
 {
     Outline outline;
-    BoxCollider coll;
 
     [SerializeField] Animator anim;
     [SerializeField] GameObject canvasBlackScreen;
@@ -15,7 +13,6 @@ public class SarcoInteract : MonoBehaviour, Interactor
     private void Awake()
     {
         outline = GetComponent<Outline>();
-        coll = GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -34,12 +31,20 @@ public class SarcoInteract : MonoBehaviour, Interactor
     {
         canInteract = false;
         DisableOutline();
+
         anim.SetTrigger("Open");
+
         canvasBlackScreen.SetActive(true);
+
         yield return new WaitForSeconds(1f);
         FadeBlackImage.Instance.StartFadeToBlack(2f);
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene("Endgame");
+        yield return new WaitForSeconds(1f);
+        FadeBlackImage.Instance.StartFadeFromBlack(2f);
+
+        Vector3 teleportPosition = new Vector3(180.9959f, -13.98034f, -78.98776f);
+        Quaternion teleportRotation = Quaternion.Euler(0f, 538.999f, 0f);
+
+        NewEventManager.TriggerChangeRoom(teleportPosition, teleportRotation);
     }
 
     public void DisableOutline()
