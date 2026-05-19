@@ -51,16 +51,22 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FresnelPower: 1
-    - _Multiply_Sine: 1
-    - _Multiply_pos: 0.005
+    - _FresnelPower: 0.5
+    - _Multiply_Sine: 0.6
+    - _Multiply_pos: 0.007
     - _NoiseScale: 1000
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _Smooth_1: 0.75
+    - _Smooth_2: 0.01
+    - _alpha: 0.44
+    - _first_SimpleNoise: 0.05
+    - _fresnelVol: 20.01
+    - _time_multi_nosise: 10
     m_Colors:
-    - _BeamColor: {r: 0.7490196, g: 0.017810425, b: 0, a: 1}
-    - _SecondColor: {r: 1, g: 0.82094, b: 0, a: 1}
+    - _BeamColor: {r: 2, g: 1.0990734, b: 0, a: 1}
+    - _SecondColor: {r: 2.608238, g: 0.043950718, b: 0, a: 1}
     - _remap_in_max: {r: 0, g: 0.1, b: 0, a: 0}
-    - _remap_out: {r: 0, g: 0.1, b: 0, a: 0}
+    - _remap_out: {r: 0.02, g: 0.2, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
