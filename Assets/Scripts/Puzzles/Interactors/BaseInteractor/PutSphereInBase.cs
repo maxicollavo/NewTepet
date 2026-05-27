@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class PutSphereInBase : MonoBehaviour, Interactor
 {
@@ -8,13 +9,11 @@ public class PutSphereInBase : MonoBehaviour, Interactor
     BoxCollider coll;
 
     [SerializeField] ObjectsToPick requiredObj;
-    [SerializeField] PlaceObject placeObject;
-    [SerializeField] HandObjectHandler handObjectHandler;
 
+    [SerializeField] PlayableDirector sphereTravelToBase;
     [SerializeField] GameObject CM_PuzzleCamera;
 
-    [SerializeField] Transform baseSlot;
-    private bool sphereInBase;
+    [SerializeField] ParabolaController parabolaController;
 
     private void Awake()
     {
@@ -60,79 +59,18 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 
     public IEnumerator EnterPuzzleCoroutine()
     {
-        if (!sphereInBase)
-        {
-            PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
-
-            yield return StartCoroutine(MoveSphereToSlot(sphere.transform, baseSlot));
-
-            DisableOutline();
-
-            yield return new WaitForSeconds(0.5f);
-
-            PlaceObject();
-
-            EnableOutline();
-        }
-        else
-        {
-            coll.enabled = false;
-
-            TurnPuzzleCamera(true);
-
-            yield return new WaitForSeconds(1.5f);
-
-            sphere.onBase = true;
-
-            EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
-        }
-    }
-
-    IEnumerator MoveSphereToSlot(Transform obj, Transform target)
-    {
-        obj.SetParent(null);
-
-        Vector3 startPos = obj.position;
-        Quaternion startRot = obj.rotation;
-
-        Vector3 endPos = target.position;
-        Quaternion endRot = target.rotation;
-
-        float distance = Vector3.Distance(startPos, endPos);
-
-        float arcHeight = Mathf.Clamp(distance * 0.3f, 0.15f, 0.5f);
-        Vector3 midPoint = (startPos + endPos) / 2 + Vector3.up * arcHeight;
-
-        float duration = Mathf.Lerp(0.2f, 0.4f, distance);
-        float time = 0f;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            float t = time / duration;
-
-            t = 1 - Mathf.Pow(1 - t, 3);
-
-            Vector3 pos =
-                Mathf.Pow(1 - t, 2) * startPos +
-                2 * (1 - t) * t * midPoint +
-                Mathf.Pow(t, 2) * endPos;
-
-            obj.position = pos;
-
-            obj.rotation = Quaternion.Slerp(startRot, endRot, t);
-
-            yield return null;
-        }
-
-        obj.position = endPos;
-        obj.rotation = endRot;
-    }
-
-    public void PlaceObject()
-    {
-        placeObject.Place();
-        handObjectHandler.Reset();
+        parabolaController.FollowParabolaTo(this.transform);
+        //PickedObjData.Instance.MarkAsThrowed(requiredObj, false); CUANDO TODO ME FUNCIONA DESCOMENTAR
+        //coll.enabled = false; CUANDO TODO ME FUNCIONA DESCOMENTAR
+        DisableOutline();
+        //Encendemos la esfera de puzzle
+        //TurnPuzzleCamera(true);
+        yield return new WaitForSeconds(1f);
+        //sphere.gameObject.SetActive(true); CUANDO TODO ME FUNCIONA DESCOMENTAR
+        //sphere.onBase = true;
+        //yield return new WaitForSeconds(1.5f);
+        //sphereTravelToBase.Play();
+        //EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
     private void TurnPuzzleCamera(bool state)
@@ -150,15 +88,10 @@ public class PutSphereInBase : MonoBehaviour, Interactor
     private IEnumerator CannotPick()
     {
         EnableOutline();
-
         var originalColor = outline.OutlineColor;
-
         outline.OutlineColor = Color.red;
-
         yield return new WaitForSeconds(0.5f);
-
         outline.OutlineColor = originalColor;
-
         DisableOutline();
     }
 }
