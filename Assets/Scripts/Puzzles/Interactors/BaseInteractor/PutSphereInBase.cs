@@ -13,6 +13,8 @@ public class PutSphereInBase : MonoBehaviour, Interactor
     [SerializeField] PlayableDirector sphereTravelToBase;
     [SerializeField] GameObject CM_PuzzleCamera;
 
+    [SerializeField] ParabolaController parabolaController;
+
     private void Awake()
     {
         outline = GetComponent<Outline>();
@@ -57,14 +59,18 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 
     public IEnumerator EnterPuzzleCoroutine()
     {
-        PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
-        coll.enabled = false;
-        TurnPuzzleCamera(true);
+        parabolaController.FollowParabolaTo(this.transform);
+        //PickedObjData.Instance.MarkAsThrowed(requiredObj, false); CUANDO TODO ME FUNCIONA DESCOMENTAR
+        //coll.enabled = false; CUANDO TODO ME FUNCIONA DESCOMENTAR
         DisableOutline();
-        yield return new WaitForSeconds(1.5f);
-        sphereTravelToBase.Play();
-        sphere.isBeingHeld = true;
-        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
+        //Encendemos la esfera de puzzle
+        //TurnPuzzleCamera(true);
+        yield return new WaitForSeconds(1f);
+        //sphere.gameObject.SetActive(true); CUANDO TODO ME FUNCIONA DESCOMENTAR
+        //sphere.onBase = true;
+        //yield return new WaitForSeconds(1.5f);
+        //sphereTravelToBase.Play();
+        //EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
     private void TurnPuzzleCamera(bool state)
