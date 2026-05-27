@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -89,6 +90,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] PlayableDirector playableDirector;
+    [SerializeField] GameObject blinkCanvas;
+    [SerializeField] CinemachineCamera cinemachine;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -105,6 +110,19 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.LoadScene("Level_Two");
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            playableDirector.Stop();
+            cinemachine.Priority = 9;
+            blinkCanvas.SetActive(false);
+            StartGame();
+        }
+    }
+
+    public void StartGame()
+    {
+        FPController.EnableInputs();
     }
 
     private void SpawnPlayer()

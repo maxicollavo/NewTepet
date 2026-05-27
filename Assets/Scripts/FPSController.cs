@@ -289,7 +289,7 @@ public class FPSController : MonoBehaviour
         AudioListener.volume = VolumeValue;
     }
 
-    public void StartGame()
+    public void EnableInputs()
     {
         this.enabled = true; 
     }
