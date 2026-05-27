@@ -9,7 +9,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private Outline outline;
     private bool canUse = true;
     [HideInInspector] public bool hasWon;
-    [HideInInspector] public bool isBeingHeld;
+    [HideInInspector] public bool onBase;
     [SerializeField] ParticleSystem particle;
     [SerializeField] private float emissionIntensity;
     Material fillMat;
@@ -79,7 +79,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     private void Update()
     {
-        if (!isBeingHeld || hasWon) return;
+        if (!onBase || hasWon) return;
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -103,7 +103,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     public void Aiming()
     {
-        if (!canUse || isBeingHeld || hasWon) return;
+        if (!canUse || onBase || hasWon) return;
         EnableOutline();
         Debug.Log("Apunta");
     }
@@ -123,21 +123,19 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        if (!canUse || isBeingHeld || hasWon) return;
+        if (!canUse || onBase || hasWon) return;
 
         DisableOutline();
-        puzzleCamera.SetActive(true);
         uiPuzzle.SetActive(true);
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
 
-        isBeingHeld = true;
-        Debug.Log(isBeingHeld);
+        onBase = true;
+        Debug.Log(onBase);
     }
 
     private void Release()
     {
-        isBeingHeld = false;
-        puzzleCamera.SetActive(false);
+        onBase = false;
         uiPuzzle.SetActive(false);
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
@@ -313,13 +311,13 @@ public class RotateSphere : MonoBehaviour, Interactor
         }
         else
         {
-            StartCoroutine(LoseInSphere());
+            StartCoroutine(FailedAttemptCoroutine());
         }
 
         CheckFillAmount();
     }
 
-    public IEnumerator LoseInSphere()
+    public IEnumerator FailedAttemptCoroutine()
     {
         canUse = false;
         animator.enabled = true;
