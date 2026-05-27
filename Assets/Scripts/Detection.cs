@@ -9,7 +9,6 @@ public class Detection : MonoBehaviour
 
     private bool onClick;
 
-    private ISwitcheable lastSwitcheable = null;
     private IRead lastReadeable = null;
     private Interactor lastInteractor = null;
 
@@ -49,7 +48,6 @@ public class Detection : MonoBehaviour
         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         int layerMask = ~ignoreMask.value;
 
-        ISwitcheable currentSwitcheable = null;
         IRead currentReadeable = null;
         Interactor currentInteractor = null;
 
@@ -81,11 +79,6 @@ public class Detection : MonoBehaviour
             }
         }
 
-        if (lastSwitcheable != null && lastSwitcheable != currentSwitcheable)
-        {
-            lastSwitcheable.DisableOutline();
-        }
-
         if (lastInteractor != null && lastInteractor != currentInteractor)
         {
             lastInteractor.DisableOutline();
@@ -96,7 +89,6 @@ public class Detection : MonoBehaviour
             lastReadeable.DisableOutline();
         }
 
-        lastSwitcheable = currentSwitcheable;
         lastReadeable = currentReadeable;
         lastInteractor = currentInteractor;
     }
