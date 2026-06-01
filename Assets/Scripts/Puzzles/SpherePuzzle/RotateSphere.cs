@@ -9,7 +9,7 @@ public class RotateSphere : MonoBehaviour, Interactor
     private Outline outline;
     private bool canUse = true;
     [HideInInspector] public bool hasWon;
-    [HideInInspector] public bool onBase;
+    [HideInInspector] public bool onPuzzle;
     [SerializeField] ParticleSystem particle;
     [SerializeField] private float emissionIntensity;
     Material fillMat;
@@ -41,6 +41,10 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     Transform child;
 
+    private bool isTransitioning;
+
+    [SerializeField] private Collider[] interactionColliders;
+
     private void OnEnable()
     {
         child = transform.GetChild(0);
@@ -67,6 +71,11 @@ public class RotateSphere : MonoBehaviour, Interactor
         pivot = GetComponent<Transform>();
         anim = GetComponent<Animator>();
         animator = GetComponent<Animator>();
+
+        if (interactionColliders == null || interactionColliders.Length == 0)
+        {
+            interactionColliders = GetComponentsInChildren<Collider>();
+        }
     }
 
     private void Start()
@@ -79,7 +88,7 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     private void Update()
     {
-        if (!onBase || hasWon) return;
+        if (!onPuzzle || hasWon || isTransitioning) return;
 
         if (Input.GetKey(KeyCode.A))
         {
@@ -97,13 +106,14 @@ public class RotateSphere : MonoBehaviour, Interactor
 
         if (Input.GetMouseButtonDown(1))
         {
-            Release();
+            StartCoroutine(ExitPuzzleCoroutine());
         }
     }
 
     public void Aiming()
     {
-        if (!canUse || onBase || hasWon) return;
+        if (!canUse || onPuzzle || hasWon || isTransitioning) return;
+
         EnableOutline();
         Debug.Log("Apunta");
     }
@@ -123,32 +133,98 @@ public class RotateSphere : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        if (!canUse || onBase || hasWon) return;
+        if (!canUse || onPuzzle || hasWon || isTransitioning) return;
 
-        DisableOutline();
-        uiPuzzle.SetActive(true);
-        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
-
-        onBase = true;
-        Debug.Log(onBase);
+        StartCoroutine(EnterPuzzleCoroutine());
     }
 
-    private void Release()
+    private void SetInteractionColliders(bool state)
     {
-        onBase = false;
+        foreach (Collider col in interactionColliders)
+        {
+            if (col != null)
+            {
+                col.enabled = state;
+            }
+        }
+    }
+
+    private IEnumerator EnterPuzzleCoroutine()
+    {
+        if (isTransitioning || onPuzzle || hasWon) yield break;
+
+        isTransitioning = true;
+        canUse = false;
+        onPuzzle = true;
+
+        DisableOutline();
+        SetInteractionColliders(false);
+        TurnPuzzleCamera(true);
+
+        yield return new WaitForSeconds(1.5f);
+
+        uiPuzzle.SetActive(true);
+
+        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
+
+        isTransitioning = false;
+    }
+
+    private IEnumerator ExitPuzzleCoroutine()
+    {
+        if (isTransitioning || !onPuzzle) yield break;
+
+        isTransitioning = true;
+        onPuzzle = false;
+
         uiPuzzle.SetActive(false);
+        DisableOutline();
+        TurnPuzzleCamera(false);
+
+        yield return new WaitForSeconds(1.5f);
+
+        if (!hasWon)
+        {
+            canUse = true;
+            SetInteractionColliders(true);
+        }
+
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
+
+        isTransitioning = false;
+    }
+
+    [SerializeField] GameObject CM_PuzzleCamera;
+
+    private void TurnPuzzleCamera(bool state)
+    {
+        if (state)
+        {
+            CM_PuzzleCamera.SetActive(true);
+        }
+        else
+        {
+            CM_PuzzleCamera.SetActive(false);
+        }
     }
 
     [SerializeField] Animator mimicSphere;
 
     private void OnWinMethod()
     {
-        Release();
         canUse = false;
         hasWon = true;
+        isTransitioning = false;
+
+        uiPuzzle.SetActive(false);
+        DisableOutline();
+        SetInteractionColliders(false);
+
         mimicSphere.SetBool("CanStart", false);
-        //SetSphereMaterials(SphereStates.Win);
+
+        // Opcional: si querés salir automáticamente de la cámara del puzzle al ganar
+        TurnPuzzleCamera(false);
+        EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 
     public enum SphereStates

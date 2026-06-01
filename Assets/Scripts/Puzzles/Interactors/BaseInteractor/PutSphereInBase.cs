@@ -10,9 +10,6 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 
     [SerializeField] ObjectsToPick requiredObj;
 
-    [SerializeField] PlayableDirector sphereTravelToBase;
-    [SerializeField] GameObject CM_PuzzleCamera;
-
     [SerializeField] private Transform sphereInHand;
     [SerializeField] private Transform spherePivot;
 
@@ -64,29 +61,10 @@ public class PutSphereInBase : MonoBehaviour, Interactor
         PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
         coll.enabled = false;
         DisableOutline();
-        //Encendemos la esfera de puzzle
-        //TurnPuzzleCamera(true);
         yield return new WaitForSeconds(0.5f);
         sphere.gameObject.SetActive(true);
         sphereInHand.gameObject.SetActive(false);
-        //sphere.onBase = true;
-        //yield return new WaitForSeconds(1.5f);
-        //sphereTravelToBase.Play();
-        //EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
-
-    private void TurnPuzzleCamera(bool state)
-    {
-        if (state)
-        {
-            CM_PuzzleCamera.SetActive(true);
-        }
-        else
-        {
-            CM_PuzzleCamera.SetActive(false);
-        }
-    }
-
     private IEnumerator CannotPick()
     {
         EnableOutline();
