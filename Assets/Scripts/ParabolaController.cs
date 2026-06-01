@@ -8,6 +8,9 @@ public class ParabolaController : MonoBehaviour
     /// </summary>
     public float Speed = 1;
 
+    private Vector3 dynamicEndPosition;
+    private bool usingDynamicEnd = false;
+
     [SerializeField] private Transform endPoint;
 
     /// <summary>
@@ -18,7 +21,7 @@ public class ParabolaController : MonoBehaviour
     /// <summary>
     /// Animate
     /// </summary>
-    public bool Animation = true;
+    public bool Animation = false;
 
     //next parabola event
     internal bool nextParbola = false;
@@ -32,12 +35,16 @@ public class ParabolaController : MonoBehaviour
     //draw
     protected ParabolaFly parabolaFly;
 
-    public static ParabolaController instance;
+    [SerializeField] private Transform startPoint;
+    [SerializeField] private Transform midPoint;
 
-    private void Awake()
-    {
-        instance = this;
-    }
+    [SerializeField] private float arcHeight = 1.5f;
+
+    private Vector3 originalStartLocalPos;
+    private Vector3 originalMidLocalPos;
+    private Vector3 originalEndLocalPos;
+
+    private bool restorePointsOnFinish = false;
 
     void OnDrawGizmos()
     {
@@ -69,22 +76,32 @@ public class ParabolaController : MonoBehaviour
     void Start()
     {
         parabolaFly = new ParabolaFly(ParabolaRoot.transform);
+        RefreshTransforms(Speed);
+
+        Animation = false;
+        animationTime = float.MaxValue;
     }
     void Update()
     {
         nextParbola = false;
 
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            FollowParabola();
-        }
+        if (!Animation || parabolaFly == null)
+            return;
 
-        if (Animation && parabolaFly != null && animationTime < parabolaFly.GetDuration())
+        float duration = parabolaFly.GetDuration();
+
+        if (animationTime < duration)
         {
             int parabolaIndexBefore;
             int parabolaIndexAfter;
+
             parabolaFly.GetParabolaIndexAtTime(animationTime, out parabolaIndexBefore);
+
             animationTime += Time.deltaTime;
+
+            if (animationTime > duration)
+                animationTime = duration;
+
             parabolaFly.GetParabolaIndexAtTime(animationTime, out parabolaIndexAfter);
 
             transform.position = parabolaFly.GetPositionAtTime(animationTime);
@@ -92,37 +109,95 @@ public class ParabolaController : MonoBehaviour
             if (parabolaIndexBefore != parabolaIndexAfter)
                 nextParbola = true;
 
-            //if (transform.position.y > HighestPoint.y)
-            //HighestPoint = transform.position;
+            if (animationTime >= duration)
+            {
+                FinishParabola();
+            }
         }
-        else if (Animation && parabolaFly != null && animationTime > parabolaFly.GetDuration())
-        {
-            animationTime = float.MaxValue;
-            Animation = false;
-        }
+    }
 
+    private void FinishParabola()
+    {
+        animationTime = float.MaxValue;
+        Animation = false;
+
+        // NO usamos dynamicEndPosition acá.
+        // Dejamos el objeto exactamente donde terminó la curva calculada.
+        usingDynamicEnd = false;
     }
 
     public void FollowParabolaTo(Transform target)
     {
         if (target == null)
         {
-            FollowParabola();
+            Debug.LogWarning("FollowParabolaTo: target es null.");
+            return;
         }
-        else
+
+        if (ParabolaRoot == null)
         {
-            endPoint.position = target.position;
-            FollowParabola();
+            Debug.LogWarning("FollowParabolaTo: falta asignar ParabolaRoot.");
+            return;
         }
+
+        if (parabolaFly == null)
+        {
+            parabolaFly = new ParabolaFly(ParabolaRoot.transform);
+        }
+
+        if (parabolaFly.Points == null || parabolaFly.Points.Length < 3)
+        {
+            Debug.LogWarning("FollowParabolaTo: ParabolaRoot necesita 3 puntos: 00_Start, 01_Mid, 02_End.");
+            return;
+        }
+
+        // CLAVE:
+        // No usamos endPoint del inspector por si está mal referenciado.
+        // Usamos directamente el último punto real que usa ParabolaFly.
+        Transform realEndPoint = parabolaFly.Points[parabolaFly.Points.Length - 1];
+
+        Vector3 originalEndLocalPos = realEndPoint.localPosition;
+
+        // Movemos temporalmente el último punto real de la curva al target.
+        realEndPoint.position = target.position;
+
+        // Calculamos la curva usando:
+        // 00_Start -> 01_Mid -> target.position
+        RefreshTransforms(Speed);
+
+        // Devolvemos el punto visual a su lugar original.
+        realEndPoint.localPosition = originalEndLocalPos;
+
+        animationTime = 0f;
+
+        // Esto hace que el objeto arranque desde el 00_Start de la parábola.
+        transform.position = parabolaFly.Points[0].position;
+
+        Animation = true;
+
+        Debug.Log("Parábola iniciada hacia: " + target.name);
     }
 
     public void FollowParabola()
     {
+        if (parabolaFly == null)
+        {
+            if (ParabolaRoot == null)
+            {
+                Debug.LogWarning("FollowParabola: falta asignar ParabolaRoot.");
+                return;
+            }
+
+            parabolaFly = new ParabolaFly(ParabolaRoot.transform);
+        }
+
         RefreshTransforms(Speed);
+
+        usingDynamicEnd = false;
+
         animationTime = 0f;
         transform.position = parabolaFly.Points[0].position;
         Animation = true;
-        //HighestPoint = points[0].position;
     }
 
     public Vector3 getHighestPoint(int parabolaIndex)
@@ -320,16 +395,27 @@ public class ParabolaController : MonoBehaviour
 
         public Vector3 GetPositionAtLength(float length)
         {
-            //f(x) = ax² + bx + c
-            var percent = length / Length;
+            if (Length <= 0f)
+                return C;
 
-            var x = percent * (C - A).magnitude;
+            float percent = length / Length;
+            percent = Mathf.Clamp01(percent);
+
+            // CLAVE:
+            // Forzamos que el inicio y el final sean EXACTAMENTE los puntos reales.
+            if (percent <= 0f)
+                return A;
+
+            if (percent >= 1f)
+                return C;
+
+            float x = percent * (C - A).magnitude;
+
             if (tooClose)
                 x = percent * 2f;
 
-            Vector3 pos;
+            Vector3 pos = A * (1f - percent) + C * percent + h.normalized * parabola2D.f(x);
 
-            pos = A * (1f - percent) + C * percent + h.normalized * parabola2D.f(x);
             if (tooClose)
                 pos.Set(A.x, pos.y, A.z);
 

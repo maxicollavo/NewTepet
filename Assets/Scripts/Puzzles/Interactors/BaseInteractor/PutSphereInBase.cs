@@ -59,14 +59,15 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 
     public IEnumerator EnterPuzzleCoroutine()
     {
+        parabolaController.transform.SetParent(null, true);
         parabolaController.FollowParabolaTo(this.transform);
-        //PickedObjData.Instance.MarkAsThrowed(requiredObj, false); CUANDO TODO ME FUNCIONA DESCOMENTAR
-        //coll.enabled = false; CUANDO TODO ME FUNCIONA DESCOMENTAR
+        PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
+        coll.enabled = false;
         DisableOutline();
         //Encendemos la esfera de puzzle
         //TurnPuzzleCamera(true);
-        yield return new WaitForSeconds(1f);
-        //sphere.gameObject.SetActive(true); CUANDO TODO ME FUNCIONA DESCOMENTAR
+        yield return new WaitForSeconds(0.7f);
+        sphere.gameObject.SetActive(true);
         //sphere.onBase = true;
         //yield return new WaitForSeconds(1.5f);
         //sphereTravelToBase.Play();
