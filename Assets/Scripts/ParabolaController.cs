@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ParabolaController : MonoBehaviour
 {
+    public static ParabolaController Instance { get; private set; }
+
     /// <summary>
     /// Animation Speed
     /// </summary>
@@ -46,46 +48,74 @@ public class ParabolaController : MonoBehaviour
 
     private bool restorePointsOnFinish = false;
 
+    // NUEVO:
+    // Este es el objeto que el controller general va a mover.
+    private Transform currentMoveObj;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
     void OnDrawGizmos()
     {
+        if (ParabolaRoot == null)
+            return;
+
         if (gizmo == null)
         {
             gizmo = new ParabolaFly(ParabolaRoot.transform);
         }
 
         gizmo.RefreshTransforms(1f);
+
         if ((gizmo.Points.Length - 1) % 2 != 0)
             return;
 
         int accur = 50;
         Vector3 prevPos = gizmo.Points[0].position;
+
         for (int c = 1; c <= accur; c++)
         {
             float currTime = c * gizmo.GetDuration() / accur;
             Vector3 currPos = gizmo.GetPositionAtTime(currTime);
             float mag = (currPos - prevPos).magnitude * 2;
+
             Gizmos.color = new Color(mag, 0, 0, 1);
             Gizmos.DrawLine(prevPos, currPos);
             Gizmos.DrawSphere(currPos, 0.01f);
+
             prevPos = currPos;
         }
     }
 
-
     // Use this for initialization
     void Start()
     {
+        if (ParabolaRoot == null)
+        {
+            Debug.LogWarning("ParabolaController: falta asignar ParabolaRoot.");
+            return;
+        }
+
         parabolaFly = new ParabolaFly(ParabolaRoot.transform);
         RefreshTransforms(Speed);
 
         Animation = false;
         animationTime = float.MaxValue;
     }
+
     void Update()
     {
         nextParbola = false;
 
-        if (!Animation || parabolaFly == null)
+        if (!Animation || parabolaFly == null || currentMoveObj == null)
             return;
 
         float duration = parabolaFly.GetDuration();
@@ -104,7 +134,10 @@ public class ParabolaController : MonoBehaviour
 
             parabolaFly.GetParabolaIndexAtTime(animationTime, out parabolaIndexAfter);
 
-            transform.position = parabolaFly.GetPositionAtTime(animationTime);
+            // CAMBIO IMPORTANTE:
+            // Antes era transform.position.
+            // Ahora mueve el objeto que le pasaste.
+            currentMoveObj.position = parabolaFly.GetPositionAtTime(animationTime);
 
             if (parabolaIndexBefore != parabolaIndexAfter)
                 nextParbola = true;
@@ -121,13 +154,20 @@ public class ParabolaController : MonoBehaviour
         animationTime = float.MaxValue;
         Animation = false;
 
-        // NO usamos dynamicEndPosition acá.
-        // Dejamos el objeto exactamente donde terminó la curva calculada.
         usingDynamicEnd = false;
+        currentMoveObj = null;
     }
 
-    public void FollowParabolaTo(Transform target)
+    // NUEVO MÉTODO PRINCIPAL:
+    // Este es el que tenés que usar desde otros scripts.
+    public void FollowParabolaTo(Transform moveObj, Transform target)
     {
+        if (moveObj == null)
+        {
+            Debug.LogWarning("FollowParabolaTo: moveObj es null.");
+            return;
+        }
+
         if (target == null)
         {
             Debug.LogWarning("FollowParabolaTo: target es null.");
@@ -151,6 +191,11 @@ public class ParabolaController : MonoBehaviour
             return;
         }
 
+        currentMoveObj = moveObj;
+
+        // Si el objeto está en la mano/cámara, lo soltamos manteniendo posición global.
+        currentMoveObj.SetParent(null, true);
+
         // CLAVE:
         // No usamos endPoint del inspector por si está mal referenciado.
         // Usamos directamente el último punto real que usa ParabolaFly.
@@ -170,16 +215,33 @@ public class ParabolaController : MonoBehaviour
 
         animationTime = 0f;
 
-        // Esto hace que el objeto arranque desde el 00_Start de la parábola.
-        transform.position = parabolaFly.Points[0].position;
+        // El objeto arranca desde el 00_Start de la parábola.
+        currentMoveObj.position = parabolaFly.Points[0].position;
 
         Animation = true;
 
-        Debug.Log("Parábola iniciada hacia: " + target.name);
+        Debug.Log("Parábola iniciada. Objeto: " + moveObj.name + " Target: " + target.name);
     }
 
-    public void FollowParabola()
+    // MÉTODO VIEJO:
+    // Lo dejo para no romper referencias viejas, pero con controller general NO deberías usar este.
+    public void FollowParabolaTo(Transform target)
     {
+        Debug.LogWarning("Estás usando FollowParabolaTo(target) viejo. Para el controller general usá FollowParabolaTo(moveObj, target).");
+
+        FollowParabolaTo(transform, target);
+    }
+
+    // NUEVO:
+    // Sigue la parábola fija sin target dinámico, moviendo el objeto que le pases.
+    public void FollowParabola(Transform moveObj)
+    {
+        if (moveObj == null)
+        {
+            Debug.LogWarning("FollowParabola: moveObj es null.");
+            return;
+        }
+
         if (parabolaFly == null)
         {
             if (ParabolaRoot == null)
@@ -191,13 +253,25 @@ public class ParabolaController : MonoBehaviour
             parabolaFly = new ParabolaFly(ParabolaRoot.transform);
         }
 
+        currentMoveObj = moveObj;
+        currentMoveObj.SetParent(null, true);
+
         RefreshTransforms(Speed);
 
         usingDynamicEnd = false;
 
         animationTime = 0f;
-        transform.position = parabolaFly.Points[0].position;
+        currentMoveObj.position = parabolaFly.Points[0].position;
         Animation = true;
+    }
+
+    // MÉTODO VIEJO:
+    // Lo dejo para no romper nada, pero con controller general NO deberías usarlo.
+    public void FollowParabola()
+    {
+        Debug.LogWarning("Estás usando FollowParabola() viejo. Para el controller general usá FollowParabola(moveObj).");
+
+        FollowParabola(transform);
     }
 
     public Vector3 getHighestPoint(int parabolaIndex)
@@ -223,15 +297,20 @@ public class ParabolaController : MonoBehaviour
     public void StopFollow()
     {
         animationTime = float.MaxValue;
+        Animation = false;
+        currentMoveObj = null;
     }
+
     /// <summary>
     /// Returns children transforms, sorted by name.
     /// </summary>
     public void RefreshTransforms(float speed)
     {
+        if (parabolaFly == null)
+            return;
+
         parabolaFly.RefreshTransforms(speed);
     }
-
 
     public static float DistanceToLine(Ray ray, Vector3 point)
     {
@@ -246,7 +325,6 @@ public class ParabolaController : MonoBehaviour
 
     public class ParabolaFly
     {
-
         public Transform[] Points;
         protected Parabola3D[] parabolas;
         protected float[] partDuration;
@@ -254,11 +332,11 @@ public class ParabolaController : MonoBehaviour
 
         public ParabolaFly(Transform ParabolaRoot)
         {
-
             List<Component> components = new List<Component>(ParabolaRoot.GetComponentsInChildren(typeof(Transform)));
             List<Transform> transforms = components.ConvertAll(c => (Transform)c);
 
             transforms.Remove(ParabolaRoot.transform);
+
             transforms.Sort(delegate (Transform a, Transform b)
             {
                 return a.name.CompareTo(b.name);
@@ -276,22 +354,24 @@ public class ParabolaController : MonoBehaviour
                 parabolas = new Parabola3D[(Points.Length - 1) / 2];
                 partDuration = new float[parabolas.Length];
             }
-
         }
 
         public Vector3 GetPositionAtTime(float time)
         {
             int parabolaIndex;
             float timeInParabola;
+
             GetParabolaIndexAtTime(time, out parabolaIndex, out timeInParabola);
 
             var percent = timeInParabola / partDuration[parabolaIndex];
+
             return parabolas[parabolaIndex].GetPositionAtLength(percent * parabolas[parabolaIndex].Length);
         }
 
         public void GetParabolaIndexAtTime(float time, out int parabolaIndex)
         {
             float timeInParabola;
+
             GetParabolaIndexAtTime(time, out parabolaIndex, out timeInParabola);
         }
 
@@ -329,7 +409,6 @@ public class ParabolaController : MonoBehaviour
 
             if (Points != null)
             {
-
                 completeDuration = 0;
 
                 //create parabolas
@@ -338,14 +417,16 @@ public class ParabolaController : MonoBehaviour
                     if (parabolas[i] == null)
                         parabolas[i] = new Parabola3D();
 
-                    parabolas[i].Set(Points[i * 2].position, Points[i * 2 + 1].position, Points[i * 2 + 2].position);
+                    parabolas[i].Set(
+                        Points[i * 2].position,
+                        Points[i * 2 + 1].position,
+                        Points[i * 2 + 2].position
+                    );
+
                     partDuration[i] = parabolas[i].Length / speed;
                     completeDuration += partDuration[i];
                 }
-
-
             }
-
         }
     }
 
@@ -375,6 +456,7 @@ public class ParabolaController : MonoBehaviour
             this.A = A;
             this.B = B;
             this.C = C;
+
             refreshCurve();
         }
 
@@ -383,9 +465,15 @@ public class ParabolaController : MonoBehaviour
             var d = (C.y - A.y) / parabola2D.Length;
             var e = A.y - C.y;
 
-            var parabolaCompl = new Parabola2D(parabola2D.a, parabola2D.b + d, parabola2D.c + e, parabola2D.Length);
+            var parabolaCompl = new Parabola2D(
+                parabola2D.a,
+                parabola2D.b + d,
+                parabola2D.c + e,
+                parabola2D.Length
+            );
 
             Vector3 E = new Vector3();
+
             E.y = parabolaCompl.E.y;
             E.x = A.x + (C.x - A.x) * (parabolaCompl.E.x / parabolaCompl.Length);
             E.z = A.z + (C.z - A.z) * (parabolaCompl.E.x / parabolaCompl.Length);
@@ -424,12 +512,17 @@ public class ParabolaController : MonoBehaviour
 
         private void refreshCurve()
         {
-
-            if (Vector2.Distance(new Vector2(A.x, A.z), new Vector2(B.x, B.z)) < 0.1f &&
-                Vector2.Distance(new Vector2(B.x, B.z), new Vector2(C.x, C.z)) < 0.1f)
+            if (
+                Vector2.Distance(new Vector2(A.x, A.z), new Vector2(B.x, B.z)) < 0.1f &&
+                Vector2.Distance(new Vector2(B.x, B.z), new Vector2(C.x, C.z)) < 0.1f
+            )
+            {
                 tooClose = true;
+            }
             else
+            {
                 tooClose = false;
+            }
 
             Length = Vector3.Distance(A, B) + Vector3.Distance(B, C);
 
@@ -442,7 +535,6 @@ public class ParabolaController : MonoBehaviour
                 refreshCurveClose();
             }
         }
-
 
         private void refreshCurveNormal()
         {
@@ -463,16 +555,14 @@ public class ParabolaController : MonoBehaviour
 
             A2d.x = 0f;
             A2d.y = 0f;
+
             B2d.x = Vector3.Distance(A, v1);
             B2d.y = Vector3.Distance(B, v1);
+
             C2d.x = Vector3.Distance(A, C);
             C2d.y = 0f;
 
             parabola2D = new Parabola2D(A2d, B2d, C2d);
-
-            //lower v
-            //var p = parabola.E.x / parabola.Length;
-            //Vector3 vl = points[0].position * (1f - p) + points[2].position * p;
 
             //h
             h = (B - v1) / Vector3.Distance(v1, B) * parabola2D.E.y;
@@ -498,6 +588,7 @@ public class ParabolaController : MonoBehaviour
             C2d.y = Vector3.Distance(A, C) * fac02;
 
             parabola2D = new Parabola2D(A2d, B2d, C2d);
+
             h = Vector3.up;
         }
     }
@@ -518,6 +609,7 @@ public class ParabolaController : MonoBehaviour
             this.c = c;
 
             setMetadata();
+
             this.Length = length;
         }
 
@@ -527,21 +619,36 @@ public class ParabolaController : MonoBehaviour
             //a = (x1(y2 - y3) + x2(y3 - y1) + x3(y1 - y2)) / ((x1 - x2)(x1 - x3)(x3 - x2))
             //b = (x1²(y2 - y3) + x2²(y3 - y1) + x3²(y1 - y2))/ ((x1 - x2)(x1 - x3)(x2 - x3))
             //c = (x1²(x2y3 - x3y2) + x1(x3²y2 - x2²y3) + x2x3y1(x2 - x3))/ ((x1 - x2)(x1 - x3)(x2 - x3))
+
             var divisor = ((A.x - B.x) * (A.x - C.x) * (C.x - B.x));
+
             if (divisor == 0f)
             {
                 A.x += 0.00001f;
                 B.x += 0.00002f;
                 C.x += 0.00003f;
+
                 divisor = ((A.x - B.x) * (A.x - C.x) * (C.x - B.x));
             }
-            a = (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)) / divisor;
-            b = (A.x * A.x * (B.y - C.y) + B.x * B.x * (C.y - A.y) + C.x * C.x * (A.y - B.y)) / divisor;
-            c = (A.x * A.x * (B.x * C.y - C.x * B.y) + A.x * (C.x * C.x * B.y - B.x * B.x * C.y) + B.x * C.x * A.y * (B.x - C.x)) / divisor;
 
-            b = b * -1f;//hack
+            a = (A.x * (B.y - C.y) + B.x * (C.y - A.y) + C.x * (A.y - B.y)) / divisor;
+
+            b = (
+                A.x * A.x * (B.y - C.y) +
+                B.x * B.x * (C.y - A.y) +
+                C.x * C.x * (A.y - B.y)
+            ) / divisor;
+
+            c = (
+                A.x * A.x * (B.x * C.y - C.x * B.y) +
+                A.x * (C.x * C.x * B.y - B.x * B.x * C.y) +
+                B.x * C.x * A.y * (B.x - C.x)
+            ) / divisor;
+
+            b = b * -1f; //hack
 
             setMetadata();
+
             Length = Vector2.Distance(A, C);
         }
 
@@ -557,6 +664,7 @@ public class ParabolaController : MonoBehaviour
             //2ax+b=0
             //x = -b/2a
             var x = -b / (2 * a);
+
             E = new Vector2(x, f(x));
         }
     }

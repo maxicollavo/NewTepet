@@ -13,7 +13,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
     [SerializeField] PlayableDirector sphereTravelToBase;
     [SerializeField] GameObject CM_PuzzleCamera;
 
-    [SerializeField] ParabolaController parabolaController;
+    [SerializeField] private Transform sphereInHand;
 
     private void Awake()
     {
@@ -59,8 +59,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
 
     public IEnumerator EnterPuzzleCoroutine()
     {
-        parabolaController.transform.SetParent(null, true);
-        parabolaController.FollowParabolaTo(this.transform);
+        ParabolaController.Instance.FollowParabolaTo(sphereInHand, this.transform);
         PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
         coll.enabled = false;
         DisableOutline();
@@ -68,6 +67,7 @@ public class PutSphereInBase : MonoBehaviour, Interactor
         //TurnPuzzleCamera(true);
         yield return new WaitForSeconds(0.7f);
         sphere.gameObject.SetActive(true);
+        sphereInHand.gameObject.SetActive(false);
         //sphere.onBase = true;
         //yield return new WaitForSeconds(1.5f);
         //sphereTravelToBase.Play();

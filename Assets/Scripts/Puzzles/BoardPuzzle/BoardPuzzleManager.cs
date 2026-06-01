@@ -18,7 +18,6 @@ public class BoardPuzzleManager : MonoBehaviour
     public BoardPiece[] pieces;
     private BoardPiece selectedPiece;
     public GameObject handPiece;
-    [SerializeField] PlayableDirector pieceTravelToBoard;
 
     [Header("Waypoints")]
     private BoardWaypoint currentWp;
@@ -52,6 +51,9 @@ public class BoardPuzzleManager : MonoBehaviour
 
     [SerializeField] PuzzleInteractor interactor;
     [SerializeField] PuzzleDefiner definer;
+
+    [SerializeField] Transform pieceInHand;
+    [SerializeField] Transform piecePivot;
 
     private void Start()
     {
@@ -132,35 +134,28 @@ public class BoardPuzzleManager : MonoBehaviour
 
     public IEnumerator EnterPuzzleCoroutine()
     {
-        if (!isFirstTime)
+        if (!pieceOnBoard)
+        {
+            ParabolaController.Instance.FollowParabolaTo(pieceInHand, piecePivot);
+            yield return new WaitForSeconds(0.7f);
+            pieceInHand.gameObject.SetActive(false);
+            pieces[1].gameObject.SetActive(true);
+            pieceOnBoard = true;
+        }
+        else
         {
             RotateArmsToPuzzle();
-            NewEventManager.TriggerFreeze(true);
-            yield return new WaitForSeconds(1f);
-        }
-        else
-            NewEventManager.TriggerFreeze(true);
-
-        TurnPuzzleCamera(true);
-        interactor.DisableOutline();
-        interactorCollider.enabled = false;
-        canGoBack = false;
-        canInteract = false;
-        yield return new WaitForSeconds(1.5f);
-        canGoBack = true;
-        canInteract = true;
-        EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
-
-        if (isFirstTime)
-        {
-            pieceTravelToBoard.Play();
-            definer.requiresHand = false;
-            pieceOnBoard = true;
+            TurnPuzzleCamera(true);
+            interactor.DisableOutline();
+            interactorCollider.enabled = false;
+            canGoBack = false;
+            canInteract = false;
+            yield return new WaitForSeconds(1.5f);
+            canGoBack = true;
+            canInteract = true;
             PickedObjData.Instance.MarkAsThrowed(requiredObj, false);
             isFirstTime = false;
-        }
-        else
-        {
+            EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
             CanInteractWithPuzzle();
         }
     }
