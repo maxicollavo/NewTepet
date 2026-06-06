@@ -1,87 +1,67 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
-    [SerializeField] private Transform laserVisual;
-    [SerializeField] private float maxDistance = 20f;
-    [SerializeField] private LayerMask statueMask;
+    [Header("Settings")]
+    public LayerMask mirrorMask;
+    public LayerMask winnerMask;
+    public LineRenderer line;
+    public float maxDistance = 128;
+    public int maxBounces = 128;
 
-    private Vector3 originalScale;
-    private MeshFilter meshFilter;
-    private float meshHeight;
-
-    private void Start()
-    {
-        originalScale = laserVisual.localScale;
-
-        meshFilter = laserVisual.GetComponent<MeshFilter>();
-
-        if (meshFilter != null)
-        {
-            meshHeight = meshFilter.sharedMesh.bounds.size.y;
-        }
-        else
-        {
-            meshHeight = 2f;
-        }
-    }
+    [Header("State")]
+    readonly List<Vector3> _linePoints = new();
+    private bool hasWon;
 
     private void Update()
     {
-        Vector3 targetPoint = transform.position + transform.forward * maxDistance;
+        if (hasWon)
+            return;
 
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, maxDistance, statueMask))
-        {
-            LaserStatue statue = hit.collider.GetComponent<LaserStatue>();
-
-            if (statue != null)
-            {
-                targetPoint = statue.laserPoint.position;
-
-                Vector3 dir = statue.transform.forward;
-
-                if (Physics.Raycast(statue.laserPoint.position, dir, out RaycastHit secondHit, maxDistance, statueMask))
-                {
-                    LaserStatue secondStatue = secondHit.collider.GetComponent<LaserStatue>();
-
-                    if (secondStatue != null)
-                    {
-                        targetPoint = secondStatue.laserPoint.position;
-                    }
-                }
-            }
-        }
-
-        UpdateLaser(targetPoint);
+        _linePoints.Clear();
+        _linePoints.Add(transform.position);
+        ShootLaser(transform.position, transform.forward, maxBounces);
+        line.positionCount = _linePoints.Count;
+        line.SetPositions(_linePoints.ToArray());
     }
 
-    private void UpdateLaser(Vector3 targetPoint)
+    void ShootLaser(Vector3 pos, Vector3 dir, int bounceLimit)
     {
-        Vector3 startPoint = transform.position;
-        Vector3 dir = targetPoint - startPoint;
+        if (bounceLimit == 0)
+            return;
 
-        float distance = dir.magnitude;
+        bounceLimit--;
+        dir = dir.normalized;
 
-        if (distance <= 0.01f) return;
+        if (!Physics.Raycast(pos, dir, out RaycastHit hit, maxDistance))
+        {
+            _linePoints.Add(pos + dir * maxDistance);
+            return;
+        }
 
-        laserVisual.position = startPoint + dir.normalized * (distance / 2f);
+        _linePoints.Add(hit.point);
+        var target = hit.collider.gameObject;
 
-        laserVisual.rotation = Quaternion.LookRotation(dir.normalized) * Quaternion.Euler(90f, 0f, 0f);
+        if (IsObjectMirror(target))
+        {
+            var reflectedDir = Vector3.Reflect(dir, hit.normal);
+            ShootLaser(hit.point, reflectedDir, bounceLimit);
+        }
 
-        laserVisual.localScale = new Vector3(
-            originalScale.x,
-            originalScale.y,
-            originalScale.z
-        );
+        if (IsObjectTargetWinner(target))
+        {
+            hasWon = true;
+        }
+    }
 
-        float currentLength = laserVisual.GetComponent<Renderer>().bounds.size.z;
+    bool IsObjectMirror(GameObject target)
+    {
+        return (mirrorMask.value & (1 << target.layer)) != 0;
+    }
 
-        float multiplier = distance / currentLength;
-
-        laserVisual.localScale = new Vector3(
-            originalScale.x,
-            originalScale.y * multiplier,
-            originalScale.z
-        );
+    bool IsObjectTargetWinner(GameObject target)
+    {
+        return (winnerMask.value & (1 << target.layer)) != 0;
     }
 }
