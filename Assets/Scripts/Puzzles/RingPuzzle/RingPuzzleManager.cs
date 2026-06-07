@@ -8,6 +8,7 @@ public class RingPuzzleManager : MonoBehaviour
     public RingPuzzleController controller;
 
     [SerializeField] private Ring[] rings;
+    private float seconds = 0.25f;
 
     [HideInInspector] public bool canInteract { get; set; }
     [HideInInspector] public bool isRotating { get; private set; }
@@ -28,6 +29,32 @@ public class RingPuzzleManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private int lightCounter = 0;
+
+    private IEnumerator BlinkRingsForWin(float totalDuration, int loops)
+    {
+        DisableAllOutlines();
+
+        float secondsPerLight = totalDuration / (rings.Length * loops);
+
+        for (int loop = 0; loop < loops; loop++)
+        {
+            for (int i = 0; i < rings.Length; i++)
+            {
+                Outline outline = rings[i].GetComponent<Outline>();
+
+                outline.OutlineColor = Color.green;
+                outline.enabled = true;
+
+                yield return new WaitForSeconds(secondsPerLight);
+
+                outline.enabled = false;
+            }
+        }
+
+        DisableAllOutlines();
     }
 
     private void Update()
@@ -154,7 +181,8 @@ public class RingPuzzleManager : MonoBehaviour
     {
         canInteract = false;
         DeselectAll();
-        yield return new WaitForSeconds(1.5f);
+
+        yield return StartCoroutine(BlinkRingsForWin(1.5f, 2));
 
         yield return StartCoroutine(controller.ExitPuzzle(false));
 
