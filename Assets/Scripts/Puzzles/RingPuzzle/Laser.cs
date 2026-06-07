@@ -10,48 +10,67 @@ public class Laser : MonoBehaviour
     public float maxDistance = 128;
     public int maxBounces = 128;
 
+    [SerializeField] private float surfaceOffset = 0.01f;
+
     [Header("State")]
     readonly List<Vector3> _linePoints = new();
-    private bool hasWon;
+    public bool hasWon { get; private set; }
+    private int mirrorCounter;
 
     private void Update()
     {
-        if (hasWon)
-            return;
+        Physics.SyncTransforms();
+
+        mirrorCounter = 0;
 
         _linePoints.Clear();
         _linePoints.Add(transform.position);
+
         ShootLaser(transform.position, transform.forward, maxBounces);
+
         line.positionCount = _linePoints.Count;
         line.SetPositions(_linePoints.ToArray());
     }
 
     void ShootLaser(Vector3 pos, Vector3 dir, int bounceLimit)
     {
-        if (bounceLimit == 0)
+        if (bounceLimit <= 0)
             return;
 
-        bounceLimit--;
         dir = dir.normalized;
 
-        if (!Physics.Raycast(pos, dir, out RaycastHit hit, maxDistance))
+        int hitMask = mirrorMask.value | winnerMask.value;
+
+        if (!Physics.Raycast(pos, dir, out RaycastHit hit, maxDistance, hitMask))
         {
             _linePoints.Add(pos + dir * maxDistance);
             return;
         }
 
         _linePoints.Add(hit.point);
-        var target = hit.collider.gameObject;
+
+        GameObject target = hit.collider.gameObject;
 
         if (IsObjectMirror(target))
         {
-            var reflectedDir = Vector3.Reflect(dir, hit.normal);
-            ShootLaser(hit.point, reflectedDir, bounceLimit);
+            mirrorCounter++;
+
+            Vector3 reflectedDir = Vector3.Reflect(dir, hit.normal).normalized;
+            Vector3 newStartPos = hit.point + reflectedDir * surfaceOffset;
+
+            ShootLaser(newStartPos, reflectedDir, bounceLimit - 1);
+
+            return;
         }
 
         if (IsObjectTargetWinner(target))
         {
-            hasWon = true;
+            if (mirrorCounter == 3 && !hasWon)
+            {
+                hasWon = true;
+            }
+
+            return;
         }
     }
 

@@ -5,6 +5,7 @@ using UnityEngine;
 public class RingPuzzleManager : MonoBehaviour
 {
     public static RingPuzzleManager Instance;
+    public RingPuzzleController controller;
 
     [SerializeField] private Ring[] rings;
 
@@ -13,6 +14,9 @@ public class RingPuzzleManager : MonoBehaviour
 
     [SerializeField] private float rotationDuration = 2f;
     private int currentSelectedRing = -1;
+
+    [SerializeField] Laser laser;
+    private bool hasWon;
 
     private void Awake()
     {
@@ -28,7 +32,14 @@ public class RingPuzzleManager : MonoBehaviour
 
     private void Update()
     {
-        if (!canInteract) return;
+        if (!canInteract || hasWon) return;
+
+        hasWon = laser.hasWon;
+        if (hasWon)
+        {
+            Win();
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -132,5 +143,21 @@ public class RingPuzzleManager : MonoBehaviour
         {
             ring.DisableOutline();
         }
+    }
+
+    private void Win()
+    {
+        StartCoroutine(WinCoroutine());
+    }
+
+    private IEnumerator WinCoroutine()
+    {
+        canInteract = false;
+        DeselectAll();
+        yield return new WaitForSeconds(1.5f);
+
+        yield return StartCoroutine(controller.ExitPuzzle(false));
+
+        controller.enabled = false;
     }
 }

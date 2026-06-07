@@ -66,14 +66,17 @@ public class RingPuzzleController : MonoBehaviour, Interactor
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
-    private IEnumerator ExitPuzzle()
+    public IEnumerator ExitPuzzle(bool enableCollider = true)
     {
         RingPuzzleManager.Instance.DeselectAll();
         puzzleCam.SetActive(false);
         RingPuzzleManager.Instance.canInteract = false;
+
         yield return new WaitForSeconds(1.5f);
-        coll.enabled = true;
+
+        coll.enabled = enableCollider;
         onPuzzle = false;
+
         EventManager.Instance.Dispatch(GameEventTypes.OnGameplay, this, EventArgs.Empty);
     }
 }
