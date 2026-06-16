@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using Unity.Cinemachine;
-using UnityEditor.Animations;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
