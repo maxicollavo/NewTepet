@@ -4,6 +4,7 @@ using UnityEngine;
 public class Ring : MonoBehaviour
 {
     public int ringIndex;
+    public AudioSource ringSound;
     public bool isSelected { private get; set; }
 
     private Outline outline;
