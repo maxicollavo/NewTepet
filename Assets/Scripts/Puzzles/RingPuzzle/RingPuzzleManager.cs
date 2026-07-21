@@ -16,6 +16,9 @@ public class RingPuzzleManager : MonoBehaviour
     [SerializeField] private float rotationDuration = 2f;
     private int currentSelectedRing = -1;
 
+    [SerializeField] AudioSource rotationSound;
+
+
     [SerializeField] Laser laser;
     private bool hasWon;
 
@@ -70,11 +73,13 @@ public class RingPuzzleManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.D))
         {
+            rotationSound.Play();
             RotateSelectedRing(45f);
         }
 
         if (Input.GetKeyDown(KeyCode.A))
         {
+            rotationSound.Play();
             RotateSelectedRing(-45f);
         }
     }
