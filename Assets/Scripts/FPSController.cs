@@ -246,7 +246,7 @@ public class FPSController : MonoBehaviour
 
             if (sinValue <= -0.9f && !stepPlayedThisCycle)
             {
-                footstepAudioSource.volume = UnityEngine.Random.Range(0.8f, 1f);
+                footstepAudioSource.volume = UnityEngine.Random.Range(0.1f, 0.5f);
                 footstepAudioSource.PlayOneShot(footstepClip);
                 stepPlayedThisCycle = true;
             }
