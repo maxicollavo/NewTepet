@@ -11,6 +11,7 @@ public class Ring : MonoBehaviour
     private Color hoverColor;
     private Color selectedColor;
 
+    public Material ringMaterialShader;
     private void Awake()
     {
         outline = GetComponent<Outline>();
@@ -66,6 +67,8 @@ public class Ring : MonoBehaviour
     {
         outline.enabled = false;
         UIManager.Instance.ChangeCursor(false);
+        //ringMaterialShader.SetFloat("_vel", 0.05f);
+
     }
 
     public void EnableHoverOutline()
@@ -78,10 +81,12 @@ public class Ring : MonoBehaviour
     {
         ChangeOutlineColor(selectedColor);
         outline.enabled = true;
+        //ringMaterialShader.SetFloat("_vel", 0.25f);
     }
 
     private void ChangeOutlineColor(Color color)
     {
         outline.OutlineColor = color;
     }
+
 }
