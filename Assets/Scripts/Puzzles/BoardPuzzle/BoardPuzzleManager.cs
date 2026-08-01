@@ -132,9 +132,11 @@ public class BoardPuzzleManager : MonoBehaviour
         StartCoroutine(CannotEnter(interactor));
     }
 
+    [SerializeField] private bool needsPiece = true;
+
     public IEnumerator EnterPuzzleCoroutine()
     {
-        if (!pieceOnBoard)
+        if (!pieceOnBoard && pieceInHand != null)
         {
             ParabolaController.Instance.FollowParabolaTo(pieceInHand, piecePivot);
             yield return new WaitForSeconds(0.7f);
