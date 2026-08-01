@@ -84,20 +84,20 @@ public class ColumnInteractManager : MonoBehaviour
     {
         if (!canRotate) return;
 
-        float target = isRotating ? targetAlpha : 0f;
-        currentAlpha = Mathf.MoveTowards(currentAlpha, target, alphaLerpSpeed * Time.deltaTime);
-        ApplyVFXAlpha(currentAlpha);
+        //float target = isRotating ? targetAlpha : 0f;
+        //currentAlpha = Mathf.MoveTowards(currentAlpha, target, alphaLerpSpeed * Time.deltaTime);
+        //ApplyVFXAlpha(currentAlpha);
 
-        if (fadingPieces.Count > 0)
-        {
-            for (int i = fadingPieces.Count - 1; i >= 0; i--)
-            {
-                var p = fadingPieces[i];
-                bool finished = FadeOutPiece(p);
-                if (finished)
-                    fadingPieces.RemoveAt(i);
-            }
-        }
+        //if (fadingPieces.Count > 0)
+        //{
+        //    for (int i = fadingPieces.Count - 1; i >= 0; i--)
+        //    {
+        //        var p = fadingPieces[i];
+        //        //bool finished = FadeOutPiece(p);
+        //        if (finished)
+        //            fadingPieces.RemoveAt(i);
+        //    }
+        //}
 
         if (currentlySelected != null && !currentlySelected.interiorPieces[piecesCounter].hasWon)
         {
@@ -179,11 +179,11 @@ public class ColumnInteractManager : MonoBehaviour
 
         rotatingPiece = currentlySelected.interiorPieces[piecesCounter];
 
-        foreach (var vfx in rotatingPiece.vfxEffects)
-        {
-            if (vfx != null)
-                vfx.SetFloat("alpha", alpha);
-        }
+        //foreach (var vfx in rotatingPiece.vfxEffects)
+        //{
+        //    if (vfx != null)
+        //        vfx.SetFloat("alpha", alpha);
+        //}
     }
 
     private void AddFadeOut(InteriorPieceSelector piece)
@@ -192,7 +192,7 @@ public class ColumnInteractManager : MonoBehaviour
             fadingPieces.Add(piece);
     }
 
-    private bool FadeOutPiece(InteriorPieceSelector piece)
+    /*private bool FadeOutPiece(InteriorPieceSelector piece)
     {
         if (piece == null) return true;
 
@@ -211,7 +211,7 @@ public class ColumnInteractManager : MonoBehaviour
         }
 
         return allZero;
-    }
+    }*/
 
     private void CutVFX()
     {

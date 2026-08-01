@@ -15,8 +15,6 @@ public class InteriorPieceSelector : MonoBehaviour
     [HideInInspector] public bool isAligned;
     [HideInInspector] public bool hasWon;
 
-    public VisualEffect[] vfxEffects;
-
     private void Awake()
     {
         outline = GetComponent<Outline>();
