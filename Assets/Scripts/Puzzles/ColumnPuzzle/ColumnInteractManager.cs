@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class ColumnInteractManager : MonoBehaviour
     private Transform lookAtTarget;
 
     public bool canRotate;
-    private bool isRotating;
+    public bool isRotating { get; private set; }
     [HideInInspector] public bool hasWon;
 
     private int piecesCounter;
@@ -40,6 +41,9 @@ public class ColumnInteractManager : MonoBehaviour
     private InteriorPieceSelector previousPiece;
     private List<InteriorPieceSelector> fadingPieces = new List<InteriorPieceSelector>();
     private InteriorPieceSelector rotatingPiece;
+
+    [SerializeField] private float rotationStep = 20f;
+    [SerializeField] private float rotationDuration = 0.15f;
 
     public void OnSelectedMethod(int columnIndex, bool isSelected, ColumnSelected selected)
     {
@@ -100,28 +104,23 @@ public class ColumnInteractManager : MonoBehaviour
             Transform columnTransform = currentlySelected.interiorPieces[piecesCounter].columnTransform;
             Transform tableColumnTransform = currentlySelected.interiorPieces[piecesCounter].transform.parent.transform;
 
-            if (Input.GetKey(KeyCode.A))
+            if (!isRotating)
             {
-                RotatePiece(columnTransform, tableColumnTransform, +rotationSpeed);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                RotatePiece(columnTransform, tableColumnTransform, -rotationSpeed);
+                if (Input.GetKeyDown(KeyCode.A))
+                    StartCoroutine(RotatePiece(columnTransform, tableColumnTransform, rotationStep));
+
+                if (Input.GetKeyDown(KeyCode.D))
+                    StartCoroutine(RotatePiece(columnTransform, tableColumnTransform, -rotationStep));
             }
 
-            if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
-                StopRotating();
-
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) && !isRotating)
             {
                 SelectNextPiece(+1);
-                StopRotating();
             }
 
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S) && !isRotating)
             {
                 SelectNextPiece(-1);
-                StopRotating();
             }
         }
 
@@ -138,23 +137,39 @@ public class ColumnInteractManager : MonoBehaviour
             currentlySelected.DeselectPiece();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) SelectNextColumn(-1);
-        if (Input.GetKeyDown(KeyCode.E)) SelectNextColumn(+1);
+        if (Input.GetKeyDown(KeyCode.Q) && !isRotating) SelectNextColumn(-1);
+        if (Input.GetKeyDown(KeyCode.E) && !isRotating) SelectNextColumn(+1);
     }
-
-    private void StopRotating()
+    private IEnumerator RotatePiece(Transform columnTrans, Transform tableTrans, float angle)
     {
-        isRotating = false;
-        AddFadeOut(currentlySelected.interiorPieces[piecesCounter]);
-    }
-
-    private void RotatePiece(Transform columnTrans, Transform tableTrans, float speed)
-    {
-        columnTrans.Rotate(Vector3.up, speed * Time.deltaTime);
-        tableTrans.Rotate(Vector3.up, speed * Time.deltaTime);
-        cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
-
         isRotating = true;
+
+        Quaternion startColumn = columnTrans.rotation;
+        Quaternion endColumn = startColumn * Quaternion.Euler(0, angle, 0);
+
+        Quaternion startTable = tableTrans.rotation;
+        Quaternion endTable = startTable * Quaternion.Euler(0, angle, 0);
+
+        float elapsed = 0;
+
+        while (elapsed < rotationDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = elapsed / rotationDuration;
+
+            columnTrans.rotation = Quaternion.Slerp(startColumn, endColumn, t);
+            tableTrans.rotation = Quaternion.Slerp(startTable, endTable, t);
+
+            cameraShake.TriggerShake(Time.deltaTime, shakeMagnitude);
+
+            yield return null;
+        }
+
+        columnTrans.rotation = endColumn;
+        tableTrans.rotation = endTable;
+
+        isRotating = false;
     }
 
     private void ApplyVFXAlpha(float alpha)
@@ -270,7 +285,6 @@ public class ColumnInteractManager : MonoBehaviour
 
         foreach (var pair in interiorPieceSelected)
         {
-            AlignColumn(pair.Key);
             pair.Key.OnWin();
         }
 
@@ -278,23 +292,6 @@ public class ColumnInteractManager : MonoBehaviour
         canRotate = false;
         hasWon = true;
     }
-
-    private void AlignColumn(InteriorPieceSelector column)
-    {
-        Transform columnTransform = column.columnTransform;
-
-        Vector3 pos = columnTransform.position;
-
-        Vector3 currentDir = (column.forward.position - pos).normalized;
-        Vector3 targetDir = (column.lookAtTarget.position - pos).normalized;
-
-        currentDir.y = 0;
-        targetDir.y = 0;
-
-        Quaternion deltaRot = Quaternion.FromToRotation(currentDir, targetDir);
-        columnTransform.rotation = deltaRot * columnTransform.rotation;
-    }
-
     private void OnDrawGizmos()
     {
         foreach (var pair in interiorPieceSelected)

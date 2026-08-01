@@ -25,16 +25,24 @@ public class ColumnSelected : MonoBehaviour
         OnSelectedAction += interactManager.OnSelectedMethod;
     }
 
+    private void Update()
+    {
+        if (interactManager.isRotating)
+        {
+            DisableOutline();
+        }
+    }
+
     private void OnMouseDown()
     {
-        if (isSelected || interactManager.hasWon) return;
+        if (isSelected || interactManager.hasWon || interactManager.isRotating) return;
 
         SelectedPiece();
     }
 
     private void OnMouseEnter()
     {
-        if (isSelected || interactManager.hasWon) return;
+        if (isSelected || interactManager.hasWon || interactManager.isRotating) return;
 
         EnableOutline();
     }
