@@ -46,7 +46,7 @@ public class DialManager : MonoBehaviour
     private bool _onPuzzle;
     private bool _canGoBack;
     private bool hasWon;
-    [SerializeField] private BoxCollider _buttonBoxCollider;
+    [SerializeField] private GameObject _buttonGo;
 
     private void RotatableDialState(bool state)
     {
@@ -149,9 +149,16 @@ public class DialManager : MonoBehaviour
     {
         ExitDialMethod();
         hasWon = true;
+        _buttonGo.GetComponent<BoxCollider>().enabled = false;
+        StartCoroutine(RewardCoroutine());
+    }
+
+    private IEnumerator RewardCoroutine()
+    {
+        yield return new WaitForSeconds(1.5f);
         _doorAnim.SetTrigger("Open");
         _doorSound.Play();
-        _buttonBoxCollider.enabled = false;
+        _buttonGo.GetComponent<Animator>().SetTrigger("Interact");
     }
     #endregion
 }
