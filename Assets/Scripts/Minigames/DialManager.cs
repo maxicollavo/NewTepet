@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Searcher.Searcher.AnalyticsEvent;
 
 public class DialManager : MonoBehaviour
 {
@@ -157,6 +158,7 @@ public class DialManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
         _doorAnim.SetTrigger("Open");
+        EventManager.Instance.Dispatch(GameEventTypes.OnDoorOpen, this, EventArgs.Empty);
         _doorSound.Play();
         _buttonGo.GetComponent<Animator>().SetTrigger("Interact");
     }

@@ -69,6 +69,7 @@ public class ResultManager : MonoBehaviour
 
         if (doorsDone[doorIndex]) return;
         doorAnims[doorIndex].SetTrigger("Open");
+        EventManager.Instance.Dispatch(GameEventTypes.OnDoorOpen, this, EventArgs.Empty);
         doorSounds3D[doorIndex].Play();
         doorsDone[doorIndex] = true;
         Debug.Log("se abre la ultima puerta");

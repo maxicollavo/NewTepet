@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -23,6 +24,7 @@ public class TutorialOnWin : MonoBehaviour
     {
         yield return new WaitForSeconds(1.7f);
         doorAnim.SetTrigger("Open");
+        EventManager.Instance.Dispatch(GameEventTypes.OnDoorOpen, this, EventArgs.Empty);
         yield return new WaitForSeconds(0.025f);
         door3DSound.Play();
     }

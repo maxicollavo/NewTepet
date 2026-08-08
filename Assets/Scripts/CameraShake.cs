@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Cinemachine;
+using System;
 
 public class CameraShake : MonoBehaviour
 {
@@ -12,6 +13,15 @@ public class CameraShake : MonoBehaviour
     void Awake()
     {
         TryInit();
+
+        EventManager.Instance.Register(GameEventTypes.OnDoorOpen, OnTriggerShake);
+
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Instance.Unregister(GameEventTypes.OnDoorOpen, OnTriggerShake);
+
     }
 
     private void TryInit()
@@ -25,6 +35,11 @@ public class CameraShake : MonoBehaviour
                 initialized = true;
             }
         }
+    }
+
+    private void OnTriggerShake(object sender, EventArgs e)
+    {
+        TriggerShake(1f, 0.02f);
     }
 
     public void TriggerShake(float duration, float magnitude)
@@ -42,7 +57,7 @@ public class CameraShake : MonoBehaviour
 
         if (shakeTime > 0)
         {
-            cameraOffset.Offset = originalOffset + Random.insideUnitSphere * shakeMagnitude;
+            cameraOffset.Offset = originalOffset + UnityEngine.Random.insideUnitSphere * shakeMagnitude;
             shakeTime -= Time.deltaTime;
         }
         else

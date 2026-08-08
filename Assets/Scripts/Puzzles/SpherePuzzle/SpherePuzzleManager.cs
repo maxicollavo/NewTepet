@@ -66,6 +66,7 @@ public class SpherePuzzleManager : MonoBehaviour
         else
         {
             openDoor.SetTrigger("Open");
+            EventManager.Instance.Dispatch(GameEventTypes.OnDoorOpen, this, EventArgs.Empty);
             WinSound.Play();
         }
 

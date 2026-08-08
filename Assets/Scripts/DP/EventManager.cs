@@ -51,5 +51,6 @@ public enum GameEventTypes
     OnCinematic,
     OnPuzzle,
     OnPickeable,
-    OnObjectPlaced
+    OnObjectPlaced,
+    OnDoorOpen
 }

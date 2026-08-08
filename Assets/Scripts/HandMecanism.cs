@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -48,6 +49,7 @@ public class HandMecanism : MonoBehaviour, Interactor
         DisableOutline();
         yield return new WaitForSeconds(1f);
         doorAnim.SetTrigger("Open");
+        EventManager.Instance.Dispatch(GameEventTypes.OnDoorOpen, this, EventArgs.Empty);
         door3DSound.Play();
         //AudioManager.Instance.PlaySound("rocaMoviendose");
     }
