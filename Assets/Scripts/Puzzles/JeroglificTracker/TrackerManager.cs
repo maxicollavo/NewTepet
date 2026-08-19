@@ -109,7 +109,6 @@ public class TrackerManager : MonoBehaviour
     {
         isTransitioning = true;
         OnPuzzle = true;
-
         HandsManager.Instance.SetPose(HandPose.Puzzle, ArmTarget.Left);
         NewEventManager.TriggerFreeze(true);
 

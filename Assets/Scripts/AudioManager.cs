@@ -32,11 +32,11 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySound(string clipName)
+    public void PlaySound(string clipName, float volume = 1f)
     {
         if (audioClips.ContainsKey(clipName))
         {
-            audioSource.PlayOneShot(audioClips[clipName]);
+            audioSource.PlayOneShot(audioClips[clipName], volume);
         }
         else
         {

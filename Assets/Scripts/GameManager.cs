@@ -61,31 +61,39 @@ public class GameManager : MonoBehaviour
 
     private void OnBlendCreated(CinemachineCore.BlendEventParams evtParams)
     {
-        if (evtParams.Blend.CamA == playerCam as ICinemachineCamera)
-        {
-            var camA = evtParams.Blend.CamB as CinemachineCamera;
+        var camA = evtParams.Blend.CamA as CinemachineCamera;
+        var camB = evtParams.Blend.CamB as CinemachineCamera;
 
-            if (camA != null)
-            {
-                GameObject camObject = camA.gameObject;
-                PuzzleDefiner definer = camObject.GetComponent<PuzzleDefiner>();
+        bool isPlayerCamA = evtParams.Blend.CamA == playerCam as ICinemachineCamera;
+        bool isPlayerCamB = evtParams.Blend.CamB == playerCam as ICinemachineCamera;
 
-                if (definer != null)
-                {
-                    requiresHand = definer.requiresHand;
-                    OnPuzzleMethod(requiresHand);
-                    return;
-                }
-            }
+        // Si no participa la cámara del jugador, no nos interesa
+        if (!isPlayerCamA && !isPlayerCamB)
+            return;
 
-            OnPuzzleMethod(false);
-        }
+        // La otra cámara involucrada en el blend
+        CinemachineCamera otherCamera = isPlayerCamA ? camB : camA;
+
+        if (otherCamera == null)
+            return;
+
+        // Solo reproducimos el sonido si la otra cámara es una cámara de puzzle
+        PuzzleDefiner definer = otherCamera.GetComponent<PuzzleDefiner>();
+
+        if (definer == null)
+            return;
+
+        AudioManager.Instance.PlaySound("CameraTransition", 0.2f);
+
+        requiresHand = definer.requiresHand;
+        OnPuzzleMethod(requiresHand);
     }
 
     private void OnBlendFinished(ICinemachineMixer cam1, ICinemachineCamera cam2)
     {
         if (cam2 == playerCam as ICinemachineCamera)
         {
+            Debug.Log("Vuelve a player");
             OnGameplayMethod();
         }
     }
