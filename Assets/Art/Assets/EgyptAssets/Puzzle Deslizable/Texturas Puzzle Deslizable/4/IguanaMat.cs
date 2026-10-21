@@ -45,7 +45,7 @@ public class IguanaMat : MonoBehaviour
     private void UpdateBloom()
     {
         rend.GetPropertyBlock(block);
-        block.SetFloat("_bloom_Fondo", bloomValue);
+        block.SetFloat("_Intense", bloomValue);
         rend.SetPropertyBlock(block);
     }
 }
