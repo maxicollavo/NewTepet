@@ -304,17 +304,12 @@ public class RiverPuzzleManager : MonoBehaviour
         if (wp == targetWp)
         {
             piece.OnPositionWinner = true;
-           var mat = piece.GetComponent<RiverMat>();
-           if (mat != null)
-               mat.ActiveBloom();
+            piece.bloom.ActiveBloom();
         }
         else 
         {
             piece.OnPositionWinner = false;
-            var mat = piece.GetComponent<RiverMat>();
-
-            if (mat != null)
-                mat.DesactiveBloom();
+            piece.bloom.DesactiveBloom();
         }
 
         CheckWin();

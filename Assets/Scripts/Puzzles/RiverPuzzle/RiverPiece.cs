@@ -13,11 +13,13 @@ public class RiverPiece : MonoBehaviour
     public BoxCollider coll;
     public bool IsSelected;
     public bool OnPositionWinner;
+    [HideInInspector] public BloomController bloom { get; private set; }
 
     private void Awake()
     {
         outline = GetComponent<Outline>();
         coll = GetComponent<BoxCollider>();
+        bloom = GetComponent<BloomController>();
     }
 
     private void Start()

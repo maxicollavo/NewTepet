@@ -1,51 +1,55 @@
 using UnityEngine;
+
 [RequireComponent(typeof(Renderer))]
-public class RiverMat : MonoBehaviour 
+public class BloomController : MonoBehaviour
 {
     private Renderer rend;
     private MaterialPropertyBlock block;
-    public float bloomValue = 0f;
 
+    public float bloomValue = 0f;
 
     [Header("Bloom setting")]
     public int bloomTarget = 37;
     public int bloomNull = 0;
     public int bloomSpeed = 20;
-    private bool active = false;
 
+    private bool active = false;
 
     private void Awake()
     {
         rend = GetComponent<Renderer>();
         block = new MaterialPropertyBlock();
-
     }
 
     private void Update()
     {
-        if (active)
-        {
-            bloomValue = Mathf.MoveTowards(bloomValue, bloomTarget, Time.deltaTime * bloomSpeed);
-            UpdateBloom();
-        }
-        else
-        {
-            bloomValue = Mathf.MoveTowards(bloomValue, bloomNull, Time.deltaTime * bloomSpeed);
-            UpdateBloom();
-        }
+        float target = active ? bloomTarget : bloomNull;
+
+        bloomValue = Mathf.MoveTowards(
+            bloomValue,
+            target,
+            Time.deltaTime * bloomSpeed
+        );
+
+        UpdateBloom();
     }
+
     public void ActiveBloom()
     {
         active = true;
+        Debug.Log("Bloom activado");
     }
+
     public void DesactiveBloom()
-    { 
-        active = false; 
+    {
+        active = false;
+        Debug.Log("Bloom desactivado");
     }
+
     private void UpdateBloom()
     {
         rend.GetPropertyBlock(block);
-        block.SetFloat("_bloom_Fondo", bloomValue);
+        block.SetFloat("_Intense", bloomValue);
         rend.SetPropertyBlock(block);
     }
 }
