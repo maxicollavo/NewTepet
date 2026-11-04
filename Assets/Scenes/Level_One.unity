@@ -15892,6 +15892,22 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &51808866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51808857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec37b2831f52b840a7e1c03d52bbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloomValue: 0
+  bloomTarget: 37
+  bloomNull: 0
+  bloomSpeed: 20
 --- !u!1001 &52266099
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -175145,6 +175161,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6989972652074480914, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 51808861}
+    - targetCorrespondingSourceObject: {fileID: 6989972652074480914, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 51808866}
     - targetCorrespondingSourceObject: {fileID: -8277158053328706933, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 848242109}
@@ -175154,6 +175173,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8277158053328706933, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 848242107}
+    - targetCorrespondingSourceObject: {fileID: -8277158053328706933, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 848242112}
     - targetCorrespondingSourceObject: {fileID: -5514973854646914966, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 329409647}
@@ -175163,6 +175185,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -5514973854646914966, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 329409645}
+    - targetCorrespondingSourceObject: {fileID: -5514973854646914966, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 329409650}
     - targetCorrespondingSourceObject: {fileID: -1749435016463932502, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2043414698}
@@ -175172,6 +175197,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -1749435016463932502, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2043414696}
+    - targetCorrespondingSourceObject: {fileID: -1749435016463932502, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2043414701}
     - targetCorrespondingSourceObject: {fileID: 1784747260517925682, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 983658820}
@@ -175181,6 +175209,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1784747260517925682, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 983658818}
+    - targetCorrespondingSourceObject: {fileID: 1784747260517925682, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 983658824}
     - targetCorrespondingSourceObject: {fileID: 7290139105190669015, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 976447469}
@@ -175190,6 +175221,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7290139105190669015, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
       insertIndex: -1
       addedObject: {fileID: 976447467}
+    - targetCorrespondingSourceObject: {fileID: 7290139105190669015, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 976447472}
   m_SourcePrefab: {fileID: 100100000, guid: 3aae5cc7aa266304c9c8ac71038b8e13, type: 3}
 --- !u!4 &247396206 stripped
 Transform:
@@ -247279,6 +247313,22 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &329409650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 329409641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec37b2831f52b840a7e1c03d52bbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloomValue: 0
+  bloomTarget: 37
+  bloomNull: 0
+  bloomSpeed: 20
 --- !u!4 &330550747 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 35307d7af6b239149bdebc8947ec3030, type: 3}
@@ -515328,6 +515378,7 @@ GameObject:
   m_Component:
   - component: {fileID: 735791256}
   - component: {fileID: 735791257}
+  - component: {fileID: 735791258}
   m_Layer: 0
   m_Name: PuzzleCamera_Lvl3
   m_TagString: Untagged
@@ -515393,6 +515444,19 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
+--- !u!114 &735791258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735791255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d3058716ccc7f43b69c625049564fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiresHand: 0
 --- !u!1001 &736180997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -610884,6 +610948,22 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &848242112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848242103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec37b2831f52b840a7e1c03d52bbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloomValue: 0
+  bloomTarget: 37
+  bloomNull: 0
+  bloomSpeed: 20
 --- !u!1 &849461303 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 410597fc84dec264e95036f036c2833f, type: 3}
@@ -707452,6 +707532,22 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &976447472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976447461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec37b2831f52b840a7e1c03d52bbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloomValue: 0
+  bloomTarget: 37
+  bloomNull: 0
+  bloomSpeed: 20
 --- !u!1001 &976520433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -709807,6 +709903,22 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &983658824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 983658814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec37b2831f52b840a7e1c03d52bbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloomValue: 0
+  bloomTarget: 37
+  bloomNull: 0
+  bloomSpeed: 20
 --- !u!1001 &983927262
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -907491,7 +907603,7 @@ Transform:
   m_GameObject: {fileID: 1243014340}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.0000057518473}
-  m_LocalPosition: {x: 208.89, y: 4.57, z: 93.92}
+  m_LocalPosition: {x: 186.68, y: 1.12, z: 66.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -964080,6 +964192,7 @@ GameObject:
   - component: {fileID: 1312406899}
   - component: {fileID: 1312406901}
   - component: {fileID: 1312406900}
+  - component: {fileID: 1312406902}
   m_Layer: 0
   m_Name: ColumnPuzzleCamera (1)
   m_TagString: Untagged
@@ -964172,6 +964285,19 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: 0}
   ApplyAfter: 1
   PreserveComposition: 0
+--- !u!114 &1312406902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312406897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d3058716ccc7f43b69c625049564fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiresHand: 1
 --- !u!1 &1312428176
 GameObject:
   m_ObjectHideFlags: 0
@@ -1190626,6 +1190752,7 @@ GameObject:
   - component: {fileID: 1582082290}
   - component: {fileID: 1582082292}
   - component: {fileID: 1582082291}
+  - component: {fileID: 1582082293}
   m_Layer: 0
   m_Name: ColumnPuzzleCamera
   m_TagString: Untagged
@@ -1190718,6 +1190845,19 @@ MonoBehaviour:
   Offset: {x: 0, y: 0, z: 0}
   ApplyAfter: 1
   PreserveComposition: 0
+--- !u!114 &1582082293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582082288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3d3058716ccc7f43b69c625049564fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  requiresHand: 0
 --- !u!1001 &1582324412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1504454,6 +1504594,22 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &2043414701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043414692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eec37b2831f52b840a7e1c03d52bbb6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloomValue: 0
+  bloomTarget: 37
+  bloomNull: 0
+  bloomSpeed: 20
 --- !u!1 &2044728861
 GameObject:
   m_ObjectHideFlags: 0
