@@ -290,5 +290,5 @@ public class FPSController : MonoBehaviour
     public void EnableInputs()
     {
         this.enabled = true; 
-    }
+     }
 }
