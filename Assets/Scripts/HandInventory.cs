@@ -37,7 +37,7 @@ public class HandInventory : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning($"No se encontró el objeto en mano para: {obj}");
+            Debug.LogWarning($"No se encontrï¿½ el objeto en mano para: {obj}");
         }
     }
 

@@ -12,6 +12,10 @@ public enum ObjectsToPick
     Canopo,
     Djed,
     Heart,
+    Vase0,
+    Vase1,
+    Vase2,
+    Vase3,
     None
 }
 
@@ -31,8 +35,8 @@ public class PickToInventory : MonoBehaviour, Interactor
 
     private ObjectType type;
 
-    [SerializeField] private bool _triggersAction;
-    [SerializeField] private GameObject _light;
+    [SerializeField] private bool _disablesIntroLight;
+    [SerializeField] private GameObject _introLight;
 
     private void Awake()
     {
@@ -55,8 +59,16 @@ public class PickToInventory : MonoBehaviour, Interactor
         }
     }
 
+    [SerializeField] private bool isVase;
+
     public void Interact()
     {
+        if (isVase)
+        {
+            Vase vase = gameObject.GetComponent<Vase>();
+            VaseWeightManager.Instance.actualIndex = vase.vaseIndex;
+        }
+
         if (!canBePicked) return;
 
         if (HandInventory.IsHoldingSomething())
@@ -76,12 +88,12 @@ public class PickToInventory : MonoBehaviour, Interactor
         gameObject.SetActive(false);
         //Sonido de pickeo
         AudioManager.Instance.PlaySound("Grab");
-        //Si necesita hacer una acción al pickear
+        //Si necesita hacer una acciï¿½n al pickear
 
-        if (_triggersAction)
+        if (_disablesIntroLight)
         {
-            if (_light == null) return;
-            _light.SetActive(false);
+            if (_introLight == null) return;
+            _introLight.SetActive(false);
         }
 
         //if (isOnScale && plateSide != Plate.None)
