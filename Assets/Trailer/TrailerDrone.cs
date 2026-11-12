@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
@@ -44,6 +45,11 @@ public class TrailerDrone : MonoBehaviour
         public float fov = 40f;
         public float radiusOverride;          // forzar radio (metros) si el objeto es raro
         public bool skip;
+        public string poseFrom, poseTo;       // move "poses": encuadres guardados desde la Scene view (TrailerCaptures/encuadres.json)
+        public string ease = "inout";         // inout | linear | out | in
+        public float shake = 0.35f;           // camara en mano: 0 = quieta, 1 = mucho
+        public float dof = 1f;                // desenfoque de fondo: 0 = sin, 1 = normal, 2 = fuerte
+        public float speed = 1f;              // >1 = camara lenta durante la toma (graba mas cuadros por segundo de juego)
         public Ev[] events;
     }
 
@@ -63,6 +69,10 @@ public class TrailerDrone : MonoBehaviour
 
     Camera cam;
     ShotList list;
+    [Serializable] public class Pose { public string name; public Vector3 pos; public Quaternion rot; public float fov = 40f; }
+    [Serializable] public class PoseList { public List<Pose> items = new List<Pose>(); }
+    PoseList poses;
+    Pose GetPose(string n) { if (poses == null) return null; foreach (var p in poses.items) if (p.name == n) return p; return null; }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void Boot()
@@ -81,6 +91,8 @@ public class TrailerDrone : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         string json = File.ReadAllText(Path.Combine(Root, "shots.json"));
         list = JsonUtility.FromJson<ShotList>(json);
+        var ep = Path.Combine(Root, "encuadres.json");
+        if (File.Exists(ep)) poses = JsonUtility.FromJson<PoseList>(File.ReadAllText(ep));
         File.WriteAllText(Path.Combine(Root, "log.txt"), "inicio " + DateTime.Now + "\n");
 
         yield return new WaitForSecondsRealtime(list.warmup);
@@ -124,6 +136,7 @@ public class TrailerDrone : MonoBehaviour
         go.AddComponent<AudioListener>();
         cam.depth = 100;
         cam.nearClipPlane = 0.03f;
+        SetupDof();
         DontDestroyOnLoad(go);
     }
 
@@ -147,7 +160,12 @@ public class TrailerDrone : MonoBehaviour
         {
             if (!r.enabled || r is ParticleSystemRenderer) continue;
             foreach (var m in r.sharedMaterials)
+            {
                 if (m == null || m.shader == null || !m.shader.isSupported) { r.enabled = false; pink++; break; }
+                var tx = m.HasProperty("_BaseMap") ? m.GetTexture("_BaseMap") : (m.HasProperty("_MainTex") ? m.mainTexture : null);
+                if (tx != null && System.Text.RegularExpressions.Regex.IsMatch(tx.name, "WASD|TECLAS|\\(UI\\)|^UI ", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) { r.enabled = false; break; }
+            }
+            if (r is SpriteRenderer sr && sr.sprite != null && System.Text.RegularExpressions.Regex.IsMatch(sr.sprite.name, "WASD|TECLAS|\\(UI\\)|^UI ", System.Text.RegularExpressions.RegexOptions.IgnoreCase)) r.enabled = false;
         }
         if (pink > 0 && !loggedPink) { Log("ocultos por material faltante: " + pink); loggedPink = true; }
         if (list != null && list.hide != null)
@@ -202,6 +220,63 @@ public class TrailerDrone : MonoBehaviour
 
     static Vector3 V(float[] a, Vector3 def) => (a != null && a.Length == 3) ? new Vector3(a[0], a[1], a[2]) : def;
     static float Ease(float t) { t = Mathf.Clamp01(t); return t * t * (3 - 2 * t); }
+    static float Ease(string mode, float t)
+    {
+        t = Mathf.Clamp01(t);
+        switch (mode)
+        {
+            case "linear": return t;
+            case "out": return 1 - (1 - t) * (1 - t);
+            case "in": return t * t;
+            default: return Ease(t);
+        }
+    }
+
+    DepthOfField dofFx;
+    void SetupDof()
+    {
+        var vgo = new GameObject("TrailerDOF");
+        DontDestroyOnLoad(vgo);
+        var vol = vgo.AddComponent<Volume>();
+        vol.isGlobal = true; vol.priority = 1000;
+        var prof = ScriptableObject.CreateInstance<VolumeProfile>();
+        dofFx = prof.Add<DepthOfField>(true);
+        dofFx.mode.Override(DepthOfFieldMode.Bokeh);
+        dofFx.focalLength.Override(50f);
+        dofFx.aperture.Override(4f);
+        vol.sharedProfile = prof;
+    }
+
+    void ApplyLook(Shot shot, float t, Vector3? focus)
+    {
+        if (shot.shake > 0)
+        {
+            float a = shot.shake, k = 0.55f;
+            float nx = Mathf.PerlinNoise(t * k, 0.1f) - 0.5f, ny = Mathf.PerlinNoise(1.7f, t * k) - 0.5f;
+            float nr = Mathf.PerlinNoise(t * k * 0.7f, 5.3f) - 0.5f;
+            cam.transform.position += cam.transform.right * nx * 0.03f * a + cam.transform.up * ny * 0.025f * a;
+            cam.transform.rotation *= Quaternion.Euler(ny * 1.2f * a, nx * 1.2f * a, nr * 0.6f * a);
+        }
+        if (dofFx == null) return;
+        dofFx.active = shot.dof > 0;
+        if (shot.dof <= 0) return;
+        float d;
+        if (focus.HasValue) d = Vector3.Distance(cam.transform.position, focus.Value);
+        else
+        {
+            d = -1f;
+            var hits = Physics.RaycastAll(cam.transform.position, cam.transform.forward, 300f, ~0, QueryTriggerInteraction.Ignore);
+            System.Array.Sort(hits, (x, y) => x.distance.CompareTo(y.distance));
+            foreach (var h in hits)
+            {
+                var rr = h.collider.GetComponentInParent<Renderer>();
+                if (rr != null && rr.enabled && rr.bounds.Intersects(new Bounds(h.point, Vector3.one * 0.2f))) { d = h.distance; break; }
+            }
+            if (d < 0) { dofFx.active = false; return; }
+        }
+        dofFx.focusDistance.Override(Mathf.Max(d, 0.1f));
+        dofFx.aperture.Override(Mathf.Clamp(5.6f / shot.dof, 1.4f, 16f));
+    }
 
     void Log(string s) => File.AppendAllText(Path.Combine(Root, "log.txt"), s + "\n");
 
@@ -243,13 +318,15 @@ public class TrailerDrone : MonoBehaviour
         var pending = new List<Ev>(shot.events ?? new Ev[0]);
         int fps = Mathf.Max(list.fps, 1);
         int frames = Mathf.RoundToInt(shot.duration * fps);
-        Time.captureFramerate = fps;
+        Time.captureFramerate = Mathf.RoundToInt(fps * Mathf.Max(shot.speed, 1f));
+        frames = Mathf.RoundToInt(frames * Mathf.Max(shot.speed, 1f));
         var stills = new HashSet<int> { 0, frames / 2, frames - 1 };
 
         for (int i = 0; i < frames; i++)
         {
-            float t = i / (float)fps;
-            float u = Ease(t / shot.duration);
+            float t = i / (float)Time.captureFramerate;
+            float u = Ease(shot.ease, t / shot.duration);
+            Vector3? fpt = null;
             for (int e = pending.Count - 1; e >= 0; e--)
                 if (t >= pending[e].time) { Fire(pending[e], target); pending.RemoveAt(e); }
 
@@ -265,6 +342,16 @@ public class TrailerDrone : MonoBehaviour
                 cam.transform.rotation = aimPoint.HasValue
                     ? Quaternion.LookRotation(aimPoint.Value - pos, Vector3.up) * Quaternion.Euler(0, Mathf.Lerp(-shot.yaw, shot.yaw, u) * 0.5f, 0)
                     : baseRot * Quaternion.Euler(0, Mathf.Lerp(-shot.yaw, shot.yaw, u) * 0.5f, 0);
+                fpt = aimPoint;
+                goto capture;
+            }
+            if (shot.move == "poses")
+            {
+                var pa = GetPose(shot.poseFrom); var pb = GetPose(shot.poseTo) ?? pa;
+                if (pa == null) { Log("ENCUADRE NO ENCONTRADO: " + shot.poseFrom); yield break; }
+                cam.transform.position = Vector3.Lerp(pa.pos, pb.pos, u);
+                cam.transform.rotation = Quaternion.Slerp(pa.rot, pb.rot, u);
+                cam.fieldOfView = Mathf.Lerp(pa.fov, pb.fov, u);
                 goto capture;
             }
             if (shot.move == "world")
@@ -272,6 +359,7 @@ public class TrailerDrone : MonoBehaviour
                 pos = Vector3.Lerp(V(shot.from, center), V(shot.to, V(shot.from, center)), u);
                 cam.transform.position = pos;
                 cam.transform.rotation = Quaternion.LookRotation(V(shot.lookAt, center) - pos, Vector3.up);
+                fpt = V(shot.lookAt, center);
                 goto capture;
             }
             if (shot.move == "path")
@@ -288,8 +376,11 @@ public class TrailerDrone : MonoBehaviour
             }
             cam.transform.position = pos;
             cam.transform.rotation = Quaternion.LookRotation(look - pos, Vector3.up);
+            fpt = look;
 
             capture:
+            ApplyLook(shot, t, fpt);
+            foreach (var cv in FindObjectsByType<Canvas>(FindObjectsInactive.Exclude, FindObjectsSortMode.None)) cv.enabled = false;
             yield return new WaitForEndOfFrame();
             if (Mode == 2 || stills.Contains(i))
             {

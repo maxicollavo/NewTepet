@@ -31,4 +31,24 @@ public static class TrailerDroneMenu
         EditorPrefs.SetInt("TEPET_TRAILER_MODE", mode);
         EditorApplication.isPlaying = true;
     }
+
+    // Para grabar gameplay jugando (con NVIDIA ShadowPlay u OBS): en Play, oculta/muestra la UI.
+    // No toca nada guardado: al salir de Play vuelve todo como estaba.
+    static readonly System.Collections.Generic.List<Behaviour> ocultos = new System.Collections.Generic.List<Behaviour>();
+
+    [MenuItem("Tepet/Trailer/Ocultar o mostrar UI mientras juego (Play) %#u")]
+    static void ToggleUI()
+    {
+        if (!EditorApplication.isPlaying) { EditorUtility.DisplayDialog("Trailer", "Funciona en Play: entra a jugar y usa Ctrl+Shift+U.", "OK"); return; }
+        if (ocultos.Count > 0)
+        {
+            foreach (var b in ocultos) if (b) b.enabled = true;
+            ocultos.Clear();
+            Debug.Log("[Trailer] UI visible");
+            return;
+        }
+        foreach (var c in Object.FindObjectsByType<Canvas>(FindObjectsSortMode.None))
+            if (c.enabled && c.isRootCanvas) { c.enabled = false; ocultos.Add(c); }
+        Debug.Log($"[Trailer] UI oculta ({ocultos.Count} canvas). Ctrl+Shift+U para volver.");
+    }
 }
