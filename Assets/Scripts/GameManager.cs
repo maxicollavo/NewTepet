@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     public bool HasPiece;
 
-    [SerializeField] Animator pyramidOnEnterAnim;
+    [SerializeField] PyramidAnimations pyramidAnimations;
 
     public static GameManager Instance { get; private set; }
 
@@ -178,9 +178,9 @@ public class GameManager : MonoBehaviour
         crosshair.SetActive(active);
         hand.SetActive(requiresHand);
 
-        if (requiresHand)
+        if (requiresHand && pyramidAnimations != null)
         {
-            pyramidOnEnterAnim.SetTrigger("EnterPuzzle");
+            pyramidAnimations.PlayInteractAnimation();
         }
     }
 }
