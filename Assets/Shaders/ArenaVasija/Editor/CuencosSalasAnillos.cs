@@ -5,10 +5,10 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 
 // Pone cuencos de fuego (los de la sala 3: pedestal + cuenco + fuego + su luz) a los lados del tablero
-// en las salas de la Iguana y del Escarabajo. Herramienta de editor (Bauti).
+// en las salas de la Iguana y del Escarabajo.
 public static class CuencosSalasAnillos
 {
-    const string Grupo = "Cuencos de fuego";
+    const string Grupo = "Cuencos";
     const float Escala = 0.7f;
 
     static List<Transform> Escena() =>
@@ -52,7 +52,7 @@ public static class CuencosSalasAnillos
             {
                 float x = xPared + lado * sep;
                 float piso = Physics.Raycast(new Vector3(x, -9f, z), Vector3.down, out var hit, 20f, ~0, QueryTriggerInteraction.Ignore) ? hit.point.y : -15.6f;
-                var raiz = new GameObject("Cuenco " + (++n)); raiz.transform.SetParent(g.transform, false);
+                var raiz = new GameObject("Cuenco"); raiz.transform.SetParent(g.transform, false);
                 raiz.transform.position = origen;
                 foreach (var p in piezas) Copiar(p, raiz.transform);
                 raiz.transform.localScale = Vector3.one * Escala;

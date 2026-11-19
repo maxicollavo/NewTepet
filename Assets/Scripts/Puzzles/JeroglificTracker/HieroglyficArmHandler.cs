@@ -40,7 +40,7 @@ public class HieroglyficArmHandler : MonoBehaviour
         float time = 0f;
         while (time < duration)
         {
-            arm.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
+            arm.localRotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.SmoothStep(0f, 1f, time / duration));
             time += Time.deltaTime;
             yield return null;
         }
@@ -50,20 +50,18 @@ public class HieroglyficArmHandler : MonoBehaviour
 
     private IEnumerator RotateToRotation(Transform arm, Quaternion targetRotation, float duration)
     {
-        Vector3 startEuler = arm.localEulerAngles;
-        Vector3 targetEuler = targetRotation.eulerAngles;
+        Quaternion startRot = arm.localRotation;
 
         float time = 0f;
         while (time < duration)
         {
-            float t = time / duration;
-            Vector3 newEuler = Vector3.Lerp(startEuler, targetEuler, t);
-            arm.localEulerAngles = newEuler;
+            float t = Mathf.SmoothStep(0f, 1f, time / duration);
+            arm.localRotation = Quaternion.Slerp(startRot, targetRotation, t);
             time += Time.deltaTime;
             yield return null;
         }
 
-        arm.localEulerAngles = targetEuler;
+        arm.localRotation = targetRotation;
 
         arm.gameObject.SetActive(false);
 

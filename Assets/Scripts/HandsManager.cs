@@ -121,7 +121,7 @@ public class HandsManager : MonoBehaviour
         float time = 0f;
         while (time < duration)
         {
-            arm.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
+            arm.localRotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.SmoothStep(0f, 1f, time / duration));
             time += Time.deltaTime;
             yield return null;
         }
@@ -138,7 +138,7 @@ public class HandsManager : MonoBehaviour
         float time = 0f;
         while (time < duration)
         {
-            arm.localRotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
+            arm.localRotation = Quaternion.Slerp(startRotation, targetRotation, Mathf.SmoothStep(0f, 1f, time / duration));
             time += Time.deltaTime;
             yield return null;
         }

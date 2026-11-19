@@ -17,7 +17,7 @@ public class Laser : MonoBehaviour
     public bool hasWon { get; private set; }
     private int mirrorCounter;
 
-    // ---- Sonido de las gemas (Bauti) ----
+    // sonido gemas
     // Cuando el rayo empieza a tocar una gema suena un destello, y mientras la toca suena un aura en loop.
     readonly HashSet<GameObject> _gemasTocadas = new();
     readonly HashSet<GameObject> _gemasAntes = new();
@@ -28,8 +28,8 @@ public class Laser : MonoBehaviour
 
     private void Start()
     {
-        _clipDestello = Resources.Load<AudioClip>("Sounds/Niveles/Gema_Destello");
-        _clipAura = Resources.Load<AudioClip>("Sounds/Niveles/Gema_Aura_Loop");
+        _clipDestello = Resources.Load<AudioClip>("Sounds/Niveles/Destello gema");
+        _clipAura = Resources.Load<AudioClip>("Sounds/Niveles/AuraGema");
         _inicio = Time.time;
     }
 

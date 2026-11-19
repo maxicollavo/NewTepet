@@ -1,6 +1,6 @@
 using UnityEngine;
 
-// Sonido de nivel armado por Bauti: suena solo cuando el objeto se activa (loop de ambiente,
+// suena solo cuando el objeto se activa (loop de ambiente,
 // fuego, cascada) o cuando el juego prende el objeto al resolver algo (ascensor, puertas).
 // No toca ningún script del juego.
 [RequireComponent(typeof(AudioSource))]

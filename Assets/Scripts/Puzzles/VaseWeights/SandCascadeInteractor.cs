@@ -30,6 +30,7 @@ public class SandCascadeInteractor : MonoBehaviour, Interactor
         }
 
         vaseManager.TryFillVase();
+        AudioManager.Instance?.PlaySound("LlenadoVasija", 0.8f);
         DisableOutline();
     }
 

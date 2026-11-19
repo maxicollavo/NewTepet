@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-// Tepet > Sonido: arma los sonidos de la Sala de la Esfinge y de la Sala de los Anillos (Bauti).
+// Tepet > Sonido: arma los sonidos de la Sala de la Esfinge y de la Sala de los Anillos.
 public static class SonidoNivelTools
 {
     const string Carpeta = "Assets/Resources/Sounds/";
@@ -47,23 +47,23 @@ public static class SonidoNivelTools
         Quitar(false);
         int n = 0;
         var sala = Buscar("Sala SUBTERRANEA");
-        if (sala) { Crear(sala, "Sonido Ambiente Esfinge", new Vector3(180.9f, -30f, -127f), Clip("Niveles/Amb_Subterraneo_Loop.wav"), true, 0.5f, 1f, 14f, 26f, AudioRolloffMode.Linear); n++; }
+        if (sala) { Crear(sala, "Sonido ambiente", new Vector3(180.9f, -30f, -127f), Clip("Niveles/ambiente sala esfinge.wav"), true, 0.5f, 1f, 14f, 26f, AudioRolloffMode.Linear); n++; }
 
         var cascada = sala ? sala.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "CascadaArena") : null;
         if (cascada == null) cascada = Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(t => t.name == "CascadaArena");
-        if (cascada) { var p = cascada.position; Crear(cascada, "Sonido Cascada", new Vector3(p.x, -30f, p.z), Clip("Niveles/Cascada_Arena_Suave_Loop.wav"), true, 0.7f, 1f, 2f, 18f, AudioRolloffMode.Logarithmic); n++; }
+        if (cascada) { var p = cascada.position; Crear(cascada, "SonidoCascada", new Vector3(p.x, -30f, p.z), Clip("Niveles/CascadaArena loop.wav"), true, 0.7f, 1f, 2f, 18f, AudioRolloffMode.Logarithmic); n++; }
 
-        var ilum = sala ? sala.Find("Iluminacion Sala Esfinge") : null;
+        var ilum = sala ? sala.Find("Luces Esfinge") : null;
         var fuego = Clip("TorchFireLoop_Flaming Torch Sound for Sleeping _ Relaxing Fire Ambience-St.L.wav");
         if (ilum)
             foreach (Transform a in ilum)
             {
                 var f = a.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name.StartsWith("fireParticle2"));
-                Crear(a, "Sonido Fuego", f ? f.position : a.position + Vector3.up * 1.5f, fuego, true, 0.3f, 1f, 1f, 7f, AudioRolloffMode.Logarithmic); n++;
+                Crear(a, "SonidoFuego", f ? f.position : a.position + Vector3.up * 1.5f, fuego, true, 0.3f, 1f, 1f, 7f, AudioRolloffMode.Logarithmic); n++;
             }
 
         var anillos = Buscar("Nivel 4/Anillos");
-        if (anillos) { Crear(anillos, "Sonido Ambiente Anillos", anillos.position + Vector3.up * 3f, Clip("Niveles/Amb_Anillos_Loop.wav"), true, 0.45f, 1f, 10f, 20f, AudioRolloffMode.Linear); n++; }
+        if (anillos) { Crear(anillos, "AmbienteAnillos", anillos.position + Vector3.up * 3f, Clip("Niveles/AmbienteAnillos.wav"), true, 0.45f, 1f, 10f, 20f, AudioRolloffMode.Linear); n++; }
 
         var limites = Buscar("Nivel 4/Anillos/Limites");
         if (limites)
@@ -72,7 +72,7 @@ public static class SonidoNivelTools
             else
             {
                 var s = Undo.AddComponent<AudioSource>(limites.gameObject);
-                s.clip = Clip("Niveles/Ascensor_Bajando.wav"); s.loop = false; s.volume = 0.9f; s.playOnAwake = false; s.spatialBlend = 0f;
+                s.clip = Clip("Niveles/Ascensor bajando.wav"); s.loop = false; s.volume = 0.9f; s.playOnAwake = false; s.spatialBlend = 0f;
                 Undo.AddComponent<SonidoNivel>(limites.gameObject); n++;
             }
         }
@@ -93,5 +93,23 @@ public static class SonidoNivelTools
         }
         if (n > 0) EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
         if (log) Debug.Log($"[Sonido] {n} sonidos quitados.");
+    }
+    // El giro de los anillos estaba en 3D sobre RingManager: desde la camara del puzzle casi no se escuchaba.
+    [MenuItem("Tepet/Sonido/Arreglar sonido de giro de los anillos")]
+    static void ArreglarGiroAnillos()
+    {
+        var rm = Object.FindFirstObjectByType<RingPuzzleManager>(FindObjectsInactive.Include);
+        if (rm == null) { Debug.LogWarning("[Sonido] no encuentro RingPuzzleManager"); return; }
+        var so = new SerializedObject(rm);
+        var src = so.FindProperty("rotationSound")?.objectReferenceValue as AudioSource;
+        if (src == null) { Debug.LogWarning("[Sonido] RingPuzzleManager no tiene rotationSound asignado"); return; }
+        Undo.RecordObject(src, "Giro anillos");
+        src.spatialBlend = 0f; src.volume = 0.3f; src.pitch = 1.8f;
+        var nuevo = Clip("Niveles/GiroAnillo2.wav"); if (nuevo) src.clip = nuevo; // el original era casi inaudible (pico -39 dB)
+        var amb = Object.FindObjectsByType<AudioSource>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(a => a.name == "AmbienteAnillos");
+        if (amb) { Undo.RecordObject(amb, "Giro anillos"); amb.volume = 0.3f; EditorUtility.SetDirty(amb); }
+        EditorUtility.SetDirty(src);
+        EditorSceneManager.MarkSceneDirty(rm.gameObject.scene);
+        Debug.Log("[Sonido] giro de los anillos en 2D, volumen 0.3, pitch 1.8 (clip: " + (src.clip ? src.clip.name : "ninguno") + ")");
     }
 }

@@ -5,10 +5,10 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 
 // Iluminacion de la Sala de la Esfinge usando las antorchas de piso doradas que ya existen
-// (modelo "Antorcha de piso Substance dorada" + "fireParticle2 cuenco" + su luz). Solo herramienta de editor (Bauti).
+// (modelo "Antorcha de piso Substance dorada" + "fireParticle2 cuenco" + su luz). Solo herramienta de editor.
 public static class NivelEsfingeIluminacion
 {
-    const string Grupo = "Iluminacion Sala Esfinge";
+    const string Grupo = "Luces Esfinge";
     const float YPiso = -34.2f;
 
     // (x, z) en mundo. Sala: x 164.1..197.8, z -141.0..-112.2, nicho de la esfinge x 173.7..183.3 hasta z -145.8
@@ -57,7 +57,7 @@ public static class NivelEsfingeIluminacion
             var p = p0;
             foreach (var e in evitar) { var d = p - e; if (d.magnitude < 1.8f) p = e + (d.sqrMagnitude < 1e-4f ? Vector2.right : d.normalized) * 1.8f; }
 
-            var raiz = new GameObject("Antorcha " + (++i));
+            var raiz = new GameObject("Antorcha");
             raiz.transform.SetParent(g.transform, false);
             raiz.transform.position = torch.position;
             Copiar(torch, raiz.transform);
