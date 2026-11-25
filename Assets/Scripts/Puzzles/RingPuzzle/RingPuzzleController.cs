@@ -9,6 +9,7 @@ public class RingPuzzleController : MonoBehaviour, Interactor
     bool onPuzzle;
 
     [SerializeField] GameObject puzzleCam;
+    [SerializeField] GameObject uiRingPuzzle;
 
     private void Update()
     {
@@ -63,12 +64,14 @@ public class RingPuzzleController : MonoBehaviour, Interactor
         RingPuzzleManager.Instance.canInteract = false;
         yield return new WaitForSeconds(1.5f);
         RingPuzzleManager.Instance.canInteract = true;
+        if (uiRingPuzzle != null) uiRingPuzzle.SetActive(true);
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
     }
 
     public IEnumerator ExitPuzzle(bool enableCollider = true)
     {
         RingPuzzleManager.Instance.DeselectAll();
+        if (uiRingPuzzle != null) uiRingPuzzle.SetActive(false);
         puzzleCam.SetActive(false);
         RingPuzzleManager.Instance.canInteract = false;
 

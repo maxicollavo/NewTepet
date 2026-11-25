@@ -17,6 +17,13 @@ public class BrazoVivo : MonoBehaviour
     public float intensidad = 1f;
     public bool esIzquierdo;
 
+    // inclinacion pedida desde afuera: deja "objetoArriba" con su eje Y mirando para arriba
+    [HideInInspector] public Transform objetoArriba;
+    [HideInInspector] public float inclinacionObjetivo;
+    [Tooltip("Que tan rapido se inclina (1 = un segundo)")] public float velocidadInclinacion = 2f;
+    [Tooltip("Maximo que se inclina el brazo")] public float inclinacionMaxima = 50f;
+    float inclinacion;
+
     Quaternion reposo, ultimoOffset = Quaternion.identity;
     bool inicializado;
     float proximoGesto, gestoInicio = -100f, gestoDur;
@@ -83,6 +90,20 @@ public class BrazoVivo : MonoBehaviour
         }
 
         Quaternion offset = Quaternion.Euler(e * intensidad * peso);
+
+        // jarron con la boca para arriba (cerca de la cascada)
+        inclinacion = Mathf.MoveTowards(inclinacion, objetoArriba ? inclinacionObjetivo : 0f, Time.deltaTime * velocidadInclinacion);
+        if (inclinacion > 0.001f && objetoArriba)
+        {
+            Quaternion delta = Quaternion.FromToRotation(objetoArriba.up, Vector3.up);
+            delta.ToAngleAxis(out float ang, out Vector3 eje);
+            if (ang > 180f) ang -= 360f;
+            ang = Mathf.Clamp(ang, -inclinacionMaxima, inclinacionMaxima) * Mathf.SmoothStep(0f, 1f, inclinacion);
+            Quaternion mundo = Quaternion.AngleAxis(ang, eje);
+            Quaternion rot = transform.rotation;
+            offset = (Quaternion.Inverse(rot) * mundo * rot) * offset;
+        }
+
         transform.localRotation = baseRot * offset;
         ultimoOffset = offset;
     }

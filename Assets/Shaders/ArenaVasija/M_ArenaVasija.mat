@@ -29,17 +29,24 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _EdgeDarken: 0.35
-    - _EdgeWidth: 0.04
+    - _Brillo: 0.66
+    - _CentroOscuro: 0.671
+    - _EdgeDarken: 0.636
+    - _EdgeWidth: 0.2
     - _Fill: 0.5
-    - _Glint: 0.4
+    - _FresnelPotencia: 6
+    - _Glint: 0
+    - _LuzMinima: 0.383
     - _MaxY: 1
     - _MinY: -1
     - _NoiseScale: 6
-    - _NoiseStrength: 0.015
-    - _TexStrength: 0.6
+    - _NoiseStrength: 0.0131
+    - _RadioXZ: 1
+    - _TexStrength: 0.675
     - _Tiling: 4
     m_Colors:
-    - _SandColor: {r: 0.62, g: 0.46, b: 0.25, a: 1}
-    - _SandTopColor: {r: 0.74, g: 0.57, b: 0.31, a: 1}
+    - _CentroXZ: {r: 0, g: 0, b: 0, a: 0}
+    - _SandColor: {r: 0.6698113, g: 0.43140444, b: 0.12322002, a: 1}
+    - _SandTopColor: {r: 0.5849056, g: 0.41384834, b: 0.15726236, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

@@ -20,6 +20,11 @@ Shader "Tepet/ArenaVasija"
         _EdgeDarken ("Oscurecer borde", Range(0, 1)) = 0.35
         _EdgeWidth ("Ancho borde", Range(0.001, 0.2)) = 0.04
         _Glint ("Brillo de granos", Range(0, 2)) = 0.4
+        _LuzMinima ("Luz minima (que se vea adentro del jarron)", Range(0, 1)) = 0.35
+        _Brillo ("Brillo", Range(0, 1.5)) = 0.66
+        _Fresnel ("Fresnel", Range(0, 1)) = 0.33
+        [HideInInspector] _CentroXZ ("Centro (objeto)", Vector) = (0, 0, 0, 0)
+        [HideInInspector] _RadioXZ ("Radio (objeto)", Float) = 1
     }
 
     SubShader
@@ -34,7 +39,9 @@ Shader "Tepet/ArenaVasija"
             float4 _SandTex_ST;
             float _Fill, _MinY, _MaxY, _Tiling;
             float4 _SandColor, _SandTopColor;
-            float _NoiseScale, _NoiseStrength, _EdgeDarken, _EdgeWidth, _Glint, _TexStrength;
+            float _NoiseScale, _NoiseStrength, _EdgeDarken, _EdgeWidth, _Glint, _TexStrength, _LuzMinima;
+            float _Brillo, _Fresnel, _RadioXZ;
+            float4 _CentroXZ;
         CBUFFER_END
 
         float Hash21(float2 p) { p = frac(p * float2(123.34, 456.21)); p += dot(p, p + 45.32); return frac(p.x * p.y); }
@@ -142,6 +149,20 @@ Shader "Tepet/ArenaVasija"
                     albedo += g * _Glint * 0.25;
                 }
                 half3 col = Shade(i.positionWS, n, albedo);
+                col = max(col, albedo * _LuzMinima);   // adentro del jarron casi no llega luz
+
+                // fresnel
+                float fres;
+                if (front)
+                {
+                    float3 V = normalize(GetWorldSpaceViewDir(i.positionWS));
+                    fres = 1 - saturate(abs(dot(normalize(i.normalWS), V)));
+                }
+                else
+                {
+                    fres = saturate(length(i.positionOS.xz - _CentroXZ.xz) / max(_RadioXZ, 0.0001));
+                }
+                col *= lerp(1 - _Fresnel, 1, pow(fres, 6)) * _Brillo;
                 col = MixFog(col, i.fog);
                 return half4(col, 1);
             }

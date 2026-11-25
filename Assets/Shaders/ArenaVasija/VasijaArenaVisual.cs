@@ -11,11 +11,16 @@ public class VasijaArenaVisual : MonoBehaviour
     [Range(0f, 1f)] public float llenado = 0f;      // valor inicial / para probar en el Inspector
     [Tooltip("Segundos que tarda la arena en subir o bajar un nivel completo")]
     public float duracion = 0.6f;
+    [Tooltip("Hasta que altura llega la arena llena (1 = todo el objeto). En los cuencos rotos es el borde mas bajo")]
+    [Range(0.1f, 1f)] public float tope = 1f;
 
     static readonly int FillId = Shader.PropertyToID("_Fill");
     static readonly int MinId = Shader.PropertyToID("_MinY");
     static readonly int MaxId = Shader.PropertyToID("_MaxY");
-    float minY = -1f, maxY = 1f;
+    static readonly int CentroId = Shader.PropertyToID("_CentroXZ");
+    static readonly int RadioId = Shader.PropertyToID("_RadioXZ");
+    float minY = -1f, maxY = 1f, radio = 1f;
+    Vector4 centro;
     Renderer rend;
     MaterialPropertyBlock block;
     float actual, objetivo;
@@ -31,7 +36,7 @@ public class VasijaArenaVisual : MonoBehaviour
         block = new MaterialPropertyBlock();
         // la altura de corte se toma del mesh (sirve para cubo, cilindro o la forma interior de la vasija)
         var mf = GetComponent<MeshFilter>();
-        if (mf != null && mf.sharedMesh != null) { minY = mf.sharedMesh.bounds.min.y; maxY = mf.sharedMesh.bounds.max.y; }
+        if (mf != null && mf.sharedMesh != null) { var b = mf.sharedMesh.bounds; minY = b.min.y; maxY = Mathf.Lerp(minY, b.max.y, tope); centro = b.center; radio = Mathf.Max(b.extents.x, b.extents.z); }
         actual = objetivo = llenado;
         nivel = Mathf.RoundToInt(llenado * nivelesMaximos);
         listo = true;
@@ -83,6 +88,8 @@ public class VasijaArenaVisual : MonoBehaviour
         block.SetFloat(FillId, actual);
         block.SetFloat(MinId, minY);
         block.SetFloat(MaxId, maxY);
+        block.SetVector(CentroId, centro);
+        block.SetFloat(RadioId, radio);
         rend.SetPropertyBlock(block);
     }
 }

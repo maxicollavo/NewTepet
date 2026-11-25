@@ -28,6 +28,7 @@ public class TrackerManager : MonoBehaviour
 
     [Header("Camera")]
     [SerializeField] private GameObject CM_PuzzleCamera;
+    [SerializeField] private GameObject uiHieroglyph;
 
     [Header("Managers")]
     [SerializeField] private HieroglyficManager hieroglyficManager;
@@ -121,6 +122,8 @@ public class TrackerManager : MonoBehaviour
         EventManager.Instance.Dispatch(GameEventTypes.OnPuzzle, this, EventArgs.Empty);
         if (trail != null)
             trail.gameObject.SetActive(true);
+        if (uiHieroglyph != null)
+            uiHieroglyph.SetActive(true);
 
         isTransitioning = false;
     }
@@ -131,6 +134,8 @@ public class TrackerManager : MonoBehaviour
 
         if (trail != null)
             trail.gameObject.SetActive(false);
+        if (uiHieroglyph != null)
+            uiHieroglyph.SetActive(false);
 
         TurnPuzzleCamera(false);
 

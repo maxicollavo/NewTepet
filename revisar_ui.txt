@@ -1,0 +1,40 @@
+== tutorialRioPuzzle activo=False
+   Image sprite=Assets/Art/2D/UI MOVER LAS PIEZAS DEL TABLERO/Move the Pieces with WASD (UI).png pos=(554.00, -503.14) size=(4355.82, 285.00) scale=(0.08, 0.12, 0.08) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialRioPuzzle
+   Image sprite=Assets/Art/2D/Botón Go Back + Click Derecho.png pos=(813.00, -501.00) size=(4355.82, 285.00) scale=(0.04, 0.20, 0.08) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialRioPuzzle
+   Image sprite=Assets/Art/2D/UI MENUS 20-4-25/USE POWERS/MOUSE CLICKED.png pos=(342.00, -500.50) size=(100.00, 100.00) scale=(0.46, 0.57, 0.54) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialRioPuzzle
+   Image (1) sprite=Assets/Art/2D/UI CONTROLES COLUMNAS/W Y S (CAMBIAR SELECCION)/Solo CHANGE SELECTION.png pos=(180.00, -502.80) size=(100.00, 100.00) scale=(2.61, 0.31, 0.62) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialRioPuzzle
+   usado por RiverPuzzleManager en BeetleManager (uiRiverPuzzle)
+   usado por RiverPuzzleManager en LizardManager (uiRiverPuzzle)
+   usado por RiverPuzzleManager en RiverManager (uiRiverPuzzle)
+   usado por RiverPuzzleManager en RiverPuzzleManager_Lvl3 (uiRiverPuzzle)
+== tutorialEsfera activo=False
+   Image sprite=Assets/Art/2D/UI ROTAR Y CONFIRMAR/INGLES/ROTATE AND CONFIRM (sin fondo).png pos=(399.00, -438.00) size=(3670.66, 285.00) scale=(0.15, 0.19, 0.19) anchorMin=(0.50, 0.45) anchorMax=(0.50, 0.45) parent=tutorialEsfera
+   Image (2) sprite=Assets/Art/2D/ENTREGA SALA 2/UI BARRA ESPACIADORA NUEVO/SPACE BAR (letra sin bordes).png pos=(452.20, -438.00) size=(1359.42, 300.47) scale=(0.16, 0.19, 0.14) anchorMin=(0.50, 0.45) anchorMax=(0.50, 0.45) parent=tutorialEsfera
+   Image (1) sprite=Assets/Art/2D/Botón Go Back + Click Derecho.png pos=(813.43, -491.14) size=(4355.82, 263.79) scale=(0.05, 0.22, 0.12) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialEsfera
+   usado por RotateSphere en InteractSphere (uiPuzzle)
+   usado por RotateSphere en InteractSphere (1) (uiPuzzle)
+== TutorialEnvironment activo=True
+   Image sprite=Assets/Art/2D/UI SPACE CONFIRM/ENG/SPACE BAR CONFIRM.png pos=(678.41, -469.97) size=(501.18, 78.05) scale=(1.00, 1.00, 1.00) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=CanvasUI
+   Big sprite=Assets/Art/2D/Escarabajo Puzzle Rotante/ESCARAB C. MAYOR (C-FONDO).png pos=(0.00, 0.00) size=(100.00, 100.00) scale=(9.66, 9.66, 9.66) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=CanvasWorldSpace
+   Child sprite=Assets/Art/Assets/EgyptAssets/Puzzle Pieces/86c9b5e7bbeb7a8d0063c2dae5ce545d-un-escarabajo-en-las-sombras.png pos=(-0.04, 35.86) size=(42.42, 73.10) scale=(0.20, 0.20, 0.20) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=Big
+   Mid sprite=Assets/Art/2D/Escarabajo Puzzle Rotante/ESCARAB C. INTERMEDIO (C-FONDO).png pos=(0.00, 0.00) size=(100.00, 100.00) scale=(6.86, 6.86, 6.86) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=CanvasWorldSpace
+   Child sprite=- pos=(-0.06, 34.72) size=(42.42, 67.39) scale=(0.29, 0.29, 0.29) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=Mid
+   Inner sprite=Assets/Art/2D/Escarabajo Puzzle Rotante/ESCARAB C. MENOR (C-FONDO).png pos=(0.00, 0.00) size=(100.00, 100.00) scale=(4.14, 4.14, 4.14) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=CanvasWorldSpace
+   Child sprite=- pos=(-0.09, 22.00) size=(42.42, 92.09) scale=(0.48, 0.48, 0.48) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=Inner
+== TutorialManager activo=True
+== tutorialPilares activo=False
+   Image (2) sprite=Assets/Art/2D/ENTREGA SALA 2/UI BARRA ESPACIADORA NUEVO/SPACE BAR (letra sin bordes).png pos=(629.00, -453.00) size=(1359.42, 300.47) scale=(0.16, 0.19, 0.14) anchorMin=(0.50, 0.45) anchorMax=(0.50, 0.45) parent=tutorialPilares
+   Image (3) sprite=Assets/Art/2D/Solo CONFIRM.png pos=(837.00, -453.00) size=(1359.42, 300.47) scale=(0.12, 0.17, 0.12) anchorMin=(0.50, 0.45) anchorMax=(0.50, 0.45) parent=tutorialPilares
+   Image sprite=Assets/Art/2D/UI CONTROLES COLUMNAS/ROTATE y CHANGE SELECTION (Todo Junto).png pos=(212.00, -503.14) size=(4355.82, 285.00) scale=(0.13, 0.20, 0.13) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialPilares
+   Image sprite=Assets/Art/2D/UI CONTROLES COLUMNAS/Q y E (Solos).png pos=(-496.00, -503.20) size=(100.00, 285.00) scale=(1.13, 0.19, 4.08) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialPilares
+   Image sprite=Assets/Art/2D/UI CONTROLES COLUMNAS/CHANGE COLUMNS (Solo).png pos=(-248.00, -503.10) size=(100.00, 100.00) scale=(3.38, 0.46, 1.00) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialPilares
+   usado por EnterColumnPuzzle en Mesa Columnas (ColumnUI)
+   usado por EnterColumnPuzzle en Mesa Columnas (1) (ColumnUI)
+== tutorialBoardPuzzle activo=False
+   Image sprite=Assets/Art/2D/UI MOVER LAS PIEZAS DEL TABLERO/Move the Pieces with WASD (UI).png pos=(554.00, -503.14) size=(4355.82, 285.00) scale=(0.08, 0.12, 0.08) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialBoardPuzzle
+   Image sprite=Assets/Art/2D/Botón Go Back + Click Derecho.png pos=(813.00, -501.00) size=(4355.82, 285.00) scale=(0.04, 0.20, 0.08) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialBoardPuzzle
+   usado por BoardPuzzleManager en Manager (uiBoardPuzzle)
+   usado por BoardPuzzleManager en Manager (uiBoardPuzzle)
+== tutorialCanvas activo=False
+   Image sprite=Assets/Art/2D/Use WASD on the keyboard to move.png pos=(323.00, -465.00) size=(4355.82, 285.00) scale=(0.28, 0.28, 0.28) anchorMin=(0.50, 0.50) anchorMax=(0.50, 0.50) parent=tutorialCanvas
+   usado por FadeScript en FadeScript (canvasObject)

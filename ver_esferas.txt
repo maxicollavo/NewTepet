@@ -1,0 +1,28 @@
+ESFERA Nivel 3/Columnas/ColumnSphere/InteractSphere (1) pos=(167.29, 1.52, 48.01) escala=(1.00, 1.00, 1.00)
+   firstFillAmount = 1
+   secondFillAmount = 1,01
+   thirdFillAmount = 2
+   proximityTolerance = 0,93
+   shaderLerpDuration = 1
+   emissionIntensity = 1,5
+   winImagePoints = 3
+   allImages = 5
+   manager ColumnSphereManager nivel3=True
+   mat[0] EsferaMAT shader=Universal Render Pipeline/Lit _FillAmount=- path=Assets/Art/Assets/bola de vidrio/bola y mats/Esfera UN solo mat/EsferaMAT.mat
+   mat[1] Level3InteractSphere shader=Shader Graphs/PruebaEsfera _FillAmount=0 path=Assets/Art/Shaders/Level3InteractSphere.mat
+   mesh pSphere2 bounds Center: (-0.02, 0.06, 0.01), Extents: (0.01, 0.01, 0.01) childScale=(27.38, 27.38, 27.38)
+ESFERA LevelOneEnvironment/SecondPart/SpherePuzzle/InteractSphere pos=(183.07, 1.85, 130.76) escala=(1.00, 1.00, 1.00)
+   firstFillAmount = 3,8
+   secondFillAmount = 4,33
+   thirdFillAmount = 5
+   proximityTolerance = 0,54
+   shaderLerpDuration = 1
+   emissionIntensity = 1,5
+   winImagePoints = 3
+   allImages = 5
+   manager Manager nivel3=False
+   mat[0] EsferaMAT shader=Universal Render Pipeline/Lit _FillAmount=- path=Assets/Art/Assets/bola de vidrio/bola y mats/Esfera UN solo mat/EsferaMAT.mat
+   mat[1] StartBallLeft shader=Shader Graphs/PruebaEsfera _FillAmount=0 path=Assets/Art/Shaders/StartBallLeft.mat
+   mesh pSphere2 bounds Center: (-0.02, 0.06, 0.01), Extents: (0.01, 0.01, 0.01) childScale=(27.38, 27.38, 27.38)
+MIMIC MimicSphere (1) offValue=0
+MIMIC MimicSphere offValue=-10

@@ -35,6 +35,8 @@ public class RotateSphere : MonoBehaviour, Interactor
     [SerializeField] float firstFillAmount;
     [SerializeField] float secondFillAmount;
     [SerializeField] float thirdFillAmount;
+    [Tooltip("Valor de la esfera vacia. Depende de la altura de la esfera en el mundo")]
+    [SerializeField] float emptyFillAmount = 0f;
 
     private int currentImageIndex = 0;
     private bool canScore = true;
@@ -84,6 +86,7 @@ public class RotateSphere : MonoBehaviour, Interactor
         animator.enabled = false;
 
         winImagePoints = winImagePoints.OrderBy(p => p.name).ToArray();
+        fillMat.SetFloat("_FillAmount", emptyFillAmount);
     }
 
     private void Update()
@@ -324,7 +327,7 @@ public class RotateSphere : MonoBehaviour, Interactor
         switch (fillCounter)
         {
             case 0:
-                targetFill = 0f;
+                targetFill = emptyFillAmount;
                 break;
             case 1:
                 targetFill = firstFillAmount;
