@@ -43,7 +43,7 @@ public class ActivateElevator : MonoBehaviour, Interactor
 
     public void Interact()
     {
-        Debug.Log("Toco");
+        Debug.Log("Toco en: " + gameObject.name, this);
         foreach (GameObject go in boundaries)
         {
             go.SetActive(true);
